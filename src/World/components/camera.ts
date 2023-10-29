@@ -1,0 +1,14 @@
+import { PerspectiveCamera } from "three";
+import { degToRad } from "three/src/math/MathUtils.js";
+
+function createCamera(): PerspectiveCamera {
+    const camera = new PerspectiveCamera(
+        60,     // fov
+        1,      // aspect
+        0.1,    // near clipping plane
+        50,     // far clipping plane
+    );
+    return camera;
+}
+
+export { createCamera };
