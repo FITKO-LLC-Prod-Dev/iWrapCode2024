@@ -1,8 +1,8 @@
-import { PerspectiveCamera } from "three";
+import { Camera } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { degToRad } from "three/src/math/MathUtils.js";
 
-function createCamControls(camera: PerspectiveCamera, domElement: HTMLElement) {
+function createCamControls(camera: Camera, domElement: HTMLElement) {
     const camControls = new OrbitControls(camera, domElement);
     camControls.target.set(0, 1, 0);
     camControls.enablePan = false;

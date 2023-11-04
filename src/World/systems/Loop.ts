@@ -1,14 +1,14 @@
-import { Clock, PerspectiveCamera, Scene, WebGLRenderer } from "three";
+import { Camera, Clock, Scene, WebGLRenderer } from "three";
 import { GameObject } from "./interfaces.js"
 
 class Loop {
-    readonly camera: PerspectiveCamera;
+    readonly camera: Camera;
     readonly scene: Scene;
     readonly renderer: WebGLRenderer;
     readonly clock: Clock;
     updatables: Array<GameObject>;
 
-    constructor(camera: PerspectiveCamera, scene: Scene, renderer: WebGLRenderer) {
+    constructor(camera: Camera, scene: Scene, renderer: WebGLRenderer) {
         this.camera = camera;
         this.scene = scene;
         this.renderer = renderer;

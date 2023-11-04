@@ -1,5 +1,4 @@
 import { PerspectiveCamera } from "three";
-import { degToRad } from "three/src/math/MathUtils.js";
 
 function createCamera(): PerspectiveCamera {
     const camera = new PerspectiveCamera(
