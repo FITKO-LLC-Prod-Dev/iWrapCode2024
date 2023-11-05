@@ -1,0 +1,6 @@
+Deadline -- Next Week (perfections later)
+1. Add random LED glows (interactivity)
+1. Fix model issues
+1. Improve lighting
+1. Add shadows
+1. Add ground floor and background

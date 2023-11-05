@@ -1,8 +1,9 @@
-import { WebGLRenderer } from "three"
+import { ReinhardToneMapping, SRGBColorSpace, WebGLRenderer } from "three"
 
 function createRenderer(): WebGLRenderer {
-    const renderer = new WebGLRenderer({antialias: true});
-    (renderer as any).physicallyCorrectLights = true;
+    const renderer = new WebGLRenderer();
+    renderer.outputColorSpace = SRGBColorSpace;
+    renderer.toneMapping = ReinhardToneMapping;
     return renderer;
 }
 

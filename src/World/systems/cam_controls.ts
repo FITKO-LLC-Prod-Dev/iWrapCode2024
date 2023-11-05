@@ -4,14 +4,14 @@ import { degToRad } from "three/src/math/MathUtils.js";
 
 function createCamControls(camera: Camera, domElement: HTMLElement) {
     const camControls = new OrbitControls(camera, domElement);
-    camControls.target.set(0, 1, 0);
+    camControls.target.set(0, 1.3, 0);
     camControls.enablePan = false;
-    camControls.enableZoom = false;
+    camControls.enableZoom = true;
     camControls.minAzimuthAngle = degToRad(-60);
     camControls.maxAzimuthAngle = degToRad(60);
     camControls.minPolarAngle = degToRad(40);
     camControls.maxPolarAngle = degToRad(65);
-    camControls.minDistance = 2;
+    camControls.minDistance = 0.5;
     camControls.maxDistance = 4;
     camControls.update();
     (camControls as any).tick = () => camControls.update();
