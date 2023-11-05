@@ -7,7 +7,7 @@ function createPointLight(): PointLight {
 }
 
 function createIndirectLight(): AmbientLight {
-    const ambLight = new AmbientLight("white", 7.50);
+    const ambLight = new AmbientLight("white", 5);
     return ambLight;
 }
 
