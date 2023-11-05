@@ -1,4 +1,4 @@
-import { AxesHelper, Object3D, PerspectiveCamera, Scene, Vector3, WebGLRenderer } from "three";
+import { AudioListener, AxesHelper, Object3D, PerspectiveCamera, Scene, Vector3, WebGLRenderer } from "three";
 import { createCamera } from "./components/camera.js";
 import { createScene } from "./components/scene.js";
 import { createRenderer } from "./systems/renderer.js";
@@ -12,6 +12,9 @@ import { loadTarget } from "./components/target.js";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
 import { TargetBehaviour, TargetHitOrigin } from "./systems/TargetBehaviour.js";
 import { degToRad } from "three/src/math/MathUtils.js";
+import { loadPunchingBagSoundeffects } from "./components/soundeffects.js";
+import { createAudioListener } from "./systems/listener.js";
+import { AudioManager } from "./systems/AudioManager.js";
 
 interface WorldParams {
     debugGUI?: boolean;
@@ -25,6 +28,8 @@ class World {
     readonly composer: EffectComposer;
     readonly engine: Engine;
     readonly resizer: Resizer;
+    readonly listener: AudioListener;
+    readonly audioManager: AudioManager;
     readonly targetHitOrigins: Array<TargetHitOrigin>;
     readonly constantDeltaSampler: (d: number) => number;
     readonly linearDeltaSampler: (d: number) => number;
@@ -33,6 +38,7 @@ class World {
     targetBehaviour!: TargetBehaviour;
     bagMesh!: Object3D;
     targetMesh!: Object3D;
+    bagSoundEffects!: Array<AudioBuffer>;
     // debugGUI-related attributes
     debugGUIParams: Object = {};
 
@@ -44,6 +50,9 @@ class World {
         this.engine = new Engine(this.composer);
         this.resizer = new Resizer(container, this.camera, this.renderer, this.composer);
         this.resizer.updateSize();
+        // audio
+        this.listener = createAudioListener(this.camera);
+        this.audioManager = new AudioManager(this.listener);
         // lighting
         const pointLight = createPointLight();
         const indirectLight = createIndirectLight();
@@ -61,7 +70,7 @@ class World {
             {position: new Vector3(0, -0.129, 0), rotation: new Vector3(0, degToRad(+28.22), 0)},
             {position: new Vector3(0, -0.129, 0), rotation: new Vector3(0, degToRad(-28.22), 0)},
         ];
-        this.constantDeltaSampler = (d: number) => initialDelta;
+        this.constantDeltaSampler = (_: number) => initialDelta;
         this.linearDeltaSampler = (d: number) => Math.floor(- d * (initialDelta - hardestDelta) + initialDelta);
         this.maxHits = maxHits;
         // debug GUI
@@ -76,10 +85,17 @@ class World {
 
     // asynchronous setup here
     async init() {
+        // load models
         this.bagMesh = await loadBag();
         this.targetMesh = await loadTarget();
         this.scene.add(this.bagMesh);
-        this.targetBehaviour = new TargetBehaviour(this.bagMesh, this.targetMesh, this.camera, this.targetHitOrigins, this.linearDeltaSampler, this.maxHits);
+        // load soundeffects
+        const loadedSoundEffects = await loadPunchingBagSoundeffects();
+        this.audioManager.addPunchSoundeffects(loadedSoundEffects);
+        // behaviours dependent on asynchronously loaded assets
+        this.targetBehaviour = new TargetBehaviour(this.bagMesh, this.targetMesh, this.camera,
+                                                   this.audioManager, this.targetHitOrigins, this.linearDeltaSampler,
+                                                   this.maxHits);
         this.targetBehaviour.start();
     }
 

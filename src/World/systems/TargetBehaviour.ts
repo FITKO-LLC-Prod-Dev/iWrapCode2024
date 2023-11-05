@@ -1,4 +1,5 @@
 import { Camera, Object3D, Raycaster, Vector2, Vector3 } from "three";
+import { AudioManager } from "./AudioManager.js";
 
 interface TargetHitOrigin {
     position: Vector3;
@@ -9,6 +10,7 @@ class TargetBehaviour {
     readonly punchingBag: Object3D;
     readonly target: Object3D;
     readonly camera: Camera;
+    readonly audioManager: AudioManager;
     readonly localTargetHitOrigins: Array<TargetHitOrigin>;
     readonly deltaTimeSampler: (difficuly: number) => number;
     readonly raycaster: Raycaster;
@@ -18,11 +20,13 @@ class TargetBehaviour {
     timeoutId: number;
     nbrTargetsMissed: number;
 
-    constructor(punchingBag: Object3D, target: Object3D, camera: Camera, localTargetHitOrigins: Array<TargetHitOrigin>, deltaTimeSampler: (difficuly: number) => number,
-               maxHits: number) {
+    constructor(punchingBag: Object3D, target: Object3D, camera: Camera, audioManager: AudioManager,
+        localTargetHitOrigins: Array<TargetHitOrigin>,
+        deltaTimeSampler: (difficuly: number) => number, maxHits: number) {
         this.punchingBag = punchingBag;
         this.target = target;
         this.camera = camera;
+        this.audioManager = audioManager;
         this.localTargetHitOrigins = localTargetHitOrigins;
         this.deltaTimeSampler = deltaTimeSampler;
         this.maxHits = maxHits;
@@ -64,6 +68,7 @@ class TargetBehaviour {
         this.raycaster.setFromCamera(pointer, this.camera);
         const intersectRes = this.raycaster.intersectObject(this.target, false);
         if (intersectRes.length > 0) {
+            this.audioManager.playPunchSoundeffectRandomly();
             this.nbrTargetsHit++;
             clearTimeout(this.timeoutId);
             if (this.nbrTargetsHit >= this.maxHits) {
@@ -85,7 +90,7 @@ class TargetBehaviour {
     }
 
     getRandomHitOrigin(): TargetHitOrigin {
-        return this.localTargetHitOrigins[Math.floor(Math.random() * this.localTargetHitOrigins.length)]; 
+        return this.localTargetHitOrigins[Math.floor(Math.random() * this.localTargetHitOrigins.length)];
     }
 
 }

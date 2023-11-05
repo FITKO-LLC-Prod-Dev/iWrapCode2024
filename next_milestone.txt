@@ -1,6 +1,6 @@
 Deadline -- Next Week (perfections later)
-1. Add random LED glows (interactivity)
+1. Add random LED glows (interactivity) => Done (with extra stuff!)
 1. Fix model issues => Done
 1. Improve lighting => Done
-1. Add shadows
+1. Add shadows => Aborted (expensive for very little added benefit)
 1. Add ground floor and background
