@@ -35,6 +35,7 @@ class TargetBehaviour {
   readonly clock: Clock;
   readonly gameSettings: GameSettings;
   readonly reactionTimeSampler: (d: number) => number;
+  previousTargetIdx?: number;
   nbrTargetsHit: number;
   timeoutId: number;
   nbrTargetsMissed: number;
@@ -206,9 +207,15 @@ class TargetBehaviour {
   }
 
   getRandomHitOrigin(): TargetHitOrigin {
-    return this.localTargetHitOrigins[
-      Math.floor(Math.random() * this.localTargetHitOrigins.length)
-    ];
+    let newIdx = Math.floor(
+      Math.random() *
+        (this.localTargetHitOrigins.length - (this.previousTargetIdx ? 1 : 0)),
+    );
+    if (this.previousTargetIdx && newIdx >= this.previousTargetIdx) {
+      ++newIdx;
+    }
+    this.previousTargetIdx = newIdx;
+    return this.localTargetHitOrigins[newIdx];
   }
 }
 
