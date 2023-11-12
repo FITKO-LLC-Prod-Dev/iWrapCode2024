@@ -10,7 +10,7 @@ import {
 import GUI from "three/examples/jsm/libs/lil-gui.module.min.js";
 
 function createRenderer(container: HTMLElement, gui?: GUI): WebGLRenderer {
-  const renderer = new WebGLRenderer({ alpha: true });
+  const renderer = new WebGLRenderer();
   const params = { exposure: 1 };
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(container.clientWidth, container.clientHeight);

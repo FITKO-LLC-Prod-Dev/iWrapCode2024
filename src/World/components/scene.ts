@@ -1,11 +1,7 @@
-import { Color, Scene } from "three";
-import GUI from "three/examples/jsm/libs/lil-gui.module.min.js";
+import { Scene } from "three";
 
-function createScene(gui?: GUI): Scene {
+function createScene(): Scene {
   const scene = new Scene();
-  if (gui !== undefined) {
-    const sceneFolder = gui.addFolder("Scene");
-  }
   return scene;
 }
 

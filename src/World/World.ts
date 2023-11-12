@@ -10,7 +10,10 @@ import {
 import { createCamera } from "./components/camera.js";
 import { createScene } from "./components/scene.js";
 import { createRenderer } from "./systems/renderer.js";
-import { createPointLight, createIndirectLight } from "./components/lights.js";
+import {
+  createIndirectLight,
+  createDirectionalLight,
+} from "./components/lights.js";
 import { createComposer } from "./systems/composer.js";
 import { loadBag } from "./components/bag.js";
 import { Resizer } from "./systems/Resizer.js";
@@ -96,9 +99,9 @@ class World {
     this.listener = createAudioListener(this.camera);
     this.audioManager = new AudioManager(this.listener);
     // lighting
-    const pointLight = createPointLight();
-    const indirectLight = createIndirectLight();
-    this.scene.add(pointLight, indirectLight);
+    const indirectLight = createIndirectLight(this.gui);
+    const directLight = createDirectionalLight(this.gui);
+    this.scene.add(directLight, indirectLight);
     // systems
     this.targetHitOrigins = [
       {

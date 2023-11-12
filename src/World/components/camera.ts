@@ -8,8 +8,8 @@ function createCamera(gui?: GUI): PerspectiveCamera {
     0.1, // near clipping plane
     50, // far clipping plane
   );
-  const camTarget = new Vector3(0.0, 1.2, 0.0);
-  camera.position.set(0, 1, 2);
+  const camTarget = new Vector3(0.0, 0.94, 0.0);
+  camera.position.set(0, 2.2, 2.4);
   camera.lookAt(camTarget);
   if (gui !== undefined) {
     const cameraFolder = gui.addFolder("Camera");

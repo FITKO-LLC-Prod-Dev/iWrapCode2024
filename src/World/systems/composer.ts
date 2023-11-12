@@ -22,7 +22,7 @@ function createComposer(
     new Vector2(container.clientWidth, container.clientHeight),
     0.1,
     1,
-    0.5,
+    1,
   );
   const output = new OutputPass();
   const fxaa = new ShaderPass(FXAAShader);
