@@ -20,8 +20,8 @@ function createComposer(
   const renderPass = new RenderPass(scene, camera);
   const bloomPostProcessing = new UnrealBloomPass(
     new Vector2(container.clientWidth, container.clientHeight),
-    0.1,
-    1,
+    0.05,
+    0.5,
     1,
   );
   const output = new OutputPass();
