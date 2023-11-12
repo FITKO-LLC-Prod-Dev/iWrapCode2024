@@ -16,6 +16,7 @@
     },
     "dependencies": {
         "common-js": "^0.3.8",
-        "three": "^0.157.0"
+        "three": "^0.157.0",
+        "bootstrap": "^5.3.2"
     }
 }
