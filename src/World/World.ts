@@ -11,7 +11,6 @@ import { createCamera } from "./components/camera.js";
 import { createScene } from "./components/scene.js";
 import { createRenderer } from "./systems/renderer.js";
 import { createPointLight, createIndirectLight } from "./components/lights.js";
-import { createCamControls } from "./systems/orbiter.js";
 import { createComposer } from "./systems/composer.js";
 import { loadBag } from "./components/bag.js";
 import { Resizer } from "./systems/Resizer.js";
@@ -27,6 +26,7 @@ import { degToRad } from "three/src/math/MathUtils.js";
 import { loadPunchingBagSoundeffects } from "./components/soundeffects.js";
 import { createAudioListener } from "./systems/listener.js";
 import { AudioManager } from "./systems/AudioManager.js";
+import GUI from "three/examples/jsm/libs/lil-gui.module.min.js";
 
 interface DebugParams {
   debugGUI: boolean;
@@ -44,7 +44,7 @@ class World {
   readonly listener: AudioListener;
   readonly audioManager: AudioManager;
   readonly targetHitOrigins: Array<TargetHitOrigin>;
-  readonly debugParams: DebugParams;
+  readonly gui?: GUI;
   gameSettings: GameSettings;
   // TODO: add exponential reaction time sample
   targetBehaviour!: TargetBehaviour;
@@ -59,7 +59,7 @@ class World {
       minimumPoints: 0,
       nbrTargets: 30,
       startReactionTime: 2000,
-      endReactionTime: 400,
+      endReactionTime: 500,
       progression: "linear",
       keyboardTargetActivated: false,
     },
@@ -68,17 +68,21 @@ class World {
       worldAxis: false,
     },
   ) {
+    // debugging GUI
+    if (debugParams.debugGUI) {
+      this.gui = new GUI();
+    }
     this.container = container;
     this.gameSettings = gameSettings;
-    this.debugParams = debugParams;
-    this.camera = createCamera();
+    this.camera = createCamera(this.gui);
     this.scene = createScene();
-    this.renderer = createRenderer();
+    this.renderer = createRenderer(container, this.gui);
     this.composer = createComposer(
       container,
       this.renderer,
       this.scene,
       this.camera,
+      this.gui,
     );
     this.engine = new Engine(this.composer);
     this.resizer = new Resizer(
@@ -96,7 +100,6 @@ class World {
     const indirectLight = createIndirectLight();
     this.scene.add(pointLight, indirectLight);
     // systems
-    createCamControls(this.camera, this.renderer.domElement);
     this.targetHitOrigins = [
       {
         position: new Vector3(0, 0, 0),
@@ -135,7 +138,6 @@ class World {
         rotation: new Vector3(0, degToRad(-28.22), 0),
       },
     ];
-    // debug GUI
     if (debugParams.worldAxis) {
       const worldAxis = new AxesHelper(3);
       this.scene.add(worldAxis);
@@ -150,7 +152,7 @@ class World {
     this.bagMesh = await loadBag();
     this.targetMesh = await loadTarget();
     this.scene.add(this.bagMesh);
-    // load soundeffects
+    // load sound effects
     const loadedSoundEffects = await loadPunchingBagSoundeffects();
     this.audioManager.addPunchSoundeffects(loadedSoundEffects);
     // behaviours dependent on asynchronously loaded assets

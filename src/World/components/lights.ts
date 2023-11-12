@@ -1,14 +1,14 @@
-import { AmbientLight, PointLight} from "three";
+import { AmbientLight, PointLight } from "three";
 
 function createPointLight(): PointLight {
-    const light = new PointLight('white', 100);
-    light.position.set(0, 3, 5);
-    return light;
+  const light = new PointLight("white", 5);
+  light.position.set(0, 3, 5);
+  return light;
 }
 
 function createIndirectLight(): AmbientLight {
-    const ambLight = new AmbientLight("white", 5);
-    return ambLight;
+  const ambLight = new AmbientLight("white", 3);
+  return ambLight;
 }
 
 export { createPointLight, createIndirectLight };
