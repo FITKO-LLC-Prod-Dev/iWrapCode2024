@@ -30,6 +30,7 @@ import { loadPunchingBagSoundeffects } from "./components/soundeffects.js";
 import { createAudioListener } from "./systems/listener.js";
 import { AudioManager } from "./systems/AudioManager.js";
 import GUI from "three/examples/jsm/libs/lil-gui.module.min.js";
+import { loadGround } from "./components/ground.js";
 
 interface DebugParams {
   debugGUI: boolean;
@@ -53,6 +54,7 @@ class World {
   targetBehaviour!: TargetBehaviour;
   bagMesh!: Object3D;
   targetMesh!: Object3D;
+  groundMesh!: Object3D;
   bagSoundEffects!: Array<AudioBuffer>;
 
   constructor(
@@ -78,7 +80,7 @@ class World {
     this.container = container;
     this.gameSettings = gameSettings;
     this.camera = createCamera(this.gui);
-    this.scene = createScene();
+    this.scene = createScene(this.gui);
     this.renderer = createRenderer(container, this.gui);
     this.composer = createComposer(
       container,
@@ -99,9 +101,8 @@ class World {
     this.listener = createAudioListener(this.camera);
     this.audioManager = new AudioManager(this.listener);
     // lighting
-    const indirectLight = createIndirectLight(this.gui);
     const directLight = createDirectionalLight(this.gui);
-    this.scene.add(directLight, indirectLight);
+    this.scene.add(directLight);
     // systems
     this.targetHitOrigins = [
       {
@@ -154,7 +155,8 @@ class World {
     // load models
     this.bagMesh = await loadBag();
     this.targetMesh = await loadTarget();
-    this.scene.add(this.bagMesh);
+    this.groundMesh = await loadGround();
+    this.scene.add(this.bagMesh, this.groundMesh);
     // load sound effects
     const loadedSoundEffects = await loadPunchingBagSoundeffects();
     this.audioManager.addPunchSoundeffects(loadedSoundEffects);

@@ -2,7 +2,7 @@ import { AmbientLight, DirectionalLight } from "three";
 import GUI from "three/examples/jsm/libs/lil-gui.module.min.js";
 
 function createDirectionalLight(gui?: GUI): DirectionalLight {
-  const light = new DirectionalLight(0xf6f5f4, 6);
+  const light = new DirectionalLight(0xffffff, 6.2);
   light.position.set(0, 3, 5);
   light.lookAt(0, 1.35, 0);
   if (gui !== undefined) {
