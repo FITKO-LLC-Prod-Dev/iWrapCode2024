@@ -1,6 +1,6 @@
 interface GameObject {
-    start: () => void;
-    update: (delta: number) => void;
+  start: () => void;
+  update: (delta: number) => void;
 }
 
 export { GameObject };

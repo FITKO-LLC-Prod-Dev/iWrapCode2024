@@ -10,10 +10,7 @@ import {
 import { createCamera } from "./components/camera.js";
 import { createScene } from "./components/scene.js";
 import { createRenderer } from "./systems/renderer.js";
-import {
-  createIndirectLight,
-  createDirectionalLight,
-} from "./components/lights.js";
+import { createDirectionalLight } from "./components/lights.js";
 import { createComposer } from "./systems/composer.js";
 import { loadBag } from "./components/bag.js";
 import { Resizer } from "./systems/Resizer.js";
