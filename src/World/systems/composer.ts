@@ -22,7 +22,7 @@ function createComposer(
     new Vector2(container.clientWidth, container.clientHeight),
     0.05,
     0.5,
-    1,
+    1.5,
   );
   const output = new OutputPass();
   const fxaa = new ShaderPass(FXAAShader);
@@ -42,7 +42,7 @@ function createComposer(
     const bloomFolder = composerFolder.addFolder("Unreal Bloom");
     bloomFolder.add(bloomPostProcessing, "strength", 0.0, 3, 0.05);
     bloomFolder.add(bloomPostProcessing, "radius", 0.0, 1, 0.01);
-    bloomFolder.add(bloomPostProcessing, "threshold", 0.0, 1, 0.01);
+    bloomFolder.add(bloomPostProcessing, "threshold", 0.0, 5, 0.05);
     composerFolder.add(fxaa, "enabled").name("FXAA");
   }
 
