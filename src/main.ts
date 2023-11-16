@@ -1,24 +1,10 @@
 import { World } from "./World/World.js";
+import { GUI } from "./GUI/GUI.js";
 
 async function main() {
   const container = document.querySelector<HTMLDivElement>("#scene-container");
   if (container == null) throw new Error("#scene-container not found in DOM.");
-  // events
-  container.addEventListener("three::targetspawn", (e) => {
-    console.log((e as CustomEvent).detail);
-  });
-  container.addEventListener("three::targethit", (e) => {
-    console.log((e as CustomEvent).detail);
-  });
-  container.addEventListener("three::targetmiss", (e) => {
-    console.log((e as CustomEvent).detail);
-  });
-  container.addEventListener("three::gamestart", (e) => {
-    console.log((e as CustomEvent).detail);
-  });
-  container.addEventListener("three::gameover", (e) => {
-    console.log((e as CustomEvent).detail);
-  });
+  // create game scene (called World)
   const world = new World(
     container,
     {
@@ -30,10 +16,26 @@ async function main() {
       progression: "constant",
       keyboardTargetActivated: false,
     },
-    { debugGUI: true, worldAxis: false },
+    { debugGUI: false, worldAxis: false },
   );
   await world.init();
-  world.start();
+  world.startLoop();
+  // create game GUI
+  const gui = new GUI(container);
+  gui.addStartButton(() => {
+    world.startGame();
+  });
+  // add event listeners
+  container.addEventListener("gameover", (ev) => {
+    console.log(ev.detail);
+    gui.addRestartButton(() => {
+      world.startGame();
+    });
+  });
+  container.addEventListener("targetspawn", (ev) => {
+    console.log(ev.detail);
+    gui.addTimerProgressBar(ev.detail.remainingTime);
+  });
 }
 
 main().catch((err) => {
