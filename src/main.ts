@@ -16,7 +16,7 @@ async function main() {
       progression: "constant",
       keyboardTargetActivated: false,
     },
-    { debugGUI: false, worldAxis: false },
+    { debugGUI: true, worldAxis: false },
   );
   await world.init();
   world.startLoop();
@@ -26,15 +26,10 @@ async function main() {
     world.startGame();
   });
   // add event listeners
-  container.addEventListener("gameover", (ev) => {
-    console.log(ev.detail);
+  container.addEventListener("gameover", (_) => {
     gui.addRestartButton(() => {
       world.startGame();
     });
-  });
-  container.addEventListener("targetspawn", (ev) => {
-    console.log(ev.detail);
-    gui.addTimerProgressBar(ev.detail.remainingTime);
   });
 }
 

@@ -1,4 +1,12 @@
-import { Camera, Clock, Object3D, Raycaster, Vector2, Vector3 } from "three";
+import {
+  Camera,
+  Clock,
+  Mesh,
+  Object3D,
+  Raycaster,
+  Vector2,
+  Vector3,
+} from "three";
 import { AudioManager } from "./AudioManager.js";
 import {
   createTargetHitEvent,
@@ -7,6 +15,8 @@ import {
   createGameOverEvent,
   createGameStartEvent,
 } from "./events.js";
+import GUI from "three/examples/jsm/libs/lil-gui.module.min.js";
+import { Engine } from "./Engine.js";
 
 interface TargetHitOrigin {
   position: Vector3;
@@ -25,7 +35,8 @@ interface GameSettings {
 
 class TargetBehaviour {
   readonly container: HTMLElement;
-  readonly punchingBag: Object3D;
+  readonly engine: Engine;
+  readonly punchingBag: Mesh;
   readonly target: Object3D;
   readonly camera: Camera;
   readonly audioManager: AudioManager;
@@ -40,17 +51,22 @@ class TargetBehaviour {
   timeoutId: number;
   nbrTargetsMissed: number;
   points: number;
+  // holds reference to the Mesh that contains valid shape keys
+  actualMesh: Mesh;
 
   constructor(
     container: HTMLElement,
-    punchingBag: Object3D,
+    engine: Engine,
+    punchingBag: Mesh,
     target: Object3D,
     camera: Camera,
     audioManager: AudioManager,
     localTargetHitOrigins: Array<TargetHitOrigin>,
     gameSettings: GameSettings,
+    gui?: GUI,
   ) {
     this.container = container;
+    this.engine = engine;
     this.punchingBag = punchingBag;
     this.target = target;
     this.camera = camera;
@@ -97,6 +113,27 @@ class TargetBehaviour {
     this.timeoutId = -1;
     // clock
     this.clock = new Clock(false);
+    this.punchingBag.morphTargetDictionary;
+    // for some reason child 1 is the one that only works...
+    this.actualMesh = this.punchingBag.children[1] as Mesh;
+    // debugging
+    if (gui !== undefined) {
+      console.log(this.punchingBag.morphTargetDictionary);
+      if (
+        this.actualMesh.morphTargetDictionary !== undefined &&
+        this.actualMesh.morphTargetInfluences !== undefined
+      ) {
+        const shapeKeysFolder = gui.addFolder("Shape Keys");
+        const shapeKeyNames = Object.keys(
+          this.actualMesh.morphTargetDictionary,
+        );
+        for (let i = 0; i < shapeKeyNames.length; i++) {
+          shapeKeysFolder
+            .add(this.actualMesh.morphTargetInfluences, i, 0.0, 1.0)
+            .name(shapeKeyNames[i]);
+        }
+      }
+    }
   }
 
   start(): void {
@@ -147,6 +184,14 @@ class TargetBehaviour {
     // if target was hit
     if (intersectRes.length > 0) {
       this.audioManager.playPunchSoundeffectRandomly();
+      // play hit shape key animation
+      this.engine.addBehaviour(
+        new TargetPunchAnimationBehaviour(
+          this.engine,
+          this.actualMesh,
+          this.previousTargetIdx!,
+        ),
+      );
       this.nbrTargetsHit++;
       const reactionTime: number = this.clock.getDelta() * 1000;
       const deltaPoints: number = 500 / reactionTime;
@@ -229,6 +274,57 @@ class TargetBehaviour {
     }
     this.previousTargetIdx = newIdx;
     return this.localTargetHitOrigins[newIdx];
+  }
+}
+
+class TargetPunchAnimationBehaviour {
+  private readonly engine: Engine;
+  private readonly coverMesh: Mesh;
+  private readonly targetIdx: number;
+  private readonly inwardAnimationSpeed: number;
+  private readonly outwardAnimationSpeed: number;
+  private reverse: boolean;
+  public uid?: number;
+
+  constructor(
+    engine: Engine,
+    coverMesh: Mesh,
+    targetIdx: number,
+    inwardAnimationSpeed: number = 6.4,
+    outwardAnimationSpeed: number = 0.7,
+  ) {
+    this.engine = engine;
+    this.coverMesh = coverMesh;
+    this.targetIdx = targetIdx;
+    this.inwardAnimationSpeed = inwardAnimationSpeed;
+    this.outwardAnimationSpeed = outwardAnimationSpeed;
+    this.reverse = false;
+  }
+
+  update(delta: number) {
+    if (!this.reverse) {
+      let newInfluence =
+        this.coverMesh.morphTargetInfluences![this.targetIdx] +
+        delta * this.inwardAnimationSpeed;
+      if (newInfluence > 1.0) {
+        newInfluence = 1.0;
+        this.reverse = true;
+      }
+      this.coverMesh.morphTargetInfluences![this.targetIdx] = newInfluence;
+      return;
+    }
+    let newInfluence =
+      this.coverMesh.morphTargetInfluences![this.targetIdx] -
+      delta * this.outwardAnimationSpeed;
+    if (newInfluence < 0.0) {
+      newInfluence = 0.0;
+      this.engine.removeBehaviour(this.uid!);
+    }
+    this.coverMesh.morphTargetInfluences![this.targetIdx] = newInfluence;
+  }
+
+  setUID(uid: number) {
+    this.uid = uid;
   }
 }
 

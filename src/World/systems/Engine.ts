@@ -27,11 +27,13 @@ class Engine {
 
   public addBehaviour<T extends GameObject>(behaviour: T): number {
     this.updatables.set(this.uid, behaviour);
-    return ++this.uid;
+    if (behaviour.setUID !== undefined) behaviour.setUID(this.uid);
+    ++this.uid;
+    return this.uid - 1;
   }
 
   public removeBehaviour(uid: number): void {
-    this.updatables.delete(uid);
+    console.log(this.updatables.delete(uid));
   }
 
   public start(): void {

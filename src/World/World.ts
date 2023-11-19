@@ -1,6 +1,7 @@
 import {
   AudioListener,
   AxesHelper,
+  Mesh,
   Object3D,
   PerspectiveCamera,
   Scene,
@@ -50,7 +51,7 @@ class World {
   readonly gui?: GUI;
   gameSettings: GameSettings;
   targetBehaviour!: TargetBehaviour;
-  bagMesh!: Object3D;
+  bagMesh!: Mesh;
   targetMesh!: Object3D;
   groundMesh!: Object3D;
   bagSoundEffects!: Array<AudioBuffer>;
@@ -91,7 +92,6 @@ class World {
     this.cameraBehaviour = new CameraBehaviour(
       this.engine,
       this.camera,
-      1,
       this.gui,
     );
     this.resizer = new Resizer(
@@ -110,19 +110,15 @@ class World {
     // systems
     this.targetHitOrigins = [
       {
-        position: new Vector3(0, 0, 0),
-        rotation: new Vector3(0, 0, 0),
+        position: new Vector3(0, +0.129, 0),
+        rotation: new Vector3(0, degToRad(-28.22), 0),
       },
       {
         position: new Vector3(0, +0.129, 0),
         rotation: new Vector3(0, 0, 0),
       },
       {
-        position: new Vector3(0, -0.129, 0),
-        rotation: new Vector3(0, 0, 0),
-      },
-      {
-        position: new Vector3(0, 0, 0),
+        position: new Vector3(0, +0.129, 0),
         rotation: new Vector3(0, degToRad(+28.22), 0),
       },
       {
@@ -130,20 +126,24 @@ class World {
         rotation: new Vector3(0, degToRad(-28.22), 0),
       },
       {
-        position: new Vector3(0, +0.129, 0),
-        rotation: new Vector3(0, degToRad(+28.22), 0),
+        position: new Vector3(0, 0, 0),
+        rotation: new Vector3(0, 0, 0),
       },
       {
-        position: new Vector3(0, +0.129, 0),
-        rotation: new Vector3(0, degToRad(-28.22), 0),
-      },
-      {
-        position: new Vector3(0, -0.129, 0),
+        position: new Vector3(0, 0, 0),
         rotation: new Vector3(0, degToRad(+28.22), 0),
       },
       {
         position: new Vector3(0, -0.129, 0),
         rotation: new Vector3(0, degToRad(-28.22), 0),
+      },
+      {
+        position: new Vector3(0, -0.129, 0),
+        rotation: new Vector3(0, 0, 0),
+      },
+      {
+        position: new Vector3(0, -0.129, 0),
+        rotation: new Vector3(0, degToRad(+28.22), 0),
       },
     ];
     // camera positions and targets
@@ -168,12 +168,14 @@ class World {
     // behaviours dependent on asynchronously loaded assets
     this.targetBehaviour = new TargetBehaviour(
       this.container,
+      this.engine,
       this.bagMesh,
       this.targetMesh,
       this.camera,
       this.audioManager,
       this.targetHitOrigins,
       this.gameSettings,
+      this.gui,
     );
   }
   // for render-on-demand use-cases

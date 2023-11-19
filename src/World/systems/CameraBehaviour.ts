@@ -5,18 +5,18 @@ import GUI from "three/examples/jsm/libs/lil-gui.module.min.js";
 class CameraBehaviour {
   private readonly engine: Engine;
   private readonly camera: PerspectiveCamera;
-  private transitionSpeed: number; // in meters per s
+  private transitionSpeed: number; // in percents per remaining distance per second
   private transitionBehaviourID?: number;
-  cameraStartPosition = new Vector3(0, 1.5, 3.5);
-  cameraStartTarget = new Vector3(-1.5, 0.8, 0.0);
-  cameraGamePosition = new Vector3(0, 2.2, 2.4);
-  cameraGameTarget = new Vector3(0.0, 0.94, 0.0);
+  private cameraStartPosition = new Vector3(0, 1.5, 3.5);
+  private cameraStartTarget = new Vector3(-1.5, 0.8, 0.0);
+  private cameraGamePosition = new Vector3(0, 2.2, 2.4);
+  private cameraGameTarget = new Vector3(0.0, 0.94, 0.0);
 
   constructor(
     engine: Engine,
     camera: PerspectiveCamera,
-    transitionSpeed: number = 1, // in meters per s
-    gui: GUI | undefined = undefined,
+    gui?: GUI,
+    transitionSpeed: number = 4.5,
   ) {
     this.engine = engine;
     this.camera = camera;
@@ -71,35 +71,38 @@ class CameraBehaviour {
     );
   }
 
-  // TODO: optimize distance measurement by using squared distance
   private transitionTo(
-    transitionToPosition: Vector3,
+    finalPosition: Vector3,
     initialTarget: Vector3,
-    transitionToTarget: Vector3,
+    finalTarget: Vector3,
   ): void {
-    const initialPosition = this.camera.position;
-    const totalDistance = initialPosition.distanceTo(transitionToPosition);
-    console.log(totalDistance);
+    if (this.transitionBehaviourID !== undefined) this.stopCurrentTransition();
+    const copiedVect = new Vector3();
+    copiedVect.copy(initialTarget);
     this.transitionBehaviourID = this.engine.addBehaviour({
       update: (delta: number) => {
-        const t =
-          (initialPosition.distanceTo(this.camera.position) +
-            delta * this.transitionSpeed) /
-          totalDistance;
-        this.camera.position.lerpVectors(
-          initialPosition,
-          transitionToPosition,
-          t,
-        );
-        this.camera.lookAt(initialTarget.lerp(transitionToTarget, t));
-        if (t > 1.0) this.stopCurrentTransition();
+        const t = delta * this.transitionSpeed;
+        this.camera.position.lerp(finalPosition, t);
+        const camTarget = copiedVect.lerp(finalTarget, t);
+        this.camera.lookAt(camTarget);
+        if (
+          this.camera.position.distanceToSquared(finalPosition) <= 1e-6 &&
+          camTarget.distanceToSquared(finalTarget) <= 1e-6
+        ) {
+          this.camera.position.copy(finalPosition);
+          this.camera.lookAt(finalTarget);
+          this.stopCurrentTransition();
+        }
       },
     });
   }
 
   public stopCurrentTransition(): void {
-    if (this.transitionBehaviourID)
+    if (this.transitionBehaviourID !== undefined) {
+      console.log("STOPED!", this.transitionBehaviourID);
       this.engine.removeBehaviour(this.transitionBehaviourID);
+      this.transitionBehaviourID = undefined;
+    }
   }
 }
 

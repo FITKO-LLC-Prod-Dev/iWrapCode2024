@@ -5,6 +5,7 @@ async function loadBag() {
   const loader = new GLTFLoader();
   const bagData = await loader.loadAsync("/assets/models/bag.glb");
   const meshData = extractMesh(bagData);
+  console.log(meshData);
   return meshData;
 }
 
