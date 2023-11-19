@@ -1,11 +1,11 @@
 import {
-    AudioListener,
-    AxesHelper,
-    Object3D,
-    PerspectiveCamera,
-    Scene,
-    Vector3,
-    WebGLRenderer,
+  AudioListener,
+  AxesHelper,
+  Object3D,
+  PerspectiveCamera,
+  Scene,
+  Vector3,
+  WebGLRenderer,
 } from "three";
 import { createCamera } from "./components/camera.js";
 import { createScene } from "./components/scene.js";
@@ -18,9 +18,9 @@ import { Engine } from "./systems/Engine.js";
 import { loadTarget } from "./components/target.js";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
 import {
-    TargetBehaviour,
-    TargetHitOrigin,
-    GameSettings,
+  TargetBehaviour,
+  TargetHitOrigin,
+  GameSettings,
 } from "./systems/TargetBehaviour.js";
 import { degToRad } from "three/src/math/MathUtils.js";
 import { loadPunchingBagSoundeffects } from "./components/soundeffects.js";
@@ -28,165 +28,183 @@ import { createAudioListener } from "./systems/listener.js";
 import { AudioManager } from "./systems/AudioManager.js";
 import GUI from "three/examples/jsm/libs/lil-gui.module.min.js";
 import { loadGround } from "./components/ground.js";
+import { CameraBehaviour } from "./systems/CameraBehaviour.js";
 
 interface DebugParams {
-    debugGUI: boolean;
-    worldAxis: boolean;
+  debugGUI: boolean;
+  worldAxis: boolean;
 }
 
 class World {
-    readonly container: HTMLElement;
-    readonly camera: PerspectiveCamera;
-    readonly scene: Scene;
-    readonly renderer: WebGLRenderer;
-    readonly composer: EffectComposer;
-    readonly engine: Engine;
-    readonly resizer: Resizer;
-    readonly listener: AudioListener;
-    readonly audioManager: AudioManager;
-    readonly targetHitOrigins: Array<TargetHitOrigin>;
-    readonly gui?: GUI;
-    gameSettings: GameSettings;
-    // TODO: add exponential reaction time sample
-    targetBehaviour!: TargetBehaviour;
-    bagMesh!: Object3D;
-    targetMesh!: Object3D;
-    groundMesh!: Object3D;
-    bagSoundEffects!: Array<AudioBuffer>;
+  readonly container: HTMLElement;
+  readonly camera: PerspectiveCamera;
+  readonly cameraBehaviour: CameraBehaviour;
+  readonly scene: Scene;
+  readonly renderer: WebGLRenderer;
+  readonly composer: EffectComposer;
+  readonly engine: Engine;
+  readonly resizer: Resizer;
+  readonly listener: AudioListener;
+  readonly audioManager: AudioManager;
+  readonly targetHitOrigins: Array<TargetHitOrigin>;
+  readonly gui?: GUI;
+  gameSettings: GameSettings;
+  targetBehaviour!: TargetBehaviour;
+  bagMesh!: Object3D;
+  targetMesh!: Object3D;
+  groundMesh!: Object3D;
+  bagSoundEffects!: Array<AudioBuffer>;
 
-    constructor(
-        container: HTMLElement,
-        gameSettings: GameSettings = {
-            initialPoints: 1000,
-            minimumPoints: 0,
-            nbrTargets: 30,
-            startReactionTime: 2000,
-            endReactionTime: 500,
-            progression: "linear",
-            keyboardTargetActivated: false,
-        },
-        debugParams: DebugParams = {
-            debugGUI: false,
-            worldAxis: false,
-        },
-    ) {
-        // debugging GUI
-        if (debugParams.debugGUI) {
-            this.gui = new GUI();
-        }
-        this.container = container;
-        this.gameSettings = gameSettings;
-        this.camera = createCamera(this.gui);
-        this.scene = createScene(this.gui);
-        this.renderer = createRenderer(container, this.gui);
-        this.composer = createComposer(
-            container,
-            this.renderer,
-            this.scene,
-            this.camera,
-            this.gui,
-        );
-        this.engine = new Engine(this.composer);
-        this.resizer = new Resizer(
-            container,
-            this.camera,
-            this.renderer,
-            this.composer,
-        );
-        this.resizer.updateSize();
-        // audio
-        this.listener = createAudioListener(this.camera);
-        this.audioManager = new AudioManager(this.listener);
-        // lighting
-        const directLight = createDirectionalLight(this.gui);
-        this.scene.add(directLight);
-        // systems
-        this.targetHitOrigins = [
-            {
-                position: new Vector3(0, 0, 0),
-                rotation: new Vector3(0, 0, 0),
-            },
-            {
-                position: new Vector3(0, +0.129, 0),
-                rotation: new Vector3(0, 0, 0),
-            },
-            {
-                position: new Vector3(0, -0.129, 0),
-                rotation: new Vector3(0, 0, 0),
-            },
-            {
-                position: new Vector3(0, 0, 0),
-                rotation: new Vector3(0, degToRad(+28.22), 0),
-            },
-            {
-                position: new Vector3(0, 0, 0),
-                rotation: new Vector3(0, degToRad(-28.22), 0),
-            },
-            {
-                position: new Vector3(0, +0.129, 0),
-                rotation: new Vector3(0, degToRad(+28.22), 0),
-            },
-            {
-                position: new Vector3(0, +0.129, 0),
-                rotation: new Vector3(0, degToRad(-28.22), 0),
-            },
-            {
-                position: new Vector3(0, -0.129, 0),
-                rotation: new Vector3(0, degToRad(+28.22), 0),
-            },
-            {
-                position: new Vector3(0, -0.129, 0),
-                rotation: new Vector3(0, degToRad(-28.22), 0),
-            },
-        ];
-        if (debugParams.worldAxis) {
-            const worldAxis = new AxesHelper(3);
-            this.scene.add(worldAxis);
-        }
-        // finally add DOM element to the provided container
-        container.append(this.renderer.domElement);
+  constructor(
+    container: HTMLElement,
+    gameSettings: GameSettings = {
+      initialPoints: 1000,
+      minimumPoints: 0,
+      nbrTargets: 30,
+      startReactionTime: 2000,
+      endReactionTime: 500,
+      progression: "linear",
+      keyboardTargetActivated: false,
+    },
+    debugParams: DebugParams = {
+      debugGUI: false,
+      worldAxis: false,
+    },
+  ) {
+    // debugging GUI
+    if (debugParams.debugGUI) {
+      this.gui = new GUI();
     }
+    this.container = container;
+    this.gameSettings = gameSettings;
+    this.scene = createScene(this.gui);
+    this.camera = createCamera();
+    this.renderer = createRenderer(container, this.gui);
+    this.composer = createComposer(
+      container,
+      this.renderer,
+      this.scene,
+      this.camera,
+      this.gui,
+    );
+    this.engine = new Engine(this.composer);
+    this.cameraBehaviour = new CameraBehaviour(
+      this.engine,
+      this.camera,
+      1,
+      this.gui,
+    );
+    this.resizer = new Resizer(
+      container,
+      this.camera,
+      this.renderer,
+      this.composer,
+    );
+    this.resizer.updateSize();
+    // audio
+    this.listener = createAudioListener(this.camera);
+    this.audioManager = new AudioManager(this.listener);
+    // lighting
+    const directLight = createDirectionalLight(this.gui);
+    this.scene.add(directLight);
+    // systems
+    this.targetHitOrigins = [
+      {
+        position: new Vector3(0, 0, 0),
+        rotation: new Vector3(0, 0, 0),
+      },
+      {
+        position: new Vector3(0, +0.129, 0),
+        rotation: new Vector3(0, 0, 0),
+      },
+      {
+        position: new Vector3(0, -0.129, 0),
+        rotation: new Vector3(0, 0, 0),
+      },
+      {
+        position: new Vector3(0, 0, 0),
+        rotation: new Vector3(0, degToRad(+28.22), 0),
+      },
+      {
+        position: new Vector3(0, 0, 0),
+        rotation: new Vector3(0, degToRad(-28.22), 0),
+      },
+      {
+        position: new Vector3(0, +0.129, 0),
+        rotation: new Vector3(0, degToRad(+28.22), 0),
+      },
+      {
+        position: new Vector3(0, +0.129, 0),
+        rotation: new Vector3(0, degToRad(-28.22), 0),
+      },
+      {
+        position: new Vector3(0, -0.129, 0),
+        rotation: new Vector3(0, degToRad(+28.22), 0),
+      },
+      {
+        position: new Vector3(0, -0.129, 0),
+        rotation: new Vector3(0, degToRad(-28.22), 0),
+      },
+    ];
+    // camera positions and targets
+    if (debugParams.worldAxis) {
+      const worldAxis = new AxesHelper(3);
+      this.scene.add(worldAxis);
+    }
+    // finally add DOM element to the provided container
+    container.append(this.renderer.domElement);
+  }
 
-    // asynchronous setup here
-    async init() {
-        // load models
-        this.bagMesh = await loadBag();
-        this.targetMesh = await loadTarget();
-        this.groundMesh = await loadGround();
-        this.scene.add(this.bagMesh, this.groundMesh);
-        // load sound effects
-        const loadedSoundEffects = await loadPunchingBagSoundeffects();
-        this.audioManager.addPunchSoundeffects(loadedSoundEffects);
-        // behaviours dependent on asynchronously loaded assets
-        this.targetBehaviour = new TargetBehaviour(
-            this.container,
-            this.bagMesh,
-            this.targetMesh,
-            this.camera,
-            this.audioManager,
-            this.targetHitOrigins,
-            this.gameSettings,
-        );
-    }
-    // for render-on-demand use-cases
-    render() {
-        this.composer.render();
-    }
+  // asynchronous setup here
+  async init() {
+    // load models
+    this.bagMesh = await loadBag();
+    this.targetMesh = await loadTarget();
+    this.groundMesh = await loadGround();
+    this.scene.add(this.bagMesh, this.groundMesh);
+    // load sound effects
+    const loadedSoundEffects = await loadPunchingBagSoundeffects();
+    this.audioManager.addPunchSoundeffects(loadedSoundEffects);
+    // behaviours dependent on asynchronously loaded assets
+    this.targetBehaviour = new TargetBehaviour(
+      this.container,
+      this.bagMesh,
+      this.targetMesh,
+      this.camera,
+      this.audioManager,
+      this.targetHitOrigins,
+      this.gameSettings,
+    );
+  }
+  // for render-on-demand use-cases
+  render() {
+    this.composer.render();
+  }
 
-    // for continuous rendering (a stream of frames)
-    startLoop() {
-        this.engine.animate();
-    }
+  // for continuous rendering (a stream of frames)
+  startLoop() {
+    this.engine.start();
+  }
 
-    stopLoop() {
-        this.engine.stop();
-    }
+  public pauseLoop() {
+    this.engine.pause();
+  }
 
-    startTutorial() { }
+  public resumeLoop() {
+    this.engine.resume();
+  }
 
-    startGame() {
-        this.targetBehaviour.start();
-    }
+  startTutorial() {
+    // TODO: implement tutorial logic
+  }
+
+  public startGame() {
+    this.cameraBehaviour.transitionToGameState();
+    this.container.addEventListener("gameover", () => {
+      this.cameraBehaviour.transitionToStartState();
+    });
+    this.targetBehaviour.start();
+  }
 }
 
 export { World };

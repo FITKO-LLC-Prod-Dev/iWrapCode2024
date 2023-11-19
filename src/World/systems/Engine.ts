@@ -3,28 +3,55 @@ import { GameObject } from "./interfaces.js";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
 
 class Engine {
-    readonly composer: EffectComposer;
-    readonly clock: Clock;
-    updatables: Array<GameObject>;
+  readonly composer: EffectComposer;
+  readonly clock: Clock;
+  private updatables: Map<number, GameObject>;
+  // to generate unique IDs
+  private uid = 0;
+  private requestID?: number;
 
-    constructor(composer: EffectComposer) {
-        this.composer = composer;
-        this.updatables = [];
-        this.clock = new Clock();
-    }
+  constructor(composer: EffectComposer) {
+    this.composer = composer;
+    this.updatables = new Map<number, GameObject>();
+    this.clock = new Clock();
+  }
 
-    animate() {
-        requestAnimationFrame(this.animate.bind(this));
-        const delta = this.clock.getDelta();
-        for (const gameObject of this.updatables) {
-            gameObject.update(delta);
-        }
-        this.composer.render();
+  private animate() {
+    this.requestID = requestAnimationFrame(this.animate.bind(this));
+    const delta = this.clock.getDelta();
+    for (const [_, gameObject] of this.updatables) {
+      gameObject.update(delta);
     }
+    this.composer.render();
+  }
 
-    stop() {
-        // TODO: implement animation stop for efficiency
+  public addBehaviour<T extends GameObject>(behaviour: T): number {
+    this.updatables.set(this.uid, behaviour);
+    return ++this.uid;
+  }
+
+  public removeBehaviour(uid: number): void {
+    this.updatables.delete(uid);
+  }
+
+  public start(): void {
+    // only start if engine isn't running
+    if (this.requestID === undefined) {
+      for (const [_, gameObject] of this.updatables) {
+        if (gameObject.start) gameObject.start();
+      }
+      this.animate();
     }
+  }
+
+  public pause(): void {
+    if (this.requestID) cancelAnimationFrame(this.requestID);
+    this.requestID = undefined;
+  }
+
+  public resume(): void {
+    if (this.requestID === undefined) this.animate();
+  }
 }
 
 export { Engine };

@@ -1,8 +1,8 @@
-import { Object3D } from "three";
+import { Mesh } from "three";
 import { GLTF } from "three/examples/jsm/loaders/GLTFLoader.js";
 
-function extractMesh(data: GLTF): Object3D {
-  const mesh = data.scene.children[0];
+function extractMesh(data: GLTF): Mesh {
+  const mesh = data.scene.children[0] as Mesh;
   return mesh;
 }
 

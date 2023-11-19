@@ -1,5 +1,5 @@
 interface GameObject {
-  start: () => void;
+  start?: () => void;
   update: (delta: number) => void;
 }
 
