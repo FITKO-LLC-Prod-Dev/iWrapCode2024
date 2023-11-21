@@ -6,6 +6,7 @@ interface TargetHitData {
   hitPoint: Vector2;
   hitWith: "mouse" | "keyboard";
   deltaPoints: number;
+  nbrTargetsHit: number;
 }
 
 interface TargetMissData {

@@ -23,7 +23,7 @@ interface TargetHitOrigin {
   rotation: Vector3;
 }
 
-interface GameSettings {
+interface IGameSettings {
   initialPoints: number;
   minimumPoints: number;
   nbrTargets: number;
@@ -44,7 +44,7 @@ class TargetBehaviour {
   readonly raycaster: Raycaster;
   readonly onPunchAttemptRef: (e: MouseEvent) => void;
   readonly clock: Clock;
-  readonly gameSettings: GameSettings;
+  readonly gameSettings: IGameSettings;
   readonly reactionTimeSampler: (d: number) => number;
   previousTargetIdx?: number;
   nbrTargetsHit: number;
@@ -62,7 +62,7 @@ class TargetBehaviour {
     camera: Camera,
     audioManager: AudioManager,
     localTargetHitOrigins: Array<TargetHitOrigin>,
-    gameSettings: GameSettings,
+    gameSettings: IGameSettings,
     gui?: GUI,
   ) {
     this.container = container;
@@ -74,7 +74,7 @@ class TargetBehaviour {
     this.localTargetHitOrigins = localTargetHitOrigins;
     this.gameSettings = gameSettings;
     this.raycaster = new Raycaster();
-    // t is expected to be in [0, 1]
+    // it is expected to be in [0, 1]
     switch (this.gameSettings.progression) {
       case "constant":
         this.reactionTimeSampler = (_: number) =>
@@ -118,7 +118,6 @@ class TargetBehaviour {
     this.actualMesh = this.punchingBag.children[1] as Mesh;
     // debugging
     if (gui !== undefined) {
-      console.log(this.punchingBag.morphTargetDictionary);
       if (
         this.actualMesh.morphTargetDictionary !== undefined &&
         this.actualMesh.morphTargetInfluences !== undefined
@@ -203,6 +202,7 @@ class TargetBehaviour {
           hitWith: "mouse",
           hitPoint: pointer,
           deltaPoints: deltaPoints,
+          nbrTargetsHit: this.nbrTargetsHit,
         }),
       );
       clearTimeout(this.timeoutId);
@@ -326,6 +326,10 @@ class TargetPunchAnimationBehaviour {
   setUID(uid: number) {
     this.uid = uid;
   }
+
+  getUID() {
+    return this.uid;
+  }
 }
 
-export { TargetBehaviour, TargetHitOrigin, GameSettings };
+export { TargetBehaviour, TargetHitOrigin, IGameSettings };

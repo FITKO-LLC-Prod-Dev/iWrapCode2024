@@ -17,7 +17,7 @@ body {
   position: absolute;
   width: 100%;
   height: 100%;
-  background-color: rgb(255, 255, 255);
+  background-color: $gray-light;
 }
 
 #scene-container .start-btn {
@@ -30,4 +30,64 @@ body {
   position: absolute;
   left: 0px;
   top: 0px;
+}
+
+#scene-container .in-game-container {
+  position: absolute;
+  top: 50px;
+  left: 50px;
+  width: 15%;
+  height: 30%;
+  display: flex;
+  flex-direction: column;
+  font-family: monospace;
+  border: 1px solid #eee;
+  border-radius: 0.5em;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+@property --progress {
+  syntax: "<length>";
+  initial-value: 100%;
+  inherits: true;
+}
+
+#scene-container .progress {
+  --progress: 100%;
+  border: 1px solid #fff;
+  border-radius: 0.5em;
+  border-color: color-mix(in srgb, #44bd32 var(--progress), #e84118);
+  padding: 4px 4px;
+  box-shadow: 0px 0px 8px color-mix(in srgb, #44bd32 var(--progress), #e84118);
+  flex-grow: 1;
+}
+
+#scene-container .progress .bar {
+  width: var(--progress);
+  height: 100%;
+  background-color: color-mix(in srgb, #44bd32 var(--progress), #e84118);
+  border-radius: 0.5em;
+  /* transition: width 100ms; this will be set by JavaScript */
+}
+
+#scene-container .targets-hit {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+}
+
+#scene-container .targets-hit label {
+  padding: 5px;
+  text-transform: uppercase;
+  text-align: left;
+  font-size: 0.7rem;
+  flex-grow: 2;
+}
+
+#scene-container .targets-hit span {
+  padding: 5px;
+  text-align: center;
+  font-size: 1.5rem;
+  flex-grow: 5;
 }

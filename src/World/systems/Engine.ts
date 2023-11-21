@@ -25,15 +25,18 @@ class Engine {
     this.composer.render();
   }
 
-  public addBehaviour<T extends GameObject>(behaviour: T): number {
+  public addBehaviour<T extends GameObject>(behaviour: T): T {
     this.updatables.set(this.uid, behaviour);
-    if (behaviour.setUID !== undefined) behaviour.setUID(this.uid);
+    behaviour.setUID(this.uid);
     ++this.uid;
-    return this.uid - 1;
+    return behaviour;
   }
 
   public removeBehaviour(uid: number): void {
-    console.log(this.updatables.delete(uid));
+    if (!this.updatables.delete(uid))
+      console.warn(
+        `Attempt to remove a non-existing behaviour with uid ${uid}`,
+      );
   }
 
   public start(): void {

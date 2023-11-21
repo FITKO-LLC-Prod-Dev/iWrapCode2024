@@ -21,7 +21,7 @@ import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer
 import {
   TargetBehaviour,
   TargetHitOrigin,
-  GameSettings,
+  IGameSettings,
 } from "./systems/TargetBehaviour.js";
 import { degToRad } from "three/src/math/MathUtils.js";
 import { loadPunchingBagSoundeffects } from "./components/soundeffects.js";
@@ -31,9 +31,9 @@ import GUI from "three/examples/jsm/libs/lil-gui.module.min.js";
 import { loadGround } from "./components/ground.js";
 import { CameraBehaviour } from "./systems/CameraBehaviour.js";
 
-interface DebugParams {
-  debugGUI: boolean;
-  worldAxis: boolean;
+interface IOptions extends IGameSettings {
+  debugGUI?: boolean;
+  worldAxis?: boolean;
 }
 
 class World {
@@ -49,35 +49,23 @@ class World {
   readonly audioManager: AudioManager;
   readonly targetHitOrigins: Array<TargetHitOrigin>;
   readonly gui?: GUI;
-  gameSettings: GameSettings;
+  options: IOptions;
   targetBehaviour!: TargetBehaviour;
   bagMesh!: Mesh;
   targetMesh!: Object3D;
   groundMesh!: Object3D;
   bagSoundEffects!: Array<AudioBuffer>;
 
-  constructor(
-    container: HTMLElement,
-    gameSettings: GameSettings = {
-      initialPoints: 1000,
-      minimumPoints: 0,
-      nbrTargets: 30,
-      startReactionTime: 2000,
-      endReactionTime: 500,
-      progression: "linear",
-      keyboardTargetActivated: false,
-    },
-    debugParams: DebugParams = {
-      debugGUI: false,
-      worldAxis: false,
-    },
-  ) {
+  constructor(container: HTMLElement, options: IOptions) {
+    // set defaults here
+    if (options.debugGUI == undefined) options.debugGUI = false;
+    if (options.worldAxis == undefined) options.worldAxis = false;
     // debugging GUI
-    if (debugParams.debugGUI) {
+    if (options.debugGUI) {
       this.gui = new GUI();
     }
     this.container = container;
-    this.gameSettings = gameSettings;
+    this.options = options;
     this.scene = createScene(this.gui);
     this.camera = createCamera();
     this.renderer = createRenderer(container, this.gui);
@@ -147,7 +135,7 @@ class World {
       },
     ];
     // camera positions and targets
-    if (debugParams.worldAxis) {
+    if (options.worldAxis) {
       const worldAxis = new AxesHelper(3);
       this.scene.add(worldAxis);
     }
@@ -174,7 +162,7 @@ class World {
       this.camera,
       this.audioManager,
       this.targetHitOrigins,
-      this.gameSettings,
+      this.options,
       this.gui,
     );
   }
