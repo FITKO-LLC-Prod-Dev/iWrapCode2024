@@ -82,9 +82,10 @@ body {
 
 #scene-container .targets-hit span {
   padding: 5px;
-  text-align: center;
+  text-align: right;
   font-size: 1.5rem;
   flex-grow: 5;
+  padding-right: 10px;
 }
 
 #scene-container .best-reaction {
@@ -104,9 +105,10 @@ body {
 
 #scene-container .best-reaction span {
   padding: 5px;
-  text-align: center;
+  text-align: right;
   font-size: 1.5rem;
   flex-grow: 5;
+  padding-right: 10px;
 }
 
 #scene-container .targets-missed {
@@ -126,9 +128,10 @@ body {
 
 #scene-container .targets-missed span {
   padding: 5px;
-  text-align: center;
+  text-align: right;
   font-size: 1.5rem;
   flex-grow: 5;
+  padding-right: 10px;
 }
 
 #scene-container .counter {

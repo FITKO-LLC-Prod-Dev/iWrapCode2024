@@ -59,6 +59,7 @@ class GUI {
     const bestReactionLabel = document.createElement("label");
     bestReactionLabel.textContent = "best reaction";
     this.bestReactionText = document.createElement("span");
+    this.bestReactionText.textContent = "∞";
     this.bestReactionDiv.appendChild(bestReactionLabel);
     this.bestReactionDiv.appendChild(this.bestReactionText);
     // counter
@@ -130,13 +131,14 @@ class GUI {
   }
 
   public addBestReaction(): HTMLDivElement {
+    this.bestReactionText.textContent = "∞";
     if (this.inGameContainer.contains(this.bestReactionDiv))
       this.clearBestReaction();
     return this.inGameContainer.appendChild(this.bestReactionDiv);
   }
 
   public updateBestReaction(newReaction: number) {
-    this.bestReactionText.textContent = `${newReaction} ms`;
+    this.bestReactionText.textContent = `${Math.ceil(newReaction)} ms`;
   }
 
   public clearBestReaction() {
