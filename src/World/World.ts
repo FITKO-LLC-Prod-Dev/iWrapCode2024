@@ -30,6 +30,10 @@ import { AudioManager } from "./systems/AudioManager.js";
 import GUI from "three/examples/jsm/libs/lil-gui.module.min.js";
 import { loadGround } from "./components/ground.js";
 import { CameraBehaviour } from "./systems/CameraBehaviour.js";
+import {
+  createCountdownEndEvent,
+  createCountdownStartEvent,
+} from "./systems/events.js";
 
 interface IOptions extends IGameSettings {
   debugGUI?: boolean;
@@ -190,10 +194,15 @@ class World {
 
   public startGame() {
     this.cameraBehaviour.transitionToGameState(() => {
-      setTimeout(
-        this.startGameAfterCounter.bind(this),
-        this.options.countdown * 1000,
+      this.container.dispatchEvent(
+        createCountdownStartEvent({ duration: this.options.countdown }),
       );
+      setTimeout(() => {
+        this.container.dispatchEvent(
+          createCountdownEndEvent({ duration: this.options.countdown }),
+        );
+        this.startGameAfterCounter();
+      }, this.options.countdown * 1000);
     });
   }
 

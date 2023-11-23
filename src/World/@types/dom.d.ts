@@ -4,6 +4,8 @@ import {
   TargetHitData,
   TargetMissData,
   TargetSpawnData,
+  CountdownStart,
+  CountdownEnd,
 } from "../systems/events.ts";
 
 declare global {
@@ -13,6 +15,8 @@ declare global {
     targethit: CustomEvent<TargetHitData>;
     targetmiss: CustomEvent<TargetMissData>;
     targetspawn: CustomEvent<TargetSpawnData>;
+    countdownstart: CustomEvent<CountdownStart>;
+    countdownend: CustomEvent<CountdownEnd>;
   }
 }
 export {};

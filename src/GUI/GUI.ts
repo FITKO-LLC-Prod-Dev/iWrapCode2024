@@ -1,17 +1,21 @@
 class GUI {
-  readonly container: HTMLElement;
-  readonly startBtn: HTMLButtonElement;
-  readonly restartBtn: HTMLButtonElement;
-  readonly inGameContainer: HTMLDivElement;
-  readonly timerBar: HTMLDivElement;
-  readonly targetsHitDiv: HTMLDivElement;
-  readonly targetsHitText: HTMLSpanElement;
-  readonly bestReactionDiv: HTMLDivElement;
-  readonly bestReactionText: HTMLSpanElement;
-  readonly targetsMissedDiv: HTMLDivElement;
-  readonly targetsMissedText: HTMLSpanElement;
-  progressTimerId: number | undefined;
-  progressRemainingTime: number | undefined;
+  private readonly container: HTMLElement;
+  private readonly startBtn: HTMLButtonElement;
+  private readonly restartBtn: HTMLButtonElement;
+  private readonly inGameContainer: HTMLDivElement;
+  private readonly timerBar: HTMLDivElement;
+  private readonly targetsHitDiv: HTMLDivElement;
+  private readonly targetsHitText: HTMLSpanElement;
+  private readonly bestReactionDiv: HTMLDivElement;
+  private readonly bestReactionText: HTMLSpanElement;
+  private readonly targetsMissedDiv: HTMLDivElement;
+  private readonly targetsMissedText: HTMLSpanElement;
+  private readonly counterDiv: HTMLDivElement;
+  private readonly counterNumber: HTMLSpanElement;
+  private progressTimerId: number | undefined;
+  private progressRemainingTime: number | undefined;
+  private counterId: number | undefined;
+  private counter: number | undefined;
 
   constructor(container: HTMLElement) {
     this.container = container;
@@ -57,9 +61,14 @@ class GUI {
     this.bestReactionText = document.createElement("span");
     this.bestReactionDiv.appendChild(bestReactionLabel);
     this.bestReactionDiv.appendChild(this.bestReactionText);
+    // counter
+    this.counterDiv = document.createElement("div");
+    this.counterDiv.classList.add("counter");
+    this.counterNumber = document.createElement("span");
+    this.counterDiv.appendChild(this.counterNumber);
   }
 
-  addStartButton(onClick: () => void): HTMLButtonElement {
+  public addStartButton(onClick: () => void): HTMLButtonElement {
     if (this.container.contains(this.startBtn)) {
       this.startBtn.remove();
     }
@@ -70,7 +79,7 @@ class GUI {
     return this.container.appendChild(this.startBtn);
   }
 
-  addRestartButton(onClick: () => void): HTMLButtonElement {
+  public addRestartButton(onClick: () => void): HTMLButtonElement {
     if (this.container.contains(this.restartBtn)) {
       this.restartBtn.remove();
     }
@@ -163,6 +172,22 @@ class GUI {
       this.inGameContainer.style.setProperty("--progress", `${percent}%`);
     }, updateTime);
     return this.inGameContainer.appendChild(this.timerBar);
+  }
+
+  public addCountdownCounter(duration: number): HTMLDivElement {
+    if (this.container.contains(this.counterDiv)) this.clearCountdownCounter();
+    this.counter = Math.floor(duration);
+    this.counterNumber.textContent = `${this.counter}`;
+    this.counterId = setInterval(() => {
+      --this.counter!;
+      this.counterNumber.textContent = `${this.counter}`;
+    }, 1000);
+    return this.container.appendChild(this.counterDiv);
+  }
+
+  public clearCountdownCounter() {
+    clearInterval(this.counterId);
+    this.counterDiv.remove();
   }
 }
 

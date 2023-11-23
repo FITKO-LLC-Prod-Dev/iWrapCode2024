@@ -41,6 +41,14 @@ interface TargetSpawnData {
   targetNumber: number;
 }
 
+interface CountdownStart {
+  duration: number;
+}
+
+interface CountdownEnd {
+  duration: number;
+}
+
 function createGameStartEvent(data: GameStartData): CustomEvent<GameStartData> {
   const EVENT_ID = "gamestart";
   return new CustomEvent<GameStartData>(EVENT_ID, { detail: data });
@@ -70,15 +78,33 @@ function createTargetSpawnEvent(
   return new CustomEvent<TargetSpawnData>(EVENT_ID, { detail: data });
 }
 
+function createCountdownStartEvent(
+  data: CountdownStart,
+): CustomEvent<CountdownStart> {
+  const EVENT_ID = "countdownstart";
+  return new CustomEvent<CountdownStart>(EVENT_ID, { detail: data });
+}
+
+function createCountdownEndEvent(
+  data: CountdownEnd,
+): CustomEvent<CountdownEnd> {
+  const EVENT_ID = "countdownend";
+  return new CustomEvent<CountdownEnd>(EVENT_ID, { detail: data });
+}
+
 export {
   GameStartData,
   GameOverData,
   TargetSpawnData,
   TargetHitData,
   TargetMissData,
+  CountdownStart,
+  CountdownEnd,
   createTargetHitEvent,
   createTargetMissEvent,
   createGameOverEvent,
   createTargetSpawnEvent,
   createGameStartEvent,
+  createCountdownStartEvent,
+  createCountdownEndEvent,
 };

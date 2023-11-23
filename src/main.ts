@@ -16,7 +16,7 @@ async function main() {
     endReactionTime: 1000,
     progression: "linear",
     keyboardTargetActivated: false,
-    countdown: 3,
+    countdown: countdown,
     debugGUI: false,
     worldAxis: false,
   });
@@ -32,16 +32,18 @@ async function main() {
     gui.addBestReaction();
     gui.addInGameUI();
   };
-  gui.addStartButton(startGameCallback);
-  // add event listeners
-  container.addEventListener("gameover", (_) => {
+  const endGameCallback = () => {
     gui.clearTargetsHit();
     gui.clearTargetsMissed();
     gui.clearTimerProgressBar();
     gui.clearBestReaction();
     gui.clearInGameUI();
+    gui.clearCountdownCounter();
     gui.addRestartButton(startGameCallback);
-  });
+  };
+  gui.addStartButton(startGameCallback);
+  // add event listeners
+  container.addEventListener("gameover", endGameCallback);
   container.addEventListener("targetspawn", (ev) => {
     gui.addTimerProgressBar(ev.detail.remainingTime);
   });
@@ -52,9 +54,16 @@ async function main() {
       gui.updateBestReaction(bestReaction);
     }
   });
-
   container.addEventListener("targetmiss", (ev) => {
     gui.updateTargetsMissed(ev.detail.nbrTargetsMissed);
+  });
+  container.addEventListener("countdownstart", (_) => {
+    console.log("Countdow started");
+    gui.addCountdownCounter(countdown);
+  });
+  container.addEventListener("countdownend", (_) => {
+    console.log("Countdow ended");
+    gui.clearCountdownCounter();
   });
 }
 
