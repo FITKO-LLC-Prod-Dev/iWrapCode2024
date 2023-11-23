@@ -108,3 +108,25 @@ body {
   font-size: 1.5rem;
   flex-grow: 5;
 }
+
+#scene-container .targets-missed {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  order: 79;
+}
+
+#scene-container .targets-missed label {
+  padding: 5px;
+  text-transform: uppercase;
+  text-align: left;
+  font-size: 0.7rem;
+  flex-grow: 2;
+}
+
+#scene-container .targets-missed span {
+  padding: 5px;
+  text-align: center;
+  font-size: 1.5rem;
+  flex-grow: 5;
+}

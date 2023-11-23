@@ -31,6 +31,7 @@ interface IGameSettings {
   endReactionTime: number;
   progression: "constant" | "linear" | "exponential";
   keyboardTargetActivated: boolean;
+  countdown: number;
 }
 
 class TargetBehaviour {
@@ -48,7 +49,7 @@ class TargetBehaviour {
   readonly reactionTimeSampler: (d: number) => number;
   previousTargetIdx?: number;
   nbrTargetsHit: number;
-  timeoutId: number;
+  private timeoutId?: number;
   nbrTargetsMissed: number;
   points: number;
   // holds reference to the Mesh that contains valid shape keys
@@ -110,7 +111,7 @@ class TargetBehaviour {
     this.points = 0;
     // persistent references
     this.onPunchAttemptRef = this.onPunchAttempt.bind(this);
-    this.timeoutId = -1;
+    this.timeoutId = undefined;
     // clock
     this.clock = new Clock(false);
     this.punchingBag.morphTargetDictionary;
@@ -139,19 +140,35 @@ class TargetBehaviour {
     this.clock.start();
     this.container.dispatchEvent(createGameStartEvent(this.gameSettings));
     this.punchingBag.add(this.target);
-    document.addEventListener<"click">("click", this.onPunchAttemptRef);
-    this.update();
+    this.nextTarget();
+  }
+
+  reset(): void {
+    // reset statistics
+    this.nbrTargetsHit = 0;
+    this.nbrTargetsMissed = 0;
+    this.points = this.gameSettings.initialPoints;
+    // reset previous target idx
+    this.previousTargetIdx = undefined;
   }
 
   stop(): void {
+    document.removeEventListener("click", this.onPunchAttemptRef);
+    this.clearTimeout();
     this.clock.stop();
-    document.removeEventListener<"click">("click", this.onPunchAttemptRef);
-    clearTimeout(this.timeoutId);
-    this.timeoutId = -1;
     this.punchingBag.remove(this.target);
   }
 
-  update(): void {
+  private setTimeout(reactionTime: number): void {
+    this.timeoutId = setTimeout(this.onFailure.bind(this), reactionTime);
+  }
+
+  private clearTimeout(): void {
+    clearTimeout(this.timeoutId);
+    this.timeoutId = undefined;
+  }
+
+  nextTarget(): void {
     const currentHitOrigin = this.getRandomHitOrigin();
     this.target.position.set(
       currentHitOrigin.position.x,
@@ -162,7 +179,8 @@ class TargetBehaviour {
     const reactionTime = this.reactionTimeSampler(
       this.nbrTargetsHit / this.gameSettings.nbrTargets,
     );
-    this.timeoutId = setTimeout(this.onFailure.bind(this), reactionTime);
+    this.setTimeout(reactionTime);
+    console.log(`Reaction time timeout: ${reactionTime}`);
     this.container.dispatchEvent(
       createTargetSpawnEvent({
         time: this.clock.getElapsedTime(),
@@ -170,6 +188,7 @@ class TargetBehaviour {
         targetNumber: this.nbrTargetsHit + 1,
       }),
     );
+    document.addEventListener("click", this.onPunchAttemptRef);
     this.clock.getDelta();
   }
 
@@ -205,27 +224,32 @@ class TargetBehaviour {
           nbrTargetsHit: this.nbrTargetsHit,
         }),
       );
-      clearTimeout(this.timeoutId);
-      if (this.nbrTargetsHit >= this.gameSettings.nbrTargets) {
+      this.clearTimeout();
+      if (this.nbrTargetsHit == this.gameSettings.nbrTargets) {
         this.onSuccess();
         return;
       }
-      this.update();
+      document.removeEventListener("click", this.onPunchAttemptRef);
+      this.nextTarget();
     } else {
       const deltaPoints = -100;
       this.points += deltaPoints;
+      ++this.nbrTargetsMissed;
       this.container.dispatchEvent(
         createTargetMissEvent({
           time: this.clock.getElapsedTime(),
           missWith: "mouse",
           missPoint: pointer,
           deltaPoints: deltaPoints,
+          nbrTargetsMissed: this.nbrTargetsMissed,
         }),
       );
     }
   }
 
-  onSuccess(): void {
+  private onSuccess(): void {
+    this.stop();
+    console.log(`Gameover Success: ${this.nbrTargetsHit}`);
     this.container.dispatchEvent(
       createGameOverEvent({
         time: this.clock.getElapsedTime(),
@@ -235,11 +259,19 @@ class TargetBehaviour {
         points: this.points,
       }),
     );
-    this.stop();
     this.reset();
   }
 
-  onFailure(): void {
+  private onFailure(): void {
+    this.stop();
+    console.log("Gameover Failure", {
+      time: this.clock.getElapsedTime(),
+      success: false,
+      nbrHits: this.nbrTargetsHit,
+      nbrMisses: this.nbrTargetsMissed,
+      points: this.points,
+    });
+    document.removeEventListener<"click">("click", this.onPunchAttemptRef);
     this.container.dispatchEvent(
       createGameOverEvent({
         time: this.clock.getElapsedTime(),
@@ -249,19 +281,7 @@ class TargetBehaviour {
         points: this.points,
       }),
     );
-    this.stop();
     this.reset();
-  }
-
-  reset(): void {
-    // reset statistics
-    this.nbrTargetsHit = 0;
-    this.nbrTargetsMissed = 0;
-    this.points = 0;
-    this.timeoutId = -1;
-    // reset previous target idx
-    this.previousTargetIdx = undefined;
-    // TODO: reset clock maybe?
   }
 
   getRandomHitOrigin(): TargetHitOrigin {

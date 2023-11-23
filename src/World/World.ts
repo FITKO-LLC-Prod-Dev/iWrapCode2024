@@ -189,7 +189,15 @@ class World {
   }
 
   public startGame() {
-    this.cameraBehaviour.transitionToGameState();
+    this.cameraBehaviour.transitionToGameState(() => {
+      setTimeout(
+        this.startGameAfterCounter.bind(this),
+        this.options.countdown * 1000,
+      );
+    });
+  }
+
+  private startGameAfterCounter() {
     this.container.addEventListener("gameover", () => {
       this.cameraBehaviour.transitionToStartState();
     });

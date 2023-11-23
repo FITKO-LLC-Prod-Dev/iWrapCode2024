@@ -14,6 +14,7 @@ interface TargetMissData {
   missPoint: Vector2;
   missWith: "mouse" | "keyboard";
   deltaPoints: number;
+  nbrTargetsMissed: number;
 }
 
 interface GameStartData {

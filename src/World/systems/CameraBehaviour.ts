@@ -55,11 +55,12 @@ class CameraBehaviour {
     }
   }
 
-  public transitionToGameState(): void {
+  public transitionToGameState(callback?: () => void): void {
     this.transitionTo(
       this.cameraGamePosition,
       this.cameraStartTarget,
       this.cameraGameTarget,
+      callback,
     );
   }
 
@@ -75,6 +76,7 @@ class CameraBehaviour {
     finalPosition: Vector3,
     initialTarget: Vector3,
     finalTarget: Vector3,
+    callback?: () => void,
   ): void {
     if (this.currentTransitionUID !== undefined) {
       this.engine.removeBehaviour(this.currentTransitionUID);
@@ -91,6 +93,7 @@ class CameraBehaviour {
           () => {
             this.engine.removeBehaviour(this.currentTransitionUID!);
             this.currentTransitionUID = undefined;
+            if (callback) callback();
           },
         ),
       )
