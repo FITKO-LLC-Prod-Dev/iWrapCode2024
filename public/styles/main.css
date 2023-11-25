@@ -65,11 +65,34 @@ body {
   order: 99;
 }
 
-#scene-container .targets-hit {
+#scene-container .total-score {
   flex-grow: 1;
   display: flex;
   align-items: center;
   order: 0;
+}
+
+#scene-container .total-score label {
+  padding: 5px;
+  text-transform: uppercase;
+  text-align: left;
+  font-size: 0.7rem;
+  flex-grow: 2;
+}
+
+#scene-container .total-score span {
+  padding: 5px;
+  text-align: right;
+  font-size: 1.5rem;
+  flex-grow: 5;
+  padding-right: 10px;
+}
+
+#scene-container .targets-hit {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  order: 59;
 }
 
 #scene-container .targets-hit label {
