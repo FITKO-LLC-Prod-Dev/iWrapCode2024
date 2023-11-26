@@ -24,7 +24,11 @@ import {
     IGameSettings,
 } from "./systems/TargetBehaviour.js";
 import { degToRad } from "three/src/math/MathUtils.js";
-import { loadPunchingBagSoundeffects } from "./components/soundeffects.js";
+import {
+    loadCountdownEndSoundeffect,
+    loadCountdownRepeatSoudeffect,
+    loadPunchingBagSoundeffects,
+} from "./components/soundeffects.js";
 import { createAudioListener } from "./systems/listener.js";
 import { AudioManager } from "./systems/AudioManager.js";
 import GUI from "three/examples/jsm/libs/lil-gui.module.min.js";
@@ -155,8 +159,12 @@ class World {
         this.groundMesh = await loadGround();
         this.scene.add(this.bagMesh, this.groundMesh);
         // load sound effects
-        const loadedSoundEffects = await loadPunchingBagSoundeffects();
-        this.audioManager.addPunchSoundeffects(loadedSoundEffects);
+        const loadedPunchbagSoundEffects = await loadPunchingBagSoundeffects();
+        const countdownRepeat = await loadCountdownRepeatSoudeffect();
+        const countdownEnd = await loadCountdownEndSoundeffect();
+        this.audioManager.addPunchSoundeffects(loadedPunchbagSoundEffects);
+        this.audioManager.addCountdownRepeatSoundeffect(countdownRepeat);
+        this.audioManager.addCountdownEndSoundeffect(countdownEnd);
         // behaviours dependent on asynchronously loaded assets
         this.targetBehaviour = new TargetBehaviour(
             this.container,
@@ -203,6 +211,7 @@ class World {
                 );
                 this.startGameAfterCounter();
             }, this.options.countdown * 1000);
+            this.audioManager.playCountdownAudios(this.options.countdown);
         });
     }
 

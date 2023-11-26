@@ -224,7 +224,7 @@ class TargetBehaviour {
                     time: this.clock.elapsedTime,
                     reactionTime: reactionTime,
                     hitWith: "mouse",
-                    hitPoint: pointer,
+                    hitPoint: new Vector2(e.clientX, e.clientY),
                     deltaPoints: deltaPoints,
                     nbrTargetsHit: this.nbrTargetsHit,
                     points: this.points,

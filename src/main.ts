@@ -53,6 +53,11 @@ async function main() {
     container.addEventListener("targethit", (ev) => {
         gui.updateTotalScore(ev.detail.points);
         gui.updateTargetsHit(ev.detail.nbrTargetsHit, options.nbrTargets);
+        gui.addReactionTimePopup(
+            ev.detail.hitPoint.x,
+            ev.detail.hitPoint.y,
+            ev.detail.reactionTime,
+        );
         if (ev.detail.reactionTime < bestReaction) {
             bestReaction = ev.detail.reactionTime;
             gui.updateBestReaction(bestReaction);

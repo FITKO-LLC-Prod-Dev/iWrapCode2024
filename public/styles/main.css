@@ -182,3 +182,15 @@ body {
 #scene-container .counter span {
   font-size: 7rem;
 }
+
+#scene-container .reaction-time-popup {
+  position: fixed;
+  font-size: 2rem;
+  color: #ffffff;
+  pointer-events: none;
+  user-select: none;
+  text-align: center;
+  transition-duration: 1s;
+  transition-property: opacity;
+  transition-timing-function: ease-in-expo;
+}

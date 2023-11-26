@@ -218,16 +218,27 @@ class GUI {
     }
 
     public addReactionTimePopup(
-        relativeX: number,
-        relativeY: number,
-        deleteAfter = 400,
-    ): HTMLDivElement {
-        const reactionTimeDiv = document.createElement("div");
-        reactionTimeDiv.classList.add("reaction-time-popup");
+        clientX: number,
+        clientY: number,
+        reactionTime: number,
+        deleteAfter = 600,
+    ): HTMLSpanElement {
+        const reactionTimeText = document.createElement("span");
+        console.log(clientX, clientY);
+        reactionTimeText.classList.add("reaction-time-popup");
+        reactionTimeText.textContent = `${reactionTime}ms`;
+        reactionTimeText.style.transitionDuration = `${deleteAfter}ms`;
         setTimeout(() => {
-            reactionTimeDiv.remove();
+            reactionTimeText.style.left = `${clientX - reactionTimeText.offsetWidth / 2
+                }px`;
+            reactionTimeText.style.top = `${clientY - reactionTimeText.offsetHeight / 2
+                }px`;
+            reactionTimeText.style.opacity = "0";
+        });
+        setTimeout(() => {
+            reactionTimeText.remove();
         }, deleteAfter);
-        return this.container.appendChild(reactionTimeDiv);
+        return this.container.appendChild(reactionTimeText);
     }
 }
 
