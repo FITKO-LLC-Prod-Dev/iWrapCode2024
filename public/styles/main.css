@@ -1,3 +1,10 @@
+/* Defining colors*/
+:root {
+  --theme-white: #f0f0f0;
+  --theme-orange: #e89e00;
+  --theme-black: #000000;
+  --theme-gray: #535353;
+}
 /* To be removed once shipped */
 body {
   /* remove margins and scroll bars */
@@ -7,20 +14,84 @@ body {
   /* style text */
   text-align: center;
   font-size: 12px;
-  font-family: Sans-Serif;
-
+  font-family: 'Cabin', sans-serif;
   /* color text */
   color: #444;
 }
 
 #scene-container {
-  position: absolute;
+  position: fixed;
   width: 100%;
   height: 100%;
-  background-color: $gray-light;
-  font-family: monospace;
-  font-weight: bold;
-  font-variant: small-caps;
+  background-color: var(--theme-gray);
+}
+
+/**************************** Logo *************************************/
+
+.menu-container{
+  position: absolute;
+  background: rgb(232,158,0);
+  background: linear-gradient(90deg, rgba(232,158,0,1) 0%, rgba(0,0,0,0) 90%);
+  top: 0px;
+  left: 0px;
+  height: 100%;
+  width: 50%;
+}
+/**************************** Logo *************************************/
+
+.logo{
+  position: absolute;
+  top: 3%;
+  left: 15px;  
+  height: auto;
+  width: 25vmax;
+  margin: 1%;
+}
+
+/**************************** Menu *************************************/
+.menu {
+  position: absolute;
+  top: 50%;
+  left: 0px;
+  width: 100%;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: inline-block;
+  text-align: left;
+  transform: translateY(-50%);
+}
+
+.menu-item {
+  color: var(--theme-gray);
+  font-size: 2em;
+  text-align: center;
+  padding: 15px 30px;
+  cursor: pointer;
+  display: block;
+  width: 100%;
+}
+.menu-item:hover {
+  color:var(--theme-white);
+  background: var(--theme-gray);
+  background: linear-gradient(90deg, var(--theme-gray) 0%, rgba(0,0,0,0) 80%);
+}
+
+.menu-item button {
+  background: none;
+  text-align: center;
+  margin: auto;
+  text-transform: uppercase;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+  width: 100%;
+  text-align: left;
+  font-size: 1.9em;
+  display: block;
 }
 
 #scene-container .start-btn {
@@ -41,31 +112,53 @@ body {
   inherits: true;
 }
 
-#scene-container .in-game-container {
-  --progress: 100%;
-  position: absolute;
-  top: 50px;
-  left: 50px;
-  width: 15%;
-  height: 30%;
-  padding: 4px 4px;
+.in-game-container {
   display: flex;
   flex-direction: column;
-  gap: 1em;
-  border: 1px solid #fff;
-  border-radius: 0.5em;
-  background-color: #f5f6fa;
-  box-shadow: 0px 3px 8px color-mix(in srgb, #44bd32 var(--progress), #e84118);
-  color: #353b48;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100vh; /* Full height of the viewport */
+  width: 100%; /* Full width for responsiveness */
+  max-width: 300px; /* Maximum width of the container */
+  margin: 0; /* Reset any default margin */
+  padding: 20px; /* Add some padding inside the container */
+  box-sizing: border-box; /* Include padding in the width calculation */
+  position: absolute; /* Position it absolutely relative to its closest positioned ancestor or the viewport */
+  left: 0; /* Align to the left side of the screen */
+  top: 0; /* Align to the top, works with justify-content for vertical centering */
+}
+
+/* Styles for child elements to enhance appearance */
+.in-game-container label,
+.in-game-container span {
+  display: block; /* Make labels and spans take the full width */
+  margin-bottom: 10px; /* Space out items */
 }
 
 #scene-container .in-game-container .bar {
   width: var(--progress);
   background-color: color-mix(in srgb, #44bd32 var(--progress), #e84118);
-  border-radius: 0.5em;
   /* transition: width 100ms; this will be set by JavaScript */
   flex-grow: 2;
   order: 99;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  height: 20px;
+
+}
+
+.bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.2), transparent);
+  animation: shine 2s infinite;
 }
 
 #scene-container .total-score {
@@ -198,3 +291,4 @@ body {
   transition-timing-function: ease-in-expo;
   text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.96);
 }
+

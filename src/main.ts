@@ -3,6 +3,23 @@ import { GUI } from "./GUI/GUI.js";
 
 async function main() {
   const container = document.querySelector<HTMLDivElement>("#scene-container");
+  const menuItems = [
+    {
+      id : "start-simulation-btn",
+      text : "START SIMULATION",
+      onClick : () => startGameCallback()
+    },
+    {
+      id : "about-us-btn",
+      text : "ABOUT US",
+      onClick : () => window.location.href = 'https://www.gofitko.com/about-us'
+    },
+    {
+      id : "exit-btn",
+      text : "EXIT",
+      onClick : () => window.location.href = 'https://www.gofitko.com/'
+    },
+  ];
   let bestReaction = Infinity;
   if (container == null) throw new Error("#scene-container not found in DOM.");
   // create game scene (called World)
@@ -22,7 +39,7 @@ async function main() {
   await world.init();
   world.startLoop();
   // create game GUI
-  const gui = new GUI(container);
+  const gui = new GUI(container, menuItems);
   const startGameCallback = () => {
     bestReaction = Infinity;
     world.startGame();
@@ -46,7 +63,6 @@ async function main() {
     gui.resetCursor();
     gui.addRestartButton(startGameCallback);
   };
-  gui.addStartButton(startGameCallback);
   // add event listeners
   container.addEventListener("gameover", endGameCallback);
   container.addEventListener("targetspawn", (ev) => {
