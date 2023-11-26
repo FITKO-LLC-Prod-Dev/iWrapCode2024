@@ -11,11 +11,11 @@ import GUI from "three/examples/jsm/libs/lil-gui.module.min.js";
 
 function createRenderer(container: HTMLElement, gui?: GUI): WebGLRenderer {
   const renderer = new WebGLRenderer();
-  const params = { exposure: 1 };
+  const params = { exposure: 0.96 };
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(container.clientWidth, container.clientHeight);
   renderer.outputColorSpace = SRGBColorSpace;
-  renderer.toneMapping = ReinhardToneMapping;
+  renderer.toneMapping = LinearToneMapping;
   renderer.toneMappingExposure = params.exposure;
   if (gui !== undefined) {
     const rendererFolder = gui.addFolder("WebGL Renderer");
