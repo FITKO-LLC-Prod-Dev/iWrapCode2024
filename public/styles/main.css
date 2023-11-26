@@ -19,6 +19,8 @@ body {
   height: 100%;
   background-color: $gray-light;
   font-family: monospace;
+  font-weight: bold;
+  font-variant: small-caps;
 }
 
 #scene-container .start-btn {
@@ -52,8 +54,9 @@ body {
   gap: 1em;
   border: 1px solid #fff;
   border-radius: 0.5em;
-  background-color: white;
+  background-color: #f5f6fa;
   box-shadow: 0px 3px 8px color-mix(in srgb, #44bd32 var(--progress), #e84118);
+  color: #353b48;
 }
 
 #scene-container .in-game-container .bar {
@@ -61,7 +64,7 @@ body {
   background-color: color-mix(in srgb, #44bd32 var(--progress), #e84118);
   border-radius: 0.5em;
   /* transition: width 100ms; this will be set by JavaScript */
-  flex-grow: 1;
+  flex-grow: 2;
   order: 99;
 }
 
@@ -76,7 +79,7 @@ body {
   padding: 5px;
   text-transform: uppercase;
   text-align: left;
-  font-size: 0.7rem;
+  font-size: 1rem;
   flex-grow: 2;
 }
 
@@ -99,7 +102,7 @@ body {
   padding: 5px;
   text-transform: uppercase;
   text-align: left;
-  font-size: 0.7rem;
+  font-size: 1rem;
   flex-grow: 2;
 }
 
@@ -122,7 +125,7 @@ body {
   padding: 5px;
   text-transform: uppercase;
   text-align: left;
-  font-size: 0.7rem;
+  font-size: 1rem;
   flex-grow: 2;
 }
 
@@ -145,7 +148,7 @@ body {
   padding: 5px;
   text-transform: uppercase;
   text-align: left;
-  font-size: 0.7rem;
+  font-size: 1rem;
   flex-grow: 2;
 }
 
@@ -193,4 +196,5 @@ body {
   transition-duration: 1s;
   transition-property: opacity;
   transition-timing-function: ease-in-expo;
+  text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.96);
 }

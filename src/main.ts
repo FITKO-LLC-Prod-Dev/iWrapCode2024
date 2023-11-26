@@ -33,6 +33,7 @@ async function main() {
         gui.addInGameUI();
         gui.updateTotalScore(100);
         gui.updateTargetsHit(0, options.nbrTargets);
+        gui.setPunchingBoxCursor();
     };
     const endGameCallback = () => {
         gui.clearTotalScore();
@@ -42,6 +43,7 @@ async function main() {
         gui.clearBestReaction();
         gui.clearInGameUI();
         gui.clearCountdownCounter();
+        gui.resetCursor();
         gui.addRestartButton(startGameCallback);
     };
     gui.addStartButton(startGameCallback);
