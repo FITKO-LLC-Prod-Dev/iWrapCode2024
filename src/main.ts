@@ -1,23 +1,25 @@
 import { IOptions, World } from "./World/World.js";
 import { GUI } from "./GUI/GUI.js";
+import { GameOverData } from "./World/systems/events.js";
 
 async function main() {
   const container = document.querySelector<HTMLDivElement>("#scene-container");
   const menuItems = [
     {
-      id : "start-simulation-btn",
-      text : "START SIMULATION",
-      onClick : () => startGameCallback()
+      id: "start-simulation-btn",
+      text: "START SIMULATION",
+      onClick: () => startGameCallback(),
     },
     {
-      id : "about-us-btn",
-      text : "ABOUT US",
-      onClick : () => window.location.href = 'https://www.gofitko.com/about-us'
+      id: "about-us-btn",
+      text: "ABOUT US",
+      onClick: () =>
+        (window.location.href = "https://www.gofitko.com/about-us"),
     },
     {
-      id : "exit-btn",
-      text : "EXIT",
-      onClick : () => window.location.href = 'https://www.gofitko.com/'
+      id: "exit-btn",
+      text: "EXIT",
+      onClick: () => (window.location.href = "https://www.gofitko.com/"),
     },
   ];
   let bestReaction = Infinity;
@@ -27,8 +29,8 @@ async function main() {
     initialPoints: 100,
     minimumPoints: 0,
     nbrTargets: 20,
-    startReactionTime: 10000,
-    endReactionTime: 1000,
+    startReactionTime: 10000000,
+    endReactionTime: 1000000,
     progression: "linear",
     keyboardTargetActivated: false,
     countdown: 3,
@@ -48,11 +50,13 @@ async function main() {
     gui.addTargetsMissed();
     gui.addBestReaction();
     gui.addInGameUI();
+    gui.addLeftGameUI();
+    gui.addRightGameUI();
     gui.updateTotalScore(100);
     gui.updateTargetsHit(0, options.nbrTargets);
     gui.setPunchingBoxCursor();
   };
-  const endGameCallback = () => {
+  const endGameCallback = (ev: CustomEvent<GameOverData>) => {
     gui.clearTotalScore();
     gui.clearTargetsHit();
     gui.clearTargetsMissed();
@@ -61,7 +65,7 @@ async function main() {
     gui.clearInGameUI();
     gui.clearCountdownCounter();
     gui.resetCursor();
-    gui.addRestartButton(startGameCallback);
+    gui.addEndGameUI(startGameCallback, ev.detail, bestReaction);
   };
   // add event listeners
   container.addEventListener("gameover", endGameCallback);
@@ -69,14 +73,16 @@ async function main() {
     gui.addTimerProgressBar(ev.detail.remainingTime);
   });
   container.addEventListener("targethit", (ev) => {
+    const isBestReaction = ev.detail.reactionTime < bestReaction;
     gui.updateTotalScore(ev.detail.points);
     gui.updateTargetsHit(ev.detail.nbrTargetsHit, options.nbrTargets);
     gui.addReactionTimePopup(
       ev.detail.hitPoint.x,
       ev.detail.hitPoint.y,
       ev.detail.reactionTime,
+      isBestReaction
     );
-    if (ev.detail.reactionTime < bestReaction) {
+    if (isBestReaction) {
       bestReaction = ev.detail.reactionTime;
       gui.updateBestReaction(bestReaction);
     }

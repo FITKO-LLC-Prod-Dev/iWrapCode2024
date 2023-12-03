@@ -5,6 +5,18 @@
   --theme-black: #000000;
   --theme-gray: #535353;
 }
+
+/* Animations */
+@keyframes backgroundFadeIn {
+  0%   {opacity: 0; display: none;}
+  100% {opacity: 1; display: block;}
+}
+
+@keyframes backgroundFadeOut {
+  0%   {opacity: 1; display: block;}
+  100% {opacity: 0; display: none;}
+}
+
 /* To be removed once shipped */
 body {
   /* remove margins and scroll bars */
@@ -26,7 +38,7 @@ body {
   background-color: var(--theme-gray);
 }
 
-/**************************** Logo *************************************/
+/**************************** Menu container *************************************/
 
 .menu-container{
   position: absolute;
@@ -36,6 +48,12 @@ body {
   left: 0px;
   height: 100%;
   width: 50%;
+  animation: backgroundFadeIn 2s ease forwards;
+
+}
+
+.menu-container-fade-out{
+  animation: backgroundFadeOut 0.7s ease forwards;
 }
 /**************************** Logo *************************************/
 
@@ -75,6 +93,7 @@ body {
   color:var(--theme-white);
   background: var(--theme-gray);
   background: linear-gradient(90deg, var(--theme-gray) 0%, rgba(0,0,0,0) 80%);
+  
 }
 
 .menu-item button {
@@ -114,25 +133,57 @@ body {
 
 .in-game-container {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  background: rgba(0, 0, 0, 0);
+  background: radial-gradient(circle, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.25) 100%);
+  justify-content: space-between;
   align-items: flex-start;
-  height: 100vh; /* Full height of the viewport */
-  width: 100%; /* Full width for responsiveness */
-  max-width: 300px; /* Maximum width of the container */
-  margin: 0; /* Reset any default margin */
-  padding: 20px; /* Add some padding inside the container */
-  box-sizing: border-box; /* Include padding in the width calculation */
-  position: absolute; /* Position it absolutely relative to its closest positioned ancestor or the viewport */
-  left: 0; /* Align to the left side of the screen */
-  top: 0; /* Align to the top, works with justify-content for vertical centering */
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  margin: 0;
+  padding: 20px;
+  box-sizing: border-box;
+  position: absolute;
+  left: 0;
+  top: 0; 
 }
 
+.left-game-container div {
+  display: none;
+  opacity: 0;
+  animation: backgroundFadeIn 2s ease forwards;
+  animation-delay: 0.5s;
+}
+.left-game-container span {
+  text-align: right;
+}
+
+.left-game-container label {
+  text-align: right;
+}
+
+ .right-game-container div {
+  display: none;
+  opacity: 0;
+  animation: backgroundFadeIn 2s ease forwards;
+  animation-delay: 0.5s;
+}
+
+.right-game-container span {
+  text-align: left;
+}
+
+.right-game-container label {
+  text-align: left;
+}
+
+.in-game-container span {
+  font-size: 3em;
+}
 /* Styles for child elements to enhance appearance */
 .in-game-container label,
 .in-game-container span {
   display: block; /* Make labels and spans take the full width */
-  margin-bottom: 10px; /* Space out items */
 }
 
 #scene-container .in-game-container .bar {
@@ -146,7 +197,7 @@ body {
   top: 0;
   left: 0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  height: 20px;
+  height: 15px;
 
 }
 
@@ -161,27 +212,34 @@ body {
   animation: shine 2s infinite;
 }
 
+#scene-container span {
+  padding-bottom: 0px!important;
+  padding-top: 20px!important;
+
+}
+
+#scene-container label {
+  padding-top: 0px!important;
+  padding-bottom: 30px!important;
+}
 #scene-container .total-score {
   flex-grow: 1;
   display: flex;
   align-items: center;
   order: 0;
+  border-bottom: solid #e89e00 3px;
 }
 
 #scene-container .total-score label {
   padding: 5px;
   text-transform: uppercase;
-  text-align: left;
   font-size: 1rem;
   flex-grow: 2;
 }
 
 #scene-container .total-score span {
   padding: 5px;
-  text-align: right;
-  font-size: 1.5rem;
   flex-grow: 5;
-  padding-right: 10px;
 }
 
 #scene-container .targets-hit {
@@ -189,22 +247,19 @@ body {
   display: flex;
   align-items: center;
   order: 59;
+  border-bottom: solid #e89e00 3px;
 }
 
 #scene-container .targets-hit label {
   padding: 5px;
   text-transform: uppercase;
-  text-align: left;
   font-size: 1rem;
   flex-grow: 2;
 }
 
 #scene-container .targets-hit span {
   padding: 5px;
-  text-align: right;
-  font-size: 1.5rem;
   flex-grow: 5;
-  padding-right: 10px;
 }
 
 #scene-container .best-reaction {
@@ -217,17 +272,13 @@ body {
 #scene-container .best-reaction label {
   padding: 5px;
   text-transform: uppercase;
-  text-align: left;
   font-size: 1rem;
   flex-grow: 2;
 }
 
 #scene-container .best-reaction span {
   padding: 5px;
-  text-align: right;
-  font-size: 1.5rem;
   flex-grow: 5;
-  padding-right: 10px;
 }
 
 #scene-container .targets-missed {
@@ -240,17 +291,13 @@ body {
 #scene-container .targets-missed label {
   padding: 5px;
   text-transform: uppercase;
-  text-align: left;
   font-size: 1rem;
   flex-grow: 2;
 }
 
 #scene-container .targets-missed span {
   padding: 5px;
-  text-align: right;
-  font-size: 1.5rem;
   flex-grow: 5;
-  padding-right: 10px;
 }
 
 #scene-container .counter {
@@ -279,6 +326,10 @@ body {
   font-size: 7rem;
 }
 
+.best-reaction-time-popup{
+  color: rgb(0, 248, 0)!important;
+}
+
 #scene-container .reaction-time-popup {
   position: fixed;
   font-size: 2rem;
@@ -292,3 +343,19 @@ body {
   text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.96);
 }
 
+.end-game-container {
+  display: flex;
+  background: rgba(0, 0, 0, 0);
+  background: radial-gradient(circle, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.123) 100%);
+  justify-content: space-between;
+  align-items: flex-start;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  margin: 0;
+  padding: 20px;
+  box-sizing: border-box;
+  position: absolute;
+  left: 0;
+  top: 0; 
+}
