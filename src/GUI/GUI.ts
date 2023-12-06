@@ -3,9 +3,9 @@ import { GameOverData } from "../World/systems/events.js";
 class GUI {
   private readonly container: HTMLElement;
 
-  readonly menuContainer: HTMLDivElement;
-  readonly menu: HTMLElement;
-  readonly logo: HTMLImageElement;
+  private readonly startMenuContainer: HTMLDivElement;
+  private readonly startMenu: HTMLUListElement;
+  private readonly startMenuLogo: HTMLImageElement;
 
   private readonly inGameContainer: HTMLDivElement;
   private readonly leftGameContainer: HTMLDivElement;
@@ -38,42 +38,39 @@ class GUI {
 
   constructor(
     container: HTMLElement,
-    menuItems: { text: string; id: string; onClick: () => void }[]
+    menuItems: { text: string; id: string; onClick: () => void }[],
   ) {
     this.container = container;
-    ///////////////////////////////// START MENU UI ////////////////////////////////
-
-    // initialize the menu container
-    this.menuContainer = document.createElement("div");
-    this.menuContainer.classList.add("menu-container");
-    this.container.appendChild(this.menuContainer);
-
-    // initialize the logo
-    this.logo = document.createElement("img");
-    this.logo.src = "/assets/misc/logo.png";
-    this.logo.classList.add("logo");
-    this.menuContainer.appendChild(this.logo);
-
-    // initialize the starting menu
-    this.menu = this.addMenu(menuItems);
-    this.menuContainer.appendChild(this.menu);
-
-    /////////////////////////////// IN GAME UI //////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
+    ///////////////////////////// START MENU UI ///////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
+    this.startMenuContainer = document.createElement("div");
+    this.startMenuContainer.classList.add("menu-container");
+    this.startMenuLogo = document.createElement("img");
+    this.startMenuLogo.src = "/assets/misc/logo.png";
+    this.startMenuLogo.classList.add("logo");
+    this.startMenu = document.createElement("ul");
+    this.startMenu.classList.add("menu");
+    menuItems.forEach((item) => {
+      this.addMenuItem(item.text, item.id, item.onClick);
+    });
+    this.startMenuContainer.appendChild(this.startMenuLogo);
+    this.startMenuContainer.appendChild(this.startMenu);
+    this.container.appendChild(this.startMenuContainer);
+    ///////////////////////////////////////////////////////////////////////////
+    /////////////////////////////// IN GAME UI ////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
     // in-game menu container
     this.inGameContainer = document.createElement("div");
     this.inGameContainer.classList.add("in-game-container");
     // left-game menu container
     this.leftGameContainer = document.createElement("div");
     this.leftGameContainer.classList.add("left-game-container");
+    this.inGameContainer.appendChild(this.leftGameContainer);
     // right-game menu container
     this.rightGameContainer = document.createElement("div");
     this.rightGameContainer.classList.add("right-game-container");
-    // right-game menu container
-    this.endGameContainer = document.createElement("div");
-    this.endGameContainer.classList.add("end-game-container");
-    // progress bar
-    this.timerBar = document.createElement("div");
-    this.timerBar.classList.add("bar");
+    this.inGameContainer.appendChild(this.rightGameContainer);
     // total score
     this.totalScoreDiv = document.createElement("div");
     this.totalScoreDiv.classList.add("total-score");
@@ -83,6 +80,7 @@ class GUI {
     this.totalScoreText.textContent = "-";
     this.totalScoreDiv.appendChild(this.totalScoreText);
     this.totalScoreDiv.appendChild(totalScoreLabel);
+    this.leftGameContainer.appendChild(this.totalScoreDiv);
     // targets hit
     this.targetsHitDiv = document.createElement("div");
     this.targetsHitDiv.classList.add("targets-hit");
@@ -92,9 +90,11 @@ class GUI {
     this.targetsHitText.textContent = "0";
     this.targetsHitDiv.appendChild(this.targetsHitText);
     this.targetsHitDiv.appendChild(targetsHitLabel);
+    this.rightGameContainer.appendChild(this.targetsHitDiv);
     // targets missed
     this.targetsMissedDiv = document.createElement("div");
     this.targetsMissedDiv.classList.add("targets-missed");
+    this.rightGameContainer.appendChild(this.targetsMissedDiv);
     const targetsMissedLabel = document.createElement("label");
     targetsMissedLabel.textContent = "targets missed";
     this.targetsMissedText = document.createElement("span");
@@ -110,13 +110,18 @@ class GUI {
     this.bestReactionText.textContent = "∞";
     this.bestReactionDiv.appendChild(this.bestReactionText);
     this.bestReactionDiv.appendChild(bestReactionLabel);
+    this.leftGameContainer.appendChild(this.bestReactionDiv);
+    // progress bar
+    this.timerBar = document.createElement("div");
+    this.timerBar.classList.add("bar");
     // counter
     this.counterDiv = document.createElement("div");
     this.counterDiv.classList.add("counter");
     this.counterNumber = document.createElement("span");
     this.counterDiv.appendChild(this.counterNumber);
-
-    /////////////////////////////// END GAME UI //////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
+    /////////////////////////////// END GAME UI ///////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
     // end-game menu container
     this.endGameContainer = document.createElement("div");
     this.endGameContainer.classList.add("end-game-container");
@@ -129,7 +134,6 @@ class GUI {
     this.endGameScore.appendChild(endGameScoreLabel);
     this.endGameScore.appendChild(endGameScoreValue);
     this.endGameContainer.appendChild(this.endGameScore);
-
     // end-game best reaction time
     this.endGameBestReactionTime = document.createElement("div");
     this.endGameBestReactionTime.classList.add("end-game-best-reaction");
@@ -139,7 +143,6 @@ class GUI {
     this.endGameBestReactionTime.appendChild(endGameBestReactionLabel);
     this.endGameBestReactionTime.appendChild(endGameBestReactionValue);
     this.endGameContainer.appendChild(this.endGameBestReactionTime);
-
     // end-game targets hit
     this.endGameTargetsHit = document.createElement("div");
     this.endGameTargetsHit.classList.add("end-game-targets-hit");
@@ -149,7 +152,6 @@ class GUI {
     this.endGameTargetsHit.appendChild(endGameTargetsHitLabel);
     this.endGameTargetsHit.appendChild(endGameTargetsHitValue);
     this.endGameContainer.appendChild(this.endGameTargetsHit);
-
     // end-game targets missed
     this.endGameTargetsMissed = document.createElement("div");
     this.endGameTargetsMissed.classList.add("end-game-targets-missed");
@@ -159,144 +161,81 @@ class GUI {
     this.endGameTargetsMissed.appendChild(endGameTargetsMissedLabel);
     this.endGameTargetsMissed.appendChild(endGameTargetsMissedValue);
     this.endGameContainer.appendChild(this.endGameTargetsMissed);
-
     // restart button
     this.restartBtn = document.createElement("button");
     this.restartBtn.textContent = "RESTART";
     this.restartBtn.classList.add("restart-btn");
     this.endGameContainer.appendChild(this.restartBtn);
-
   }
 
-  public addMenu(
-    menuItems: { text: string; id: string; onClick: () => void }[]
-  ) {
-    // Create menu
-    const menu = document.createElement("ul");
-    menu.classList.add("menu");
-
-    // Fill menu with items
-    menuItems.forEach((item) => {
-      this.addMenuItem(menu, item.text, item.id, item.onClick);
-    });
-
-    this.container.appendChild(menu);
-    return menu;
-  }
-
-  public addMenuItem(
-    menu: HTMLElement,
-    text: string,
-    className: string,
-    onClick: () => void
-  ): HTMLButtonElement {
-    const menuItem = document.createElement("li");
-    menuItem.classList.add("menu-item");
-
-    const button = document.createElement("button");
-    button.textContent = text;
-    button.classList.add(className);
-    button.addEventListener("click", (_: MouseEvent) => {
-      onClick();
-      //this.menuContainer.remove();
-    });
-
-    menuItem.appendChild(button);
-    menu.appendChild(menuItem);
-    return button;
-  }
-
-  public addRestartButton(onClick: () => void): HTMLButtonElement {
-    if (this.container.contains(this.restartBtn)) {
-      this.restartBtn.remove();
+  public clearStartMenuUI(): void {
+    this.startMenuContainer.classList.add("menu-container-fade-out");
+    // disable all event listeners from buttons
+    for (const menuItem of this.startMenu.getElementsByClassName("menu-item")) {
+      const clonedMenuItem = menuItem.cloneNode(true);
+      menuItem.parentNode?.replaceChild(clonedMenuItem, menuItem);
     }
+    setTimeout(() => {
+      this.startMenuContainer.remove();
+    }, 700);
+  }
+
+  public addEndGameUI(
+    onRestartClick: () => void,
+    endGameResult: GameOverData,
+    bestReaction: number,
+  ): HTMLDivElement {
+    if (this.container.contains(this.endGameContainer)) this.clearEndGameUI();
     this.restartBtn.addEventListener("click", (_: MouseEvent) => {
-      onClick();
-      this.restartBtn.remove();
+      onRestartClick();
     });
-    return this.container.appendChild(this.restartBtn);
+    this.endGameScore.getElementsByTagName(
+      "span",
+    )[0].textContent = `${endGameResult.points}`;
+    this.endGameTargetsHit.getElementsByTagName(
+      "span",
+    )[0].textContent = `${endGameResult.nbrHits}`;
+    this.endGameTargetsMissed.getElementsByTagName(
+      "span",
+    )[0].textContent = `${endGameResult.nbrMisses}`;
+    this.endGameBestReactionTime.getElementsByTagName(
+      "span",
+    )[0].textContent = `${Math.floor(bestReaction)}`;
+    return this.container.appendChild(this.endGameContainer);
+  }
+
+  public clearEndGameUI(): void {
+    this.targetsHitText.textContent = "0";
+    this.targetsMissedText.textContent = "0";
+    this.bestReactionText.textContent = "∞";
+    this.endGameContainer.remove();
   }
 
   public addInGameUI(): HTMLDivElement {
     if (this.container.contains(this.inGameContainer)) this.clearInGameUI();
-    this.menuContainer.classList.add("menu-container-fade-out");
     return this.container.appendChild(this.inGameContainer);
   }
 
   public clearInGameUI() {
+    this.clearCountdownCounter();
+    this.clearTimerProgressBar();
     this.inGameContainer.remove();
-  }
-
-  public addLeftGameUI(): HTMLDivElement {
-    if (this.inGameContainer.contains(this.leftGameContainer))
-      this.clearInGameUI();
-    return this.inGameContainer.appendChild(this.leftGameContainer);
-  }
-
-  public addRightGameUI(): HTMLDivElement {
-    if (this.inGameContainer.contains(this.rightGameContainer))
-      this.clearInGameUI();
-    return this.inGameContainer.appendChild(this.rightGameContainer);
   }
 
   public updateTargetsMissed(targetsMissed: number): void {
     this.targetsMissedText.textContent = `${targetsMissed}`;
   }
 
-  public addTargetsMissed(): HTMLDivElement {
-    if (this.rightGameContainer.contains(this.targetsMissedDiv))
-      this.clearTargetsMissed();
-    return this.rightGameContainer.appendChild(this.targetsMissedDiv);
-  }
-
-  public clearTargetsMissed(): void {
-    this.targetsMissedText.textContent = "0";
-    this.targetsMissedDiv.remove();
-  }
-
   public updateTotalScore(score: number): void {
     this.totalScoreText.textContent = `${score}`;
-  }
-
-  public addTotalScore(): HTMLDivElement {
-    if (this.leftGameContainer.contains(this.totalScoreDiv))
-      this.clearTotalScore();
-    return this.leftGameContainer.appendChild(this.totalScoreDiv);
-  }
-
-  public clearTotalScore(): void {
-    this.totalScoreDiv.remove();
   }
 
   public updateTargetsHit(targetsHit: number, totalTargets: number) {
     this.targetsHitText.textContent = `${targetsHit}/${totalTargets}`;
   }
 
-  public addTargetsHit(): HTMLDivElement {
-    if (this.rightGameContainer.contains(this.targetsHitDiv))
-      this.clearTargetsHit();
-    return this.rightGameContainer.appendChild(this.targetsHitDiv);
-  }
-
-  public clearTargetsHit() {
-    this.targetsHitText.textContent = "0";
-    this.targetsHitDiv.remove();
-  }
-
-  public addBestReaction(): HTMLDivElement {
-    this.bestReactionText.textContent = "∞";
-    if (this.leftGameContainer.contains(this.bestReactionDiv))
-      this.clearBestReaction();
-    return this.leftGameContainer.appendChild(this.bestReactionDiv);
-  }
-
   public updateBestReaction(newReaction: number) {
     this.bestReactionText.textContent = `${Math.ceil(newReaction)} ms`;
-  }
-
-  public clearBestReaction() {
-    this.bestReactionText.textContent = "∞";
-    this.bestReactionDiv.remove();
   }
 
   public clearTimerProgressBar() {
@@ -307,7 +246,7 @@ class GUI {
 
   public addTimerProgressBar(
     maxReactionTime: number,
-    updateTime = 200
+    updateTime = 200,
   ): HTMLDivElement {
     if (this.inGameContainer.contains(this.timerBar))
       this.clearTimerProgressBar();
@@ -322,7 +261,7 @@ class GUI {
         return;
       }
       const percent = Math.floor(
-        (this.progressRemainingTime! / maxReactionTime) * 100
+        (this.progressRemainingTime! / maxReactionTime) * 100,
       );
       this.inGameContainer.style.setProperty("--progress", `${percent}%`);
     }, updateTime);
@@ -350,7 +289,7 @@ class GUI {
     clientY: number,
     reactionTime: number,
     isBestReaction: boolean,
-    deleteAfter = 600
+    deleteAfter = 600,
   ): HTMLSpanElement {
     const reactionTimeText = document.createElement("span");
     console.log(clientX, clientY);
@@ -374,74 +313,29 @@ class GUI {
     return this.container.appendChild(reactionTimeText);
   }
 
-  public addEndGameUI(
-    startGameCallback: () => void,
-    endGameResult: GameOverData,
-    bestReaction : number
-  ): HTMLDivElement {
-    if (this.container.contains(this.endGameContainer)) this.clearEndGameUI();
-    // clear event listner on restart again
-    this.restartBtn.addEventListener("click", (_: MouseEvent) => {
-      this.clearEndGameUI();
-      startGameCallback();
-    });
-    this.endGameScore.getElementsByTagName('span')[0].textContent = `${endGameResult.points}`;
-    this.endGameTargetsHit.getElementsByTagName('span')[0].textContent = `${endGameResult.nbrHits}`;
-    this.endGameTargetsMissed.getElementsByTagName('span')[0].textContent = `${endGameResult.nbrMisses}`;
-    this.endGameBestReactionTime.getElementsByTagName('span')[0].textContent = `${Math.floor(bestReaction)}`;
-
-    return this.container.appendChild(this.endGameContainer);
-  }
-
-  public clearEndGameUI() {
-    this.endGameContainer.remove();
-  }
-
-  public addEndGameScore(): HTMLDivElement {
-    if (this.endGameContainer.contains(this.endGameScore))
-      this.clearEndGameScore();
-    return this.endGameContainer.appendChild(this.endGameScore);
-  }
-  public clearEndGameScore(): void {
-    this.endGameScore.remove();
-  }
-
-  public addEndGameBestReaction(): HTMLDivElement {
-    if (this.endGameContainer.contains(this.endGameBestReactionTime))
-      this.clearEndGameBestReaction();
-    return this.endGameContainer.appendChild(this.endGameBestReactionTime);
-  }
-  public clearEndGameBestReaction(): void {
-    this.endGameBestReactionTime.remove();
-  }
-
-  public addEndGameTargetsHit(): HTMLDivElement {
-    if (this.endGameContainer.contains(this.endGameTargetsHit))
-      this.clearEndGameTargetsHit();
-    return this.endGameContainer.appendChild(this.endGameTargetsHit);
-  }
-  public clearEndGameTargetsHit(): void {
-    this.endGameTargetsHit.remove();
-  }
-
-  public addEndGameTargetsMissed(): HTMLDivElement {
-    if (this.endGameContainer.contains(this.endGameTargetsMissed))
-      this.clearEndGameTargetsMissed();
-    return this.endGameContainer.appendChild(this.endGameTargetsMissed);
-  }
-  public clearEndGameTargetsMissed(): void {
-    this.endGameTargetsMissed.remove();
-  }
-
   public setPunchingBoxCursor(): void {
     this.container.style.cursor = `url("data:image/png;base64,${this.base64PunchingGlove}"), auto`;
-  }
-  public setCrosshairCursor(): void {
-    this.container.style.cursor = "crosshair";
   }
 
   public resetCursor(): void {
     this.container.style.cursor = "default";
+  }
+  private addMenuItem(
+    text: string,
+    className: string,
+    onClick: () => void,
+  ): HTMLButtonElement {
+    const menuItem = document.createElement("li");
+    menuItem.classList.add("menu-item");
+    const button = document.createElement("button");
+    button.textContent = text;
+    button.classList.add(className);
+    button.addEventListener("click", (_: MouseEvent) => {
+      onClick();
+    });
+    menuItem.appendChild(button);
+    this.startMenu.appendChild(menuItem);
+    return button;
   }
 }
 

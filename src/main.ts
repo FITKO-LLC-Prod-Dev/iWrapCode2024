@@ -42,30 +42,28 @@ async function main() {
   world.startLoop();
   // create game GUI
   const gui = new GUI(container, menuItems);
+  const restartGameCallback = () => {
+    bestReaction = Infinity;
+    world.startGame();
+    gui.clearEndGameUI();
+    gui.addInGameUI();
+    gui.updateTotalScore(100);
+    gui.updateTargetsHit(0, options.nbrTargets);
+    gui.setPunchingBoxCursor();
+  };
   const startGameCallback = () => {
     bestReaction = Infinity;
     world.startGame();
-    gui.addTotalScore();
-    gui.addTargetsHit();
-    gui.addTargetsMissed();
-    gui.addBestReaction();
+    gui.clearStartMenuUI();
     gui.addInGameUI();
-    gui.addLeftGameUI();
-    gui.addRightGameUI();
     gui.updateTotalScore(100);
     gui.updateTargetsHit(0, options.nbrTargets);
     gui.setPunchingBoxCursor();
   };
   const endGameCallback = (ev: CustomEvent<GameOverData>) => {
-    gui.clearTotalScore();
-    gui.clearTargetsHit();
-    gui.clearTargetsMissed();
-    gui.clearTimerProgressBar();
-    gui.clearBestReaction();
     gui.clearInGameUI();
-    gui.clearCountdownCounter();
     gui.resetCursor();
-    gui.addEndGameUI(startGameCallback, ev.detail, bestReaction);
+    gui.addEndGameUI(restartGameCallback, ev.detail, bestReaction);
   };
   // add event listeners
   container.addEventListener("gameover", endGameCallback);
@@ -80,7 +78,7 @@ async function main() {
       ev.detail.hitPoint.x,
       ev.detail.hitPoint.y,
       ev.detail.reactionTime,
-      isBestReaction
+      isBestReaction,
     );
     if (isBestReaction) {
       bestReaction = ev.detail.reactionTime;
