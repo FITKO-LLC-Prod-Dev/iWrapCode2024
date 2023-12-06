@@ -17,6 +17,16 @@
   100% {opacity: 0; display: none;}
 }
 
+@keyframes backgroundFlexFadeIn {
+  0%   {opacity: 0; display: none;}
+  100% {opacity: 1; display: flex;}
+}
+
+@keyframes backgroundFlexFadeOut {
+  0%   {opacity: 1; display: block;}
+  100% {opacity: 0; display: flex;}
+}
+
 /* To be removed once shipped */
 body {
   /* remove margins and scroll bars */
@@ -119,11 +129,6 @@ body {
   top: 0px;
 }
 
-#scene-container .restart-btn {
-  position: absolute;
-  left: 0px;
-  top: 0px;
-}
 
 @property --progress {
   syntax: "<length>";
@@ -146,44 +151,47 @@ body {
   position: absolute;
   left: 0;
   top: 0; 
+  pointer-events: none;
+  user-select: none;
 }
 
 .left-game-container div {
   display: none;
   opacity: 0;
-  animation: backgroundFadeIn 2s ease forwards;
+  animation: backgroundFlexFadeIn 2s ease forwards;
   animation-delay: 0.5s;
+  flex-direction: column;
 }
 .left-game-container span {
+  width: 100%;
   text-align: right;
 }
 
 .left-game-container label {
+  width: 100%;
   text-align: right;
 }
 
  .right-game-container div {
   display: none;
   opacity: 0;
-  animation: backgroundFadeIn 2s ease forwards;
+  animation: backgroundFlexFadeIn 2s ease forwards;
   animation-delay: 0.5s;
+  flex-direction: column;
 }
 
 .right-game-container span {
+  width: 100%;
   text-align: left;
 }
 
 .right-game-container label {
+  width: 100%;
   text-align: left;
 }
 
 .in-game-container span {
   font-size: 3em;
-}
-/* Styles for child elements to enhance appearance */
-.in-game-container label,
-.in-game-container span {
-  display: block; /* Make labels and spans take the full width */
 }
 
 #scene-container .in-game-container .bar {
@@ -347,15 +355,31 @@ body {
   display: flex;
   background: rgba(0, 0, 0, 0);
   background: radial-gradient(circle, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.123) 100%);
+  flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
-  align-items: center;
   height: 100vh;
   width: 100%;
   margin: 0;
   padding: 20px;
+  padding-top: 7%;
+  padding-bottom: 7%;
   box-sizing: border-box;
   position: absolute;
   left: 0;
   top: 0; 
+  font-size: 2em;
+}
+
+.restart-btn {
+  background-color: #e89e00;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.restart-btn:hover {
+  background-color: #cc8a00;
 }

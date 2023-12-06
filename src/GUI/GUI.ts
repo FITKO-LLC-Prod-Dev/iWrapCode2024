@@ -125,9 +125,9 @@ class GUI {
     this.endGameScore.classList.add("end-game-total-score");
     const endGameScoreValue = document.createElement("span");
     const endGameScoreLabel = document.createElement("label");
-    endGameScoreLabel.textContent = "Score";
-    this.endGameScore.appendChild(endGameScoreValue);
+    endGameScoreLabel.textContent = "Score : ";
     this.endGameScore.appendChild(endGameScoreLabel);
+    this.endGameScore.appendChild(endGameScoreValue);
     this.endGameContainer.appendChild(this.endGameScore);
 
     // end-game best reaction time
@@ -135,9 +135,9 @@ class GUI {
     this.endGameBestReactionTime.classList.add("end-game-best-reaction");
     const endGameBestReactionValue = document.createElement("span");
     const endGameBestReactionLabel = document.createElement("label");
-    endGameBestReactionLabel.textContent = "best reaction";
-    this.endGameBestReactionTime.appendChild(endGameBestReactionValue);
+    endGameBestReactionLabel.textContent = "Best Reaction : ";
     this.endGameBestReactionTime.appendChild(endGameBestReactionLabel);
+    this.endGameBestReactionTime.appendChild(endGameBestReactionValue);
     this.endGameContainer.appendChild(this.endGameBestReactionTime);
 
     // end-game targets hit
@@ -145,9 +145,9 @@ class GUI {
     this.endGameTargetsHit.classList.add("end-game-targets-hit");
     const endGameTargetsHitValue = document.createElement("span");
     const endGameTargetsHitLabel = document.createElement("label");
-    endGameTargetsHitLabel.textContent = "Targets Hit";
-    this.endGameTargetsHit.appendChild(endGameTargetsHitValue);
+    endGameTargetsHitLabel.textContent = "Targets Hit : ";
     this.endGameTargetsHit.appendChild(endGameTargetsHitLabel);
+    this.endGameTargetsHit.appendChild(endGameTargetsHitValue);
     this.endGameContainer.appendChild(this.endGameTargetsHit);
 
     // end-game targets missed
@@ -155,9 +155,9 @@ class GUI {
     this.endGameTargetsMissed.classList.add("end-game-targets-missed");
     const endGameTargetsMissedValue = document.createElement("span");
     const endGameTargetsMissedLabel = document.createElement("label");
-    endGameTargetsMissedLabel.textContent = "Targets Missed";
-    this.endGameTargetsMissed.appendChild(endGameTargetsMissedValue);
+    endGameTargetsMissedLabel.textContent = "Targets Missed : ";
     this.endGameTargetsMissed.appendChild(endGameTargetsMissedLabel);
+    this.endGameTargetsMissed.appendChild(endGameTargetsMissedValue);
     this.endGameContainer.appendChild(this.endGameTargetsMissed);
 
     // restart button
@@ -382,8 +382,8 @@ class GUI {
     if (this.container.contains(this.endGameContainer)) this.clearEndGameUI();
     // clear event listner on restart again
     this.restartBtn.addEventListener("click", (_: MouseEvent) => {
-      startGameCallback();
       this.clearEndGameUI();
+      startGameCallback();
     });
     this.endGameScore.getElementsByTagName('span')[0].textContent = `${endGameResult.points}`;
     this.endGameTargetsHit.getElementsByTagName('span')[0].textContent = `${endGameResult.nbrHits}`;
