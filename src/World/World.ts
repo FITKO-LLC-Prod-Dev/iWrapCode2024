@@ -157,17 +157,28 @@ class World {
   // asynchronous setup here
   async init() {
     // load models
-    this.bagMesh = await loadBag();
-    this.targetMesh = await loadTarget();
-    this.groundMesh = await loadGround();
+    [this.bagMesh, this.targetMesh, this.groundMesh] = await Promise.all([
+      loadBag(),
+      loadTarget(),
+      loadGround(),
+    ]);
     this.scene.add(this.bagMesh, this.groundMesh);
     // load sound effects
-    const loadedPunchbagSoundEffects = await loadPunchingBagSoundeffects();
-    const countdownRepeat = await loadCountdownRepeatSoudeffect();
-    const countdownEnd = await loadCountdownEndSoundeffect();
-    const targetMissed = await loadTargetMissedSoundeffect();
-    const success = await loadSuccessSoundeffect();
-    const failure = await loadFailureSoundeffect();
+    const [
+      loadedPunchbagSoundEffects,
+      countdownRepeat,
+      countdownEnd,
+      targetMissed,
+      success,
+      failure,
+    ] = await Promise.all([
+      loadPunchingBagSoundeffects(),
+      loadCountdownRepeatSoudeffect(),
+      loadCountdownEndSoundeffect(),
+      loadTargetMissedSoundeffect(),
+      loadSuccessSoundeffect(),
+      loadFailureSoundeffect(),
+    ]);
     this.audioManager.addPunchSoundeffects(loadedPunchbagSoundEffects);
     this.audioManager.addCountdownRepeatSoundeffect(countdownRepeat);
     this.audioManager.addCountdownEndSoundeffect(countdownEnd);
