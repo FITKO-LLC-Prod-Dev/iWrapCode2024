@@ -324,10 +324,10 @@ class GUI {
     text: string,
     className: string,
     onClick: () => void,
-  ): HTMLButtonElement {
+  ): HTMLDivElement {
     const menuItem = document.createElement("li");
     menuItem.classList.add("menu-item");
-    const button = document.createElement("button");
+    const button = document.createElement("div");
     button.textContent = text;
     button.classList.add(className);
     button.addEventListener("click", (_: MouseEvent) => {
