@@ -1,6 +1,7 @@
 import {
   AudioListener,
   AxesHelper,
+  DefaultLoadingManager,
   Mesh,
   Object3D,
   PerspectiveCamera,
@@ -150,6 +151,18 @@ class World {
       const worldAxis = new AxesHelper(3);
       this.scene.add(worldAxis);
     }
+    // loader events
+    DefaultLoadingManager.onProgress = function (url, itemsLoaded, itemsTotal) {
+      console.log(
+        "Loading file: " +
+          url +
+          ".\nLoaded " +
+          itemsLoaded +
+          " of " +
+          itemsTotal +
+          " files.",
+      );
+    };
     // finally add DOM element to the provided container
     container.append(this.renderer.domElement);
   }
