@@ -359,9 +359,9 @@ class GUI {
   ): HTMLDivElement {
     const menuItem = document.createElement("li");
     menuItem.classList.add("menu-item");
+    menuItem.classList.add(className);
     const button = document.createElement("div");
     button.textContent = text;
-    button.classList.add(className);
     button.addEventListener("click", (_: MouseEvent) => {
       onClick();
     });
@@ -377,15 +377,17 @@ class GUI {
     onChange: (value: string) => void,
   ): HTMLDivElement {
     const menuItem = document.createElement("li");
-    menuItem.classList.add("menu-item");
+    menuItem.classList.add("menu-item",className);
     const spinnerDiv = document.createElement("div");
     const label = document.createElement("label");
     const arrowLeft = document.createElement("button");
+    arrowLeft.textContent = "<"
     const arrowRight = document.createElement("button");
+    arrowRight.textContent = ">"
+
     spinnerDiv.appendChild(arrowLeft);
     spinnerDiv.appendChild(label);
     spinnerDiv.appendChild(arrowRight);
-    spinnerDiv.classList.add(className);
     label.textContent = options[defaultOption].toUpperCase();
     let optionsIdx = defaultOption;
     arrowLeft.addEventListener("click", (_: MouseEvent) => {

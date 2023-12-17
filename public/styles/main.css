@@ -99,12 +99,17 @@ body {
   display: block;
   width: 100%;
 }
+.select-difficulty-switch:hover{
+  color: var(--theme-gray)!important;
+  background: transparent!important;
+}
 .menu-item:hover {
   color:var(--theme-white);
   background: var(--theme-gray);
   background: linear-gradient(90deg, var(--theme-gray) 0%, rgba(0,0,0,0) 80%);
   
 }
+
 
 .menu-item div {
   background: none;
@@ -129,6 +134,27 @@ body {
   top: 0px;
 }
 
+.select-difficulty-switch button {
+  background-color: var(--theme-gray); /* Green */
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 0.5em;
+}
+.select-difficulty-switch button:hover {
+  background-color: var(--theme-white); /* Green */
+  border: none;
+  color: var(--theme-gray);
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 0.5em;
+  cursor: pointer;
+}
 
 @property --progress {
   syntax: "<length>";
