@@ -386,7 +386,18 @@ body {
 
 
 /*************************************************************************
-***************************** Mobile View ********************************
+************************* Mobile View < 400px*****************************
+**************************************************************************/
+
+@media only screen and (max-width: 400px) {
+  .in-game-container div label{
+    font-size: 0.95em!important;
+  }
+}
+
+
+/*************************************************************************
+*************************** Mobile View > 400px **************************
 **************************************************************************/
 
 @media only screen and (max-width: 600px) {
@@ -425,10 +436,14 @@ body {
     flex-direction: column;
     align-items: center;
   }
+  .end-game-container{
+    background-color: white;
+    justify-content: space-around;
+  }
 }
 
 /*************************************************************************
-***************************** Tablet View ********************************
+***************************** Tablet Views ********************************
 **************************************************************************/
 
 @media only screen and (max-width:768px) {
@@ -439,6 +454,50 @@ body {
   }
   .menu-item div {
     color: #e89e00;
+    text-align: center;
+  }
+  .end-game-container{
+    background-color: white;
+    justify-content: space-around;
+  }
+}
+
+
+@media screen and (max-aspect-ratio: 683/512) {
+  .menu-container{
+    margin: auto;
+    width: 100%;
+    background:#6e6e6e;
+    animation: none;
+  }
+  .menu-item div {
+    color: #e89e00;
+    text-align: center;
+  }
+  .end-game-container{
+    background-color: white;
+    justify-content: space-around;
+  }
+}
+
+/*************************************************************************
+***************************** Portrait View ******************************
+**************************************************************************/
+
+@media screen and (orientation: portrait) {
+  .menu-container{
+    margin: auto;
+    width: 100%;
+    background:#6e6e6e;
+    animation: none;
+  }
+  .menu-item div {
+    color: #e89e00;
+    text-align: center;
+  } 
+  .end-game-container{
+    background-color: white;
+    justify-content: space-around;
   }
 }
 

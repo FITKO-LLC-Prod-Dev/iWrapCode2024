@@ -134,7 +134,7 @@ class GUI {
     this.endGameScore.classList.add("end-game-total-score");
     const endGameScoreValue = document.createElement("span");
     const endGameScoreLabel = document.createElement("label");
-    endGameScoreLabel.textContent = "Score : ";
+    endGameScoreLabel.textContent = "Score\xa0: ";
     this.endGameScore.appendChild(endGameScoreLabel);
     this.endGameScore.appendChild(endGameScoreValue);
     this.endGameContainer.appendChild(this.endGameScore);
@@ -143,7 +143,7 @@ class GUI {
     this.endGameBestReactionTime.classList.add("end-game-best-reaction");
     const endGameBestReactionValue = document.createElement("span");
     const endGameBestReactionLabel = document.createElement("label");
-    endGameBestReactionLabel.textContent = "Best Reaction : ";
+    endGameBestReactionLabel.textContent = "Best\xa0Reaction\xa0: ";
     this.endGameBestReactionTime.appendChild(endGameBestReactionLabel);
     this.endGameBestReactionTime.appendChild(endGameBestReactionValue);
     this.endGameContainer.appendChild(this.endGameBestReactionTime);
@@ -152,7 +152,7 @@ class GUI {
     this.endGameTargetsHit.classList.add("end-game-targets-hit");
     const endGameTargetsHitValue = document.createElement("span");
     const endGameTargetsHitLabel = document.createElement("label");
-    endGameTargetsHitLabel.textContent = "Targets Hit : ";
+    endGameTargetsHitLabel.textContent = "Targets\xa0Hit : ";
     this.endGameTargetsHit.appendChild(endGameTargetsHitLabel);
     this.endGameTargetsHit.appendChild(endGameTargetsHitValue);
     this.endGameContainer.appendChild(this.endGameTargetsHit);
@@ -241,7 +241,7 @@ class GUI {
   }
 
   public updateBestReaction(newReaction: number) {
-    this.bestReactionText.textContent = `${Math.ceil(newReaction)} ms`;
+    this.bestReactionText.textContent = `${Math.ceil(newReaction)}\xa0ms`;
   }
 
   public clearTimerProgressBar() {
