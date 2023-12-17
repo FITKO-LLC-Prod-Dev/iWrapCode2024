@@ -1,22 +1,81 @@
 import { IOptions, World } from "./World/World.js";
-import { GUI } from "./GUI/GUI.js";
+import { GUI, SupportedMenuItemTypes, TMenuItem } from "./GUI/GUI.js";
 import { GameOverData } from "./World/systems/events.js";
 
 async function main() {
   const container = document.querySelector<HTMLDivElement>("#scene-container");
-  const menuItems = [
+  // create game scene (called World)
+  const options: IOptions = {
+    initialPoints: 100,
+    minimumPoints: 0,
+    nbrTargets: 20,
+    startReactionTime: 10000,
+    endReactionTime: 200,
+    progression: "linear",
+    keyboardTargetActivated: false,
+    countdown: 3,
+    debugGUI: false,
+    worldAxis: false,
+  };
+  enum Difficulty {
+    Easy = "easy",
+    Medium = "medium",
+    Hard = "hard",
+    Impossible = "impossible",
+  }
+  const menuItems: TMenuItem[] = [
     {
+      type: SupportedMenuItemTypes.InputSpinner,
+      id: "select-difficulty-switch",
+      defaultOptionIdx: 1,
+      options: [
+        Difficulty.Easy,
+        Difficulty.Medium,
+        Difficulty.Hard,
+        Difficulty.Impossible,
+      ],
+      onChange: (diff: string) => {
+        switch (diff) {
+          case Difficulty.Easy:
+            options.progression = "linear";
+            options.startReactionTime = 8500;
+            options.endReactionTime = 850;
+            break;
+          case Difficulty.Medium:
+            options.progression = "linear";
+            options.startReactionTime = 5000;
+            options.endReactionTime = 500;
+            break;
+          case Difficulty.Hard:
+            options.progression = "exponential";
+            options.startReactionTime = 3600;
+            options.endReactionTime = 360;
+            break;
+          case Difficulty.Impossible:
+            options.progression = "exponential";
+            options.startReactionTime = 2000;
+            options.endReactionTime = 200;
+            break;
+          default:
+            break;
+        }
+      },
+    },
+    {
+      type: SupportedMenuItemTypes.Button,
       id: "start-simulation-btn",
       text: "START SIMULATION",
       onClick: () => startGameCallback(),
     },
     {
+      type: SupportedMenuItemTypes.Button,
       id: "about-us-btn",
       text: "ABOUT US",
       onClick: () =>
         (window.location.href = "https://www.gofitko.com/about-us"),
     },
     {
+      type: SupportedMenuItemTypes.Button,
       id: "exit-btn",
       text: "EXIT",
       onClick: () => (window.location.href = "https://www.gofitko.com/"),
@@ -24,19 +83,6 @@ async function main() {
   ];
   let bestReaction = Infinity;
   if (container == null) throw new Error("#scene-container not found in DOM.");
-  // create game scene (called World)
-  const options: IOptions = {
-    initialPoints: 100,
-    minimumPoints: 0,
-    nbrTargets: 20,
-    startReactionTime: 10000000,
-    endReactionTime: 1000000,
-    progression: "linear",
-    keyboardTargetActivated: false,
-    countdown: 3,
-    debugGUI: false,
-    worldAxis: false,
-  };
   const world = new World(container, options);
   await world.init();
   world.startLoop();
