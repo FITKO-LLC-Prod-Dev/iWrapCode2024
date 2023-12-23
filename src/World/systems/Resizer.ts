@@ -1,17 +1,20 @@
-import { PerspectiveCamera, WebGLRenderer } from "three";
+import { Clock, PerspectiveCamera, WebGLRenderer } from "three";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
 
 class Resizer {
-  readonly container: HTMLElement;
-  readonly camera: PerspectiveCamera;
-  readonly renderer: WebGLRenderer;
-  readonly composer: EffectComposer;
+  private readonly container: HTMLElement;
+  private readonly camera: PerspectiveCamera;
+  private readonly renderer: WebGLRenderer;
+  private readonly composer: EffectComposer;
+  private readonly clock: Clock;
+  private accumulator = 0;
 
   constructor(
     container: HTMLElement,
     camera: PerspectiveCamera,
     renderer: WebGLRenderer,
     composer: EffectComposer,
+    throttlingTime: number = 0.15,
   ) {
     this.container = container;
     this.camera = camera;
@@ -19,8 +22,13 @@ class Resizer {
     this.composer = composer;
     // set initial size
     this.updateSize();
+    this.clock = new Clock();
     addEventListener("resize", () => {
-      this.updateSize();
+      this.accumulator += this.clock.getDelta();
+      if (this.accumulator > throttlingTime) {
+        this.accumulator = 0;
+        this.updateSize();
+      }
     });
   }
 
@@ -37,6 +45,7 @@ class Resizer {
       this.container.clientWidth,
       this.container.clientHeight,
     );
+    this.composer.render();
   }
 }
 
