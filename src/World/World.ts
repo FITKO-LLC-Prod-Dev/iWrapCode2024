@@ -39,6 +39,7 @@ import GUI from "three/examples/jsm/libs/lil-gui.module.min.js";
 import { loadGround } from "./components/ground.js";
 import { CameraBehaviour } from "./systems/CameraBehaviour.js";
 import {
+  createCamTransitionToStartEndEvent,
   createCountdownEndEvent,
   createCountdownStartEvent,
 } from "./systems/events.js";
@@ -220,26 +221,29 @@ class World {
       this.gui,
     );
   }
-  // for render-on-demand use-cases
-  render() {
+
+  /** Renders a single frame. Use for static background or when no updates are
+   * needed to save battery. */
+  public render() {
     this.composer.render();
   }
 
-  // for continuous rendering (a stream of frames)
-  startLoop() {
+  /** Starts the rendering loop. It is safe to call this function even if the
+   * rendering loop is already started. */
+  public startLoop() {
     this.engine.start();
   }
 
+  /** Pauses currently running rendering loop. It is safe to call this function
+   * even if currently running rendering has already been paused. */
   public pauseLoop() {
     this.engine.pause();
   }
 
+  /** Resumes previously paused rendering loop. It is safe to call this
+   * function even if the engine is already running. */
   public resumeLoop() {
     this.engine.resume();
-  }
-
-  startTutorial() {
-    // TODO: implement tutorial logic
   }
 
   public startGame() {
@@ -259,7 +263,9 @@ class World {
 
   private startGameAfterCounter() {
     this.container.addEventListener("gameover", () => {
-      this.cameraBehaviour.transitionToStartState();
+      this.cameraBehaviour.transitionToStartState(() =>
+        this.container.dispatchEvent(createCamTransitionToStartEndEvent()),
+      );
     });
     this.targetBehaviour.start();
   }

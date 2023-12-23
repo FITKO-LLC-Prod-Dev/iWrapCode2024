@@ -50,11 +50,15 @@ class Engine {
   }
 
   public pause(): void {
-    if (this.requestID) cancelAnimationFrame(this.requestID);
-    this.requestID = undefined;
+    // only pause if engine is running
+    if (this.requestID !== undefined) {
+      cancelAnimationFrame(this.requestID);
+      this.requestID = undefined;
+    }
   }
 
   public resume(): void {
+    // only resume if engine isn't running
     if (this.requestID === undefined) this.animate();
   }
 }

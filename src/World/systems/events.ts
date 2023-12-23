@@ -105,6 +105,11 @@ function createLoadingProgressEvent(
   return new CustomEvent<LoadingProgressData>(EVENT_ID, { detail: data });
 }
 
+function createCamTransitionToStartEndEvent(): Event {
+  const EVENT_ID = "camtransitiontostartend";
+  return new Event(EVENT_ID);
+}
+
 export {
   GameStartData,
   GameOverData,
@@ -122,4 +127,5 @@ export {
   createCountdownStartEvent,
   createCountdownEndEvent,
   createLoadingProgressEvent,
+  createCamTransitionToStartEndEvent,
 };

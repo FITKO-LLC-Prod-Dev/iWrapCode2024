@@ -86,11 +86,13 @@ async function main() {
   if (container == null) throw new Error("#scene-container not found in DOM.");
   const world = new World(container, options);
   await world.init();
-  world.startLoop();
+  // render background image once
+  world.render();
   // create game GUI
   const gui = new GUI(container, menuItems);
   const restartGameCallback = () => {
     bestReaction = Infinity;
+    world.resumeLoop();
     world.startGame();
     gui.clearEndGameUI();
     gui.addInGameUI();
@@ -100,6 +102,7 @@ async function main() {
   };
   const startGameCallback = () => {
     bestReaction = Infinity;
+    world.startLoop();
     world.startGame();
     gui.clearStartMenuUI();
     gui.addInGameUI();
@@ -113,6 +116,9 @@ async function main() {
     gui.addEndGameUI(restartGameCallback, ev.detail, bestReaction);
   };
   // add event listeners
+  container.addEventListener("camtransitiontostartend", () => {
+    world.pauseLoop();
+  });
   container.addEventListener("gameover", endGameCallback);
   container.addEventListener("targetspawn", (ev) => {
     gui.addTimerProgressBar(ev.detail.remainingTime);
@@ -137,11 +143,9 @@ async function main() {
     gui.updateTargetsMissed(ev.detail.nbrTargetsMissed);
   });
   container.addEventListener("countdownstart", (_) => {
-    console.log("Countdow started");
     gui.addCountdownCounter(options.countdown);
   });
   container.addEventListener("countdownend", (_) => {
-    console.log("Countdow ended");
     gui.clearCountdownCounter();
   });
 }

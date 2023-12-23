@@ -17,6 +17,7 @@ declare global {
     targetspawn: CustomEvent<TargetSpawnData>;
     countdownstart: CustomEvent<CountdownStart>;
     countdownend: CustomEvent<CountdownEnd>;
+    camtransitiontostartend: Event;
   }
 }
 export {};

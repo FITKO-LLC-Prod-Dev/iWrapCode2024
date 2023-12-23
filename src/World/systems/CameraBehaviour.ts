@@ -1,6 +1,7 @@
 import { Camera, PerspectiveCamera, Vector3 } from "three";
 import { Engine } from "./Engine.js";
 import GUI from "three/examples/jsm/libs/lil-gui.module.min.js";
+import { GameObject } from "./interfaces.js";
 
 class CameraBehaviour {
   private readonly engine: Engine;
@@ -64,11 +65,12 @@ class CameraBehaviour {
     );
   }
 
-  public transitionToStartState(): void {
+  public transitionToStartState(callback?: () => void): void {
     this.transitionTo(
       this.cameraStartPosition,
       this.cameraGameTarget,
       this.cameraStartTarget,
+      callback,
     );
   }
 
@@ -101,7 +103,7 @@ class CameraBehaviour {
   }
 }
 
-class CameraTransitionBehaviour {
+class CameraTransitionBehaviour implements GameObject {
   private readonly camera: Camera;
   private readonly finalPosition: Vector3;
   private readonly initialTarget: Vector3;

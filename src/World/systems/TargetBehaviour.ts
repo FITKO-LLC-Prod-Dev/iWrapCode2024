@@ -261,7 +261,6 @@ class TargetBehaviour {
 
   private onSuccess(): void {
     this.stop();
-    console.log(`Gameover Success: ${this.nbrTargetsHit}`);
     this.container.dispatchEvent(
       createGameOverEvent({
         time: this.clock.getElapsedTime(),
@@ -277,13 +276,6 @@ class TargetBehaviour {
 
   private onFailure(): void {
     this.stop();
-    console.log("Gameover Failure", {
-      time: this.clock.getElapsedTime(),
-      success: false,
-      nbrHits: this.nbrTargetsHit,
-      nbrMisses: this.nbrTargetsMissed,
-      points: this.points,
-    });
     document.removeEventListener<"click">("click", this.onPunchAttemptRef);
     this.container.dispatchEvent(
       createGameOverEvent({
