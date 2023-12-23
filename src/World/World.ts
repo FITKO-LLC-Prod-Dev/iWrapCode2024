@@ -42,10 +42,12 @@ import {
   createCountdownEndEvent,
   createCountdownStartEvent,
 } from "./systems/events.js";
+import { StatsWrapperGUI } from "./systems/StatsWrapperGUI.js";
 
 interface IOptions extends IGameSettings {
   debugGUI?: boolean;
   worldAxis?: boolean;
+  statsGUI?: boolean;
 }
 
 class World {
@@ -72,10 +74,9 @@ class World {
     // set defaults here
     if (options.debugGUI == undefined) options.debugGUI = false;
     if (options.worldAxis == undefined) options.worldAxis = false;
+    if (options.statsGUI == undefined) options.statsGUI = false;
     // debugging GUI
-    if (options.debugGUI) {
-      this.gui = new GUI();
-    }
+    if (options.debugGUI) this.gui = new GUI();
     this.container = container;
     this.options = options;
     this.scene = createScene(this.gui);
@@ -163,21 +164,22 @@ class World {
           " files.",
       );
     };
+    // stats debugging GUI
+    if (options.statsGUI) {
+      const statsWrapper = new StatsWrapperGUI(container);
+      this.engine.addBehaviour(statsWrapper);
+    }
     // finally add DOM element to the provided container
     container.append(this.renderer.domElement);
   }
 
   // asynchronous setup here
   async init() {
-    // load models
-    [this.bagMesh, this.targetMesh, this.groundMesh] = await Promise.all([
-      loadBag(),
-      loadTarget(),
-      loadGround(),
-    ]);
-    this.scene.add(this.bagMesh, this.groundMesh);
-    // load sound effects
+    // load models and sound effects
     const [
+      _bagMesh,
+      _targetMesh,
+      _groundMesh,
       loadedPunchbagSoundEffects,
       countdownRepeat,
       countdownEnd,
@@ -185,6 +187,9 @@ class World {
       success,
       failure,
     ] = await Promise.all([
+      loadBag(),
+      loadTarget(),
+      loadGround(),
       loadPunchingBagSoundeffects(),
       loadCountdownRepeatSoudeffect(),
       loadCountdownEndSoundeffect(),
@@ -192,6 +197,10 @@ class World {
       loadSuccessSoundeffect(),
       loadFailureSoundeffect(),
     ]);
+    this.bagMesh = _bagMesh;
+    this.targetMesh = _targetMesh;
+    this.groundMesh = _groundMesh;
+    this.scene.add(this.bagMesh, this.groundMesh);
     this.audioManager.addPunchSoundeffects(loadedPunchbagSoundEffects);
     this.audioManager.addCountdownRepeatSoundeffect(countdownRepeat);
     this.audioManager.addCountdownEndSoundeffect(countdownEnd);

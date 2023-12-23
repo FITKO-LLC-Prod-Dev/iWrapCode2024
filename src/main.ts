@@ -16,6 +16,7 @@ async function main() {
     countdown: 3,
     debugGUI: false,
     worldAxis: false,
+    statsGUI: true,
   };
   enum Difficulty {
     Easy = "easy",
