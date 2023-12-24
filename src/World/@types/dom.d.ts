@@ -6,6 +6,7 @@ import {
   TargetSpawnData,
   CountdownStart,
   CountdownEnd,
+  LoadingProgressData,
 } from "../systems/events.ts";
 
 declare global {
@@ -17,6 +18,8 @@ declare global {
     targetspawn: CustomEvent<TargetSpawnData>;
     countdownstart: CustomEvent<CountdownStart>;
     countdownend: CustomEvent<CountdownEnd>;
+    loadingprogress: CustomEvent<LoadingProgressData>;
+    loadingend: Event;
     camtransitiontostartend: Event;
   }
 }

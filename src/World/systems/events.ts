@@ -52,7 +52,8 @@ interface CountdownEnd {
 }
 
 interface LoadingProgressData {
-  progress: number;
+  progressPercentage: number; // int in percentage
+  message: string;
 }
 
 function createGameStartEvent(data: GameStartData): CustomEvent<GameStartData> {
@@ -105,6 +106,11 @@ function createLoadingProgressEvent(
   return new CustomEvent<LoadingProgressData>(EVENT_ID, { detail: data });
 }
 
+function createLoadingEndEvent(): Event {
+  const EVENT_ID = "loadingend";
+  return new Event(EVENT_ID);
+}
+
 function createCamTransitionToStartEndEvent(): Event {
   const EVENT_ID = "camtransitiontostartend";
   return new Event(EVENT_ID);
@@ -127,5 +133,6 @@ export {
   createCountdownStartEvent,
   createCountdownEndEvent,
   createLoadingProgressEvent,
+  createLoadingEndEvent,
   createCamTransitionToStartEndEvent,
 };

@@ -8,23 +8,47 @@
 
 /* Animations */
 @keyframes backgroundFadeIn {
-  0%   {opacity: 0; display: none;}
-  100% {opacity: 1; display: block;}
+  0% {
+    opacity: 0;
+    display: none;
+  }
+  100% {
+    opacity: 1;
+    display: block;
+  }
 }
 
 @keyframes backgroundFadeOut {
-  0%   {opacity: 1; display: block;}
-  100% {opacity: 0; display: none;}
+  0% {
+    opacity: 1;
+    display: block;
+  }
+  100% {
+    opacity: 0;
+    display: none;
+  }
 }
 
 @keyframes backgroundFlexFadeIn {
-  0%   {opacity: 0; display: none;}
-  100% {opacity: 1; display: flex;}
+  0% {
+    opacity: 0;
+    display: none;
+  }
+  100% {
+    opacity: 1;
+    display: flex;
+  }
 }
 
 @keyframes backgroundFlexFadeOut {
-  0%   {opacity: 1; display: block;}
-  100% {opacity: 0; display: flex;}
+  0% {
+    opacity: 1;
+    display: block;
+  }
+  100% {
+    opacity: 0;
+    display: flex;
+  }
 }
 
 /* To be removed once shipped */
@@ -36,7 +60,7 @@ body {
   /* style text */
   text-align: center;
   font-size: 12px;
-  font-family: 'Cabin', sans-serif;
+  font-family: "Cabin", sans-serif;
   /* color text */
   color: #444;
 }
@@ -50,27 +74,30 @@ body {
 
 /**************************** Menu container *************************************/
 
-.menu-container{
+.menu-container {
   position: absolute;
-  background: rgb(232,158,0);
-  background: linear-gradient(90deg, rgba(232,158,0,1) 0%, rgba(0,0,0,0) 90%);
+  background: rgb(232, 158, 0);
+  background: linear-gradient(
+    90deg,
+    rgba(232, 158, 0, 1) 0%,
+    rgba(0, 0, 0, 0) 90%
+  );
   top: 0px;
   left: 0px;
   height: 100%;
   width: 50%;
   animation: backgroundFadeIn 2s ease forwards;
-
 }
 
-.menu-container-fade-out{
+.menu-container-fade-out {
   animation: backgroundFadeOut 0.7s ease forwards;
 }
 /**************************** Logo *************************************/
 
-.logo{
+.logo {
   position: absolute;
   top: 3%;
-  left: 15px;  
+  left: 15px;
   height: auto;
   width: 25vmax;
   margin: 1%;
@@ -99,17 +126,19 @@ body {
   display: block;
   width: 100%;
 }
-.select-difficulty-switch:hover{
-  color: var(--theme-gray)!important;
-  background: transparent!important;
+.select-difficulty-switch:hover {
+  color: var(--theme-gray) !important;
+  background: transparent !important;
 }
 .menu-item:hover {
-  color:var(--theme-white);
+  color: var(--theme-white);
   background: var(--theme-gray);
-  background: linear-gradient(90deg, var(--theme-gray) 0%, rgba(0,0,0,0) 80%);
-  
+  background: linear-gradient(
+    90deg,
+    var(--theme-gray) 0%,
+    rgba(0, 0, 0, 0) 80%
+  );
 }
-
 
 .menu-item div {
   background: none;
@@ -165,7 +194,11 @@ body {
 .in-game-container {
   display: flex;
   background: rgba(0, 0, 0, 0);
-  background: radial-gradient(circle, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.25) 100%);
+  background: radial-gradient(
+    circle,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.25) 100%
+  );
   justify-content: space-between;
   align-items: flex-start;
   align-items: center;
@@ -176,7 +209,7 @@ body {
   box-sizing: border-box;
   position: absolute;
   left: 0;
-  top: 0; 
+  top: 0;
   pointer-events: none;
   user-select: none;
 }
@@ -198,7 +231,7 @@ body {
   text-align: right;
 }
 
- .right-game-container div {
+.right-game-container div {
   display: none;
   opacity: 0;
   animation: backgroundFlexFadeIn 2s ease forwards;
@@ -232,11 +265,10 @@ body {
   left: 0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   height: 15px;
-
 }
 
 .bar::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -247,14 +279,13 @@ body {
 }
 
 #scene-container span {
-  padding-bottom: 0px!important;
-  padding-top: 20px!important;
-
+  padding-bottom: 0px !important;
+  padding-top: 20px !important;
 }
 
-#scene-container label {
-  padding-top: 0px!important;
-  padding-bottom: 30px!important;
+#in-game-container label {
+  padding-top: 0px !important;
+  padding-bottom: 30px !important;
 }
 #scene-container .total-score {
   flex-grow: 1;
@@ -360,8 +391,8 @@ body {
   font-size: 7rem;
 }
 
-.best-reaction-time-popup{
-  color: rgb(0, 248, 0)!important;
+.best-reaction-time-popup {
+  color: rgb(0, 248, 0) !important;
 }
 
 #scene-container .reaction-time-popup {
@@ -380,7 +411,11 @@ body {
 .end-game-container {
   display: flex;
   background: rgba(0, 0, 0, 0);
-  background: radial-gradient(circle, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.123) 100%);
+  background: radial-gradient(
+    circle,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.123) 100%
+  );
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
@@ -393,7 +428,7 @@ body {
   box-sizing: border-box;
   position: absolute;
   left: 0;
-  top: 0; 
+  top: 0;
   font-size: 2em;
 }
 
@@ -410,30 +445,28 @@ body {
   background-color: #cc8a00;
 }
 
-
 /*************************************************************************
 ************************* Mobile View < 400px*****************************
 **************************************************************************/
 
 @media only screen and (max-width: 400px) {
-  .in-game-container div label{
-    font-size: 0.95em!important;
+  .in-game-container div label {
+    font-size: 0.95em !important;
   }
 }
-
 
 /*************************************************************************
 *************************** Mobile View > 400px **************************
 **************************************************************************/
 
 @media only screen and (max-width: 600px) {
-  .menu-container{
+  .menu-container {
     width: 100%;
-    background:#6e6e6e;
+    background: #6e6e6e;
     animation: none;
   }
-  .menu{
-    top:40%;
+  .menu {
+    top: 40%;
   }
   .menu-item {
     padding: 15px 0px;
@@ -449,11 +482,11 @@ body {
     margin: 5%;
     left: 0px;
   }
-  .in-game-container{
-    align-items: flex-end!important;
+  .in-game-container {
+    align-items: flex-end !important;
     padding: 0px;
   }
-  .in-game-container div{
+  .in-game-container div {
     background-color: white;
     width: 50%;
     margin-left: 0px;
@@ -462,7 +495,7 @@ body {
     flex-direction: column;
     align-items: center;
   }
-  .end-game-container{
+  .end-game-container {
     background-color: white;
     justify-content: space-around;
   }
@@ -472,35 +505,34 @@ body {
 ***************************** Tablet Views ********************************
 **************************************************************************/
 
-@media only screen and (max-width:768px) {
-  .menu-container{
+@media only screen and (max-width: 768px) {
+  .menu-container {
     width: 100%;
-    background:#6e6e6e;
+    background: #6e6e6e;
     animation: none;
   }
   .menu-item div {
     color: #e89e00;
     text-align: center;
   }
-  .end-game-container{
+  .end-game-container {
     background-color: white;
     justify-content: space-around;
   }
 }
 
-
 @media screen and (max-aspect-ratio: 683/512) {
-  .menu-container{
+  .menu-container {
     margin: auto;
     width: 100%;
-    background:#6e6e6e;
+    background: #6e6e6e;
     animation: none;
   }
   .menu-item div {
     color: #e89e00;
     text-align: center;
   }
-  .end-game-container{
+  .end-game-container {
     background-color: white;
     justify-content: space-around;
   }
@@ -511,20 +543,57 @@ body {
 **************************************************************************/
 
 @media screen and (orientation: portrait) {
-  .menu-container{
+  .menu-container {
     margin: auto;
     width: 100%;
-    background:#6e6e6e;
+    background: #6e6e6e;
     animation: none;
   }
   .menu-item div {
     color: #e89e00;
     text-align: center;
-  } 
-  .end-game-container{
+  }
+  .end-game-container {
     background-color: white;
     justify-content: space-around;
   }
 }
 
+@property --loadingprogress {
+  syntax: "<percentage>";
+  initial-value: 0%;
+  inherits: true;
+}
 
+/* HTML: <div class="loader"></div> */
+#scene-container .loader-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 35%;
+  aspect-ratio: 9/1;
+  display: block;
+  padding: 10px;
+  border: 3px solid #393e46;
+}
+
+#scene-container .loader-container .loader-progress {
+  height: 75%;
+  background: linear-gradient(
+    to right,
+    #ff6337 0%,
+    #ff6337 var(--loadingprogress),
+    #eeeeee var(--loadingprogress)
+  );
+}
+
+#scene-container .loader-container .labels-container {
+  color: #393e46;
+  font-weight: bold;
+  font-family: monospace;
+  font-size: 1.5em;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
