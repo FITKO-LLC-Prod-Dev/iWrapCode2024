@@ -119,6 +119,7 @@ body {
 
 .menu-item {
   color: var(--theme-gray);
+  font-family: 'Exo', sans-serif;
   font-size: 2em;
   text-align: center;
   padding: 15px 30px;
@@ -153,7 +154,7 @@ body {
   outline: inherit;
   width: 100%;
   text-align: left;
-  font-size: 1.9em;
+  font-size: 1.5em;
   display: block;
 }
 
@@ -163,25 +164,41 @@ body {
   top: 0px;
 }
 
-.select-difficulty-switch button {
-  background-color: var(--theme-gray); /* Green */
-  border: none;
-  color: white;
-  padding: 5px 10px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 0.5em;
+.select-difficulty-switch {
+  width: fit-content;
+  border: solid white 1px;
+  border-radius: 50px;
+  padding: 0px;
+  min-width: 15em;
+  margin-left: 10%;
 }
-.select-difficulty-switch button:hover {
-  background-color: var(--theme-white); /* Green */
+
+.select-difficulty-switch div{
+  display: flex;
+  justify-content: space-between;
+}
+
+.select-difficulty-switch button {
+  background-color: white;
   border: none;
   color: var(--theme-gray);
   padding: 5px 10px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 0.5em;
+  font-size: 1em;
+}
+
+.select-difficulty-switch .inc-btn{
+  border-radius: 0px 50px 50px 0px;
+}
+
+.select-difficulty-switch .dec-btn{
+  border-radius: 50px 0px 0px 50px;
+}
+
+.select-difficulty-switch button:hover {
+  color: var(--theme-gray);
   cursor: pointer;
 }
 
@@ -430,6 +447,8 @@ body {
   left: 0;
   top: 0;
   font-size: 2em;
+  pointer-events: none;
+  user-select: none;
 }
 
 .restart-btn {
@@ -439,6 +458,8 @@ body {
   border: none;
   font-size: 16px;
   cursor: pointer;
+  pointer-events: all;
+  user-select: none;
 }
 
 .restart-btn:hover {
@@ -474,6 +495,7 @@ body {
   .menu-item div {
     color: #e89e00;
     text-align: center;
+    font-size: 1em;
   }
   .logo {
     position: relative;
@@ -514,6 +536,7 @@ body {
   .menu-item div {
     color: #e89e00;
     text-align: center;
+    font-size: 1em;
   }
   .end-game-container {
     background-color: white;
@@ -531,6 +554,7 @@ body {
   .menu-item div {
     color: #e89e00;
     text-align: center;
+    font-size: 1em;
   }
   .end-game-container {
     background-color: white;
@@ -552,6 +576,7 @@ body {
   .menu-item div {
     color: #e89e00;
     text-align: center;
+    font-size: 1em;
   }
   .end-game-container {
     background-color: white;

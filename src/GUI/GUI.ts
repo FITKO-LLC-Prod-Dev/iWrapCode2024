@@ -414,9 +414,11 @@ class GUI {
         const spinnerDiv = document.createElement("div");
         const label = document.createElement("label");
         const arrowLeft = document.createElement("button");
-        arrowLeft.textContent = "<";
+        arrowLeft.classList.add("dec-btn")
+        arrowLeft.textContent = "-";
         const arrowRight = document.createElement("button");
-        arrowRight.textContent = ">";
+        arrowRight.classList.add("inc-btn")
+        arrowRight.textContent = "+";
 
         spinnerDiv.appendChild(arrowLeft);
         spinnerDiv.appendChild(label);

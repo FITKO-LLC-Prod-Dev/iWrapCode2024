@@ -26,6 +26,25 @@ function main() {
     }
     const menuItems: TMenuItem[] = [
         {
+            type: SupportedMenuItemTypes.Button,
+            id: "start-simulation-btn",
+            text: "START SIMULATION",
+            onClick: () => startGameCallback(),
+        },
+        {
+            type: SupportedMenuItemTypes.Button,
+            id: "about-us-btn",
+            text: "ABOUT US",
+            onClick: () =>
+                (window.location.href = "https://www.gofitko.com/about-us"),
+        },
+        {
+            type: SupportedMenuItemTypes.Button,
+            id: "exit-btn",
+            text: "EXIT",
+            onClick: () => (window.location.href = "https://www.gofitko.com/"),
+        },
+        {
             type: SupportedMenuItemTypes.InputSpinner,
             id: "select-difficulty-switch",
             defaultOptionIdx: 1,
@@ -61,25 +80,6 @@ function main() {
                         break;
                 }
             },
-        },
-        {
-            type: SupportedMenuItemTypes.Button,
-            id: "start-simulation-btn",
-            text: "START SIMULATION",
-            onClick: () => startGameCallback(),
-        },
-        {
-            type: SupportedMenuItemTypes.Button,
-            id: "about-us-btn",
-            text: "ABOUT US",
-            onClick: () =>
-                (window.location.href = "https://www.gofitko.com/about-us"),
-        },
-        {
-            type: SupportedMenuItemTypes.Button,
-            id: "exit-btn",
-            text: "EXIT",
-            onClick: () => (window.location.href = "https://www.gofitko.com/"),
         },
     ];
     let bestReaction = Infinity;
