@@ -35,6 +35,8 @@ interface GameOverData {
   nbrHits: number;
   nbrMisses: number;
   points: number;
+  reactionTimes: number[];
+  avgReactionTime: number;
 }
 
 interface TargetSpawnData {

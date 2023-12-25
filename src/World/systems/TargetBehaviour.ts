@@ -17,6 +17,7 @@ import {
 } from "./events.js";
 import GUI from "three/examples/jsm/libs/lil-gui.module.min.js";
 import { Engine } from "./Engine.js";
+import { GameObject } from "./interfaces.js";
 
 interface TargetHitOrigin {
   position: Vector3;
@@ -34,27 +35,34 @@ interface IGameSettings {
   countdown: number;
 }
 
+/**
+ * Random target spawning behaviour. This is the core feature of the game and
+ * it handles among other things: target spawning, points system, statistics,
+ * etc...
+ */
 class TargetBehaviour {
-  readonly container: HTMLElement;
-  readonly engine: Engine;
-  readonly punchingBag: Mesh;
-  readonly target: Object3D;
-  readonly camera: Camera;
-  readonly audioManager: AudioManager;
-  readonly localTargetHitOrigins: Array<TargetHitOrigin>;
-  readonly raycaster: Raycaster;
-  readonly onPunchAttemptRef: (e: MouseEvent) => void;
-  readonly clock: Clock;
-  readonly gameSettings: IGameSettings;
-  readonly reactionTimeSampler: (d: number) => number;
-  previousTargetIdx?: number;
-  nbrTargetsHit: number;
+  private readonly container: HTMLElement;
+  private readonly engine: Engine;
+  private readonly punchingBag: Mesh;
+  private readonly target: Object3D;
+  private readonly camera: Camera;
+  private readonly audioManager: AudioManager;
+  private readonly localTargetHitOrigins: Array<TargetHitOrigin>;
+  private readonly raycaster: Raycaster;
+  private readonly onPunchAttemptRef: (e: MouseEvent) => void;
+  private readonly clock: Clock;
+  private readonly gameSettings: IGameSettings;
+  private readonly reactionTimeSampler: (d: number) => number;
+  private previousTargetIdx?: number;
+  private nbrTargetsHit: number;
   private timeoutId?: number;
-  nbrTargetsMissed: number;
-  scoreMultiplier: number;
-  points: number;
+  private nbrTargetsMissed: number;
+  private scoreMultiplier: number;
+  private points: number;
   // holds reference to the Mesh that contains valid shape keys
-  actualMesh: Mesh;
+  private actualMesh: Mesh;
+  private reactionTimes: number[];
+  private avgReactionTime: number;
 
   constructor(
     container: HTMLElement,
@@ -81,7 +89,7 @@ class TargetBehaviour {
       case "constant":
         this.reactionTimeSampler = (_: number) =>
           this.gameSettings.startReactionTime;
-        this.scoreMultiplier = 1;
+        this.scoreMultiplier = 2;
         break;
       case "linear":
         this.reactionTimeSampler = (t: number) =>
@@ -91,7 +99,7 @@ class TargetBehaviour {
                 this.gameSettings.endReactionTime) +
               this.gameSettings.startReactionTime,
           );
-        this.scoreMultiplier = 2;
+        this.scoreMultiplier = 3;
         break;
       case "exponential": {
         const a: number =
@@ -105,7 +113,7 @@ class TargetBehaviour {
           (Math.exp(1) - 1);
         this.reactionTimeSampler = (t: number) =>
           Math.floor(a * Math.exp(-t) + b);
-        this.scoreMultiplier = 5;
+        this.scoreMultiplier = 6;
         break;
       }
     }
@@ -113,6 +121,8 @@ class TargetBehaviour {
     this.nbrTargetsHit = 0;
     this.nbrTargetsMissed = 0;
     this.points = gameSettings.initialPoints;
+    this.avgReactionTime = Infinity;
+    this.reactionTimes = [];
     // persistent references
     this.onPunchAttemptRef = this.onPunchAttempt.bind(this);
     this.timeoutId = undefined;
@@ -140,23 +150,27 @@ class TargetBehaviour {
     }
   }
 
-  start(): void {
+  /** Starts random target spawn behaviour. This is the core feature of
+   * the mini game and calling this function essentially starts the game. */
+  public start(): void {
     this.clock.start();
     this.container.dispatchEvent(createGameStartEvent(this.gameSettings));
     this.punchingBag.add(this.target);
     this.nextTarget();
   }
 
-  reset(): void {
+  private reset(): void {
     // reset statistics
     this.nbrTargetsHit = 0;
     this.nbrTargetsMissed = 0;
     this.points = this.gameSettings.initialPoints;
+    this.avgReactionTime = Infinity;
+    this.reactionTimes = [];
     // reset previous target idx
     this.previousTargetIdx = undefined;
   }
 
-  stop(): void {
+  private stop(): void {
     document.removeEventListener("click", this.onPunchAttemptRef);
     this.clearTimeout();
     this.clock.stop();
@@ -172,7 +186,7 @@ class TargetBehaviour {
     this.timeoutId = undefined;
   }
 
-  nextTarget(): void {
+  private nextTarget(): void {
     const currentHitOrigin = this.getRandomHitOrigin();
     this.target.position.set(
       currentHitOrigin.position.x,
@@ -196,7 +210,7 @@ class TargetBehaviour {
     this.clock.getDelta();
   }
 
-  onPunchAttempt(e: MouseEvent): void {
+  private onPunchAttempt(e: MouseEvent): void {
     const pointer = new Vector2(
       (e.clientX / window.innerWidth) * 2 - 1,
       -(e.clientY / window.innerHeight) * 2 + 1,
@@ -219,6 +233,10 @@ class TargetBehaviour {
       const deltaPoints: number =
         Math.floor(30000 / reactionTime) * this.scoreMultiplier;
       this.points += deltaPoints;
+      this.reactionTimes.push(reactionTime);
+      this.avgReactionTime =
+        this.reactionTimes.reduce((pv, cv) => pv + cv, 0) /
+        this.reactionTimes.length;
       this.container.dispatchEvent(
         createTargetHitEvent({
           time: this.clock.elapsedTime,
@@ -238,9 +256,9 @@ class TargetBehaviour {
       document.removeEventListener("click", this.onPunchAttemptRef);
       this.nextTarget();
     } else {
-      const deltaPoints = -5 * this.scoreMultiplier * this.nbrTargetsMissed;
-      this.points += deltaPoints;
       ++this.nbrTargetsMissed;
+      const deltaPoints = -10 * this.scoreMultiplier * this.nbrTargetsMissed;
+      this.points += deltaPoints;
       this.container.dispatchEvent(
         createTargetMissEvent({
           time: this.clock.getElapsedTime(),
@@ -268,6 +286,8 @@ class TargetBehaviour {
         nbrHits: this.nbrTargetsHit,
         nbrMisses: this.nbrTargetsMissed,
         points: this.points,
+        reactionTimes: this.reactionTimes,
+        avgReactionTime: this.avgReactionTime,
       }),
     );
     this.reset();
@@ -284,13 +304,15 @@ class TargetBehaviour {
         nbrHits: this.nbrTargetsHit,
         nbrMisses: this.nbrTargetsMissed,
         points: this.points,
+        reactionTimes: this.reactionTimes,
+        avgReactionTime: this.avgReactionTime,
       }),
     );
     this.reset();
     this.audioManager.playFailureSoundeffect();
   }
 
-  getRandomHitOrigin(): TargetHitOrigin {
+  private getRandomHitOrigin(): TargetHitOrigin {
     let newIdx = Math.floor(
       Math.random() *
         (this.localTargetHitOrigins.length - (this.previousTargetIdx ? 1 : 0)),
@@ -303,7 +325,7 @@ class TargetBehaviour {
   }
 }
 
-class TargetPunchAnimationBehaviour {
+class TargetPunchAnimationBehaviour implements GameObject {
   private readonly engine: Engine;
   private readonly coverMesh: Mesh;
   private readonly targetIdx: number;
