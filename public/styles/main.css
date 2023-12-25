@@ -59,78 +59,74 @@ body {
 
   /* style text */
   text-align: center;
-  font-size: 12px;
   font-family: "Cabin", sans-serif;
   /* color text */
   color: #444;
 }
 
+/*****************************************************************************/
+/************************** SCENE (ThreeJS) CONTAINER ************************/
+/*****************************************************************************/
+
 #scene-container {
-  position: fixed;
+  position: absolute;
   width: 100%;
   height: 100%;
   background-color: var(--theme-gray);
 }
 
-/**************************** Menu container *************************************/
+/*****************************************************************************/
+/******************************** MENU CONTAINER *****************************/
+/*****************************************************************************/
 
 .menu-container {
   position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  font-family: "Exo", sans-serif;
+  font-size: 2.2em;
   background: rgb(232, 158, 0);
   background: linear-gradient(
     90deg,
     rgba(232, 158, 0, 1) 0%,
     rgba(0, 0, 0, 0) 90%
   );
-  top: 0px;
-  left: 0px;
-  height: 100%;
-  width: 50%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 50%;
   animation: backgroundFadeIn 2s ease forwards;
 }
 
 .menu-container-fade-out {
   animation: backgroundFadeOut 0.7s ease forwards;
 }
-/**************************** Logo *************************************/
 
-.logo {
-  position: absolute;
-  top: 3%;
-  left: 15px;
-  height: auto;
-  width: 25vmax;
-  margin: 1%;
+.menu-container .logo {
+  margin: 0px 37% 0px 30px;
+  order: 0;
 }
 
-/**************************** Menu *************************************/
 .menu {
-  position: absolute;
-  top: 50%;
-  left: 0px;
-  width: 100%;
   list-style-type: none;
   padding: 0;
   margin: 0;
   display: inline-block;
   text-align: left;
   transform: translateY(-50%);
+  order: 2;
 }
 
 .menu-item {
   color: var(--theme-gray);
-  font-family: "Exo", sans-serif;
-  font-size: 2em;
   text-align: center;
   padding: 15px 30px;
   cursor: pointer;
   display: block;
   width: 100%;
 }
-.select-difficulty-switch:hover {
-  color: var(--theme-gray) !important;
-  background: transparent !important;
-}
+
 .menu-item:hover {
   color: var(--theme-white);
   background: var(--theme-gray);
@@ -144,43 +140,29 @@ body {
 .menu-item div {
   background: none;
   text-align: center;
-  margin: auto;
   text-transform: uppercase;
   color: inherit;
   border: none;
-  padding: 0;
   font: inherit;
   cursor: pointer;
   outline: inherit;
   width: 100%;
   text-align: left;
-  font-size: 1.5em;
   display: block;
 }
 
-#scene-container .start-btn {
-  position: absolute;
-  left: 0px;
-  top: 0px;
-}
-
-.select-difficulty-switch {
-  width: fit-content;
-  border: solid white 1px;
-  border-radius: 50px;
-  padding: 0px;
-  min-width: 15em;
-  margin-left: 10%;
-  pointer-events: all;
-  user-select: none;
-}
-
-.select-difficulty-switch div {
+.menu-container .select-difficulty-switch {
   display: flex;
   justify-content: space-between;
+  border: solid white 2px;
+  border-radius: 50px;
+  margin: 0px 37% 0px 30px;
+  min-width: 15em;
+  margin-left: 0px 30% 0px 2%;
+  order: 3;
 }
 
-.select-difficulty-switch button {
+.menu-container .select-difficulty-switch button {
   background-color: white;
   border: none;
   color: var(--theme-gray);
@@ -188,21 +170,29 @@ body {
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 1em;
+  font: inherit;
 }
 
-.select-difficulty-switch .inc-btn {
+.menu-container .select-difficulty-switch .inc-btn {
   border-radius: 0px 50px 50px 0px;
 }
 
-.select-difficulty-switch .dec-btn {
+.menu-container .select-difficulty-switch .dec-btn {
   border-radius: 50px 0px 0px 50px;
 }
 
-.select-difficulty-switch button:hover {
+.menu-container .select-difficulty-switch button:hover {
   color: var(--theme-gray);
   cursor: pointer;
 }
+.menu-container .select-difficulty-switch:hover {
+  color: var(--theme-gray) !important;
+  background: transparent !important;
+}
+
+/*****************************************************************************/
+/****************************** IN-GAME-CONTAINER ****************************/
+/*****************************************************************************/
 
 @property --progress {
   syntax: "<length>";

@@ -102,27 +102,26 @@ class GUI {
     this.startMenuContainer = document.createElement("div");
     this.startMenuContainer.classList.add("menu-container");
     this.startMenuLogo = document.createElement("img");
-    this.startMenuLogo.src = "/assets/misc/logo.png";
+    this.startMenuLogo.src = "/assets/misc/logo.svg";
     this.startMenuLogo.classList.add("logo");
+    this.startMenuContainer.appendChild(this.startMenuLogo);
     this.startMenu = document.createElement("ul");
     this.startMenu.classList.add("menu");
     // add difficulty input spinner
     this.difficultySpinnerSettings = difficulySpinner;
-    const menuItem = document.createElement("li");
-    menuItem.classList.add("menu-item");
     this.startMenuDifficultySpinnerContainer = this.createInputSpinner(
       this.difficultySpinnerSettings.class,
       this.difficultySpinnerSettings.defaultOptionIdx,
       this.difficultySpinnerSettings.options,
       this.difficultySpinnerSettings.onChange,
     );
-    menuItem.appendChild(this.startMenuDifficultySpinnerContainer);
-    this.startMenu.appendChild(menuItem);
+    this.startMenuContainer.appendChild(
+      this.startMenuDifficultySpinnerContainer,
+    );
     // add menu items
     menuItems.forEach((item) => {
       this.addMenuButton(item.text, item.class, item.onClick);
     });
-    this.startMenuContainer.appendChild(this.startMenuLogo);
     this.startMenuContainer.appendChild(this.startMenu);
     ///////////////////////////////////////////////////////////////////////////
     /////////////////////////////// IN GAME UI ////////////////////////////////
