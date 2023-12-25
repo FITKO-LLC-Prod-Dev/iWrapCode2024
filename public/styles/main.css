@@ -497,6 +497,10 @@ body {
     text-align: center;
     font-size: 1em;
   }
+  .select-difficulty-switch {
+    padding: 0px;
+    margin: auto;
+  }
   .logo {
     position: relative;
     height: auto;
