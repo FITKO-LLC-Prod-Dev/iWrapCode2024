@@ -1,3 +1,4 @@
+import { Chart } from "chart.js/auto";
 import { GameOverData } from "../World/systems/events.js";
 
 type MenuItem = {
@@ -50,11 +51,13 @@ class GUI {
   private readonly counterNumber: HTMLSpanElement;
 
   private readonly endGameContainer: HTMLDivElement;
+  private readonly endGameLogo: HTMLImageElement;
   private readonly restartBtn: HTMLButtonElement;
-  private readonly endGameScore: HTMLDivElement;
-  private readonly endGameBestReactionTime: HTMLDivElement;
-  private readonly endGameTargetsHit: HTMLDivElement;
-  private readonly endGameTargetsMissed: HTMLDivElement;
+  private readonly endGameScore: HTMLSpanElement;
+  private readonly endGameBestReactionTime: HTMLSpanElement;
+  private readonly endGameTargetsHit: HTMLSpanElement;
+  private readonly endGameTotalTargets: HTMLSpanElement;
+  private readonly endGameTargetsMissed: HTMLSpanElement;
 
   private progressTimerId: number | undefined;
   private progressRemainingTime: number | undefined;
@@ -191,42 +194,36 @@ class GUI {
     // end-game menu container
     this.endGameContainer = document.createElement("div");
     this.endGameContainer.classList.add("end-game-container");
-    // end-game score
-    this.endGameScore = document.createElement("div");
-    this.endGameScore.classList.add("end-game-total-score");
-    const endGameScoreValue = document.createElement("span");
-    const endGameScoreLabel = document.createElement("label");
-    endGameScoreLabel.textContent = "Score\xa0: ";
-    this.endGameScore.appendChild(endGameScoreLabel);
-    this.endGameScore.appendChild(endGameScoreValue);
-    this.endGameContainer.appendChild(this.endGameScore);
-    // end-game best reaction time
-    this.endGameBestReactionTime = document.createElement("div");
-    this.endGameBestReactionTime.classList.add("end-game-best-reaction");
-    const endGameBestReactionValue = document.createElement("span");
-    const endGameBestReactionLabel = document.createElement("label");
-    endGameBestReactionLabel.textContent = "Best\xa0Reaction\xa0: ";
-    this.endGameBestReactionTime.appendChild(endGameBestReactionLabel);
-    this.endGameBestReactionTime.appendChild(endGameBestReactionValue);
-    this.endGameContainer.appendChild(this.endGameBestReactionTime);
+    // end-game log
+    this.endGameLogo = document.createElement("img");
+    this.endGameLogo.src = "/assets/misc/logo.svg";
+    this.endGameLogo.classList.add("end-game-logo");
+    this.endGameContainer.appendChild(this.endGameLogo);
     // end-game targets hit
-    this.endGameTargetsHit = document.createElement("div");
+    const endGameTargetsContainer = document.createElement("div");
+    this.endGameTargetsHit = document.createElement("span");
     this.endGameTargetsHit.classList.add("end-game-targets-hit");
-    const endGameTargetsHitValue = document.createElement("span");
-    const endGameTargetsHitLabel = document.createElement("label");
-    endGameTargetsHitLabel.textContent = "Targets\xa0Hit : ";
-    this.endGameTargetsHit.appendChild(endGameTargetsHitLabel);
-    this.endGameTargetsHit.appendChild(endGameTargetsHitValue);
-    this.endGameContainer.appendChild(this.endGameTargetsHit);
+    this.endGameTotalTargets = document.createElement("span");
+    this.endGameTotalTargets.classList.add("end-game-total-targets");
+    const slashSpan = document.createElement("span");
+    slashSpan.textContent = "/";
+    slashSpan.classList.add("end-game-targets-seperator");
+    endGameTargetsContainer.appendChild(this.endGameTargetsHit);
+    endGameTargetsContainer.appendChild(slashSpan);
+    endGameTargetsContainer.appendChild(this.endGameTotalTargets);
+    this.endGameContainer.appendChild(endGameTargetsContainer);
+    // end-game score
+    this.endGameScore = document.createElement("span");
+    this.endGameScore.classList.add("end-game-total-score");
+    this.endGameContainer.appendChild(this.endGameScore);
     // end-game targets missed
-    this.endGameTargetsMissed = document.createElement("div");
+    this.endGameTargetsMissed = document.createElement("span");
     this.endGameTargetsMissed.classList.add("end-game-targets-missed");
-    const endGameTargetsMissedValue = document.createElement("span");
-    const endGameTargetsMissedLabel = document.createElement("label");
-    endGameTargetsMissedLabel.textContent = "Targets Missed : ";
-    this.endGameTargetsMissed.appendChild(endGameTargetsMissedLabel);
-    this.endGameTargetsMissed.appendChild(endGameTargetsMissedValue);
     this.endGameContainer.appendChild(this.endGameTargetsMissed);
+    // end-game best reaction time
+    this.endGameBestReactionTime = document.createElement("span");
+    this.endGameBestReactionTime.classList.add("end-game-best-reaction");
+    this.endGameContainer.appendChild(this.endGameBestReactionTime);
     // difficulty input spinner
     this.endGameDifficultySpinnerContainer = this.createInputSpinner(
       this.difficultySpinnerSettings.class,
@@ -290,23 +287,65 @@ class GUI {
     onRestartClick: () => void,
     endGameResult: GameOverData,
     bestReaction: number,
+    reactionTimes: number[],
   ): HTMLDivElement {
     if (this.container.contains(this.endGameContainer)) this.clearEndGameUI();
-    this.restartBtn.addEventListener("click", (_: MouseEvent) => {
-      onRestartClick();
-    });
-    this.endGameScore.getElementsByTagName("span")[0].textContent =
-      `${endGameResult.points}`;
-    this.endGameTargetsHit.getElementsByTagName("span")[0].textContent =
-      `${endGameResult.nbrHits}`;
-    this.endGameTargetsMissed.getElementsByTagName("span")[0].textContent =
-      `${endGameResult.nbrMisses}`;
-    this.endGameBestReactionTime.getElementsByTagName("span")[0].textContent =
-      `${Math.floor(bestReaction)}`;
+    this.endGameTargetsHit.textContent = `${endGameResult.nbrHits}`;
+    this.endGameTotalTargets.textContent = `${endGameResult.nbrTargets}`;
+    this.endGameScore.textContent = `${endGameResult.points}`;
+    this.endGameTargetsMissed.textContent = `${endGameResult.nbrMisses}`;
+    this.endGameBestReactionTime.textContent = `${Math.floor(bestReaction)}`;
     // update difficulty spinner label
     this.updateDifficultyInputSpinnerLabel(
       this.endGameDifficultySpinnerContainer,
     );
+    this.restartBtn.addEventListener("click", (_: MouseEvent) => {
+      onRestartClick();
+    });
+    const canvas = document.createElement("canvas");
+    canvas.id = "chartjs-canvas";
+    this.endGameContainer.appendChild(canvas);
+    new Chart(canvas, {
+      type: "line",
+      data: {
+        labels: reactionTimes.map((_: number, idx: number) => idx + 1),
+        datasets: [
+          {
+            label: "Reaction Times (ms)",
+            data: reactionTimes,
+            fill: false,
+            borderColor: "#222f3e",
+            tension: 0.1,
+          },
+        ],
+      },
+      options: {
+        scales: {
+          x: {
+            title: {
+              text: "Target Hit Index",
+              display: true,
+              color: "#535353",
+            },
+          },
+          y: {
+            title: {
+              text: "Reaction Time (ms)",
+              display: true,
+              color: "#535353",
+            },
+          },
+        },
+        plugins: {
+          legend: {
+            display: false,
+          },
+          tooltip: {
+            enabled: false,
+          },
+        },
+      },
+    });
     return this.container.appendChild(this.endGameContainer);
   }
 
@@ -315,6 +354,8 @@ class GUI {
     this.targetsHitText.textContent = "0";
     this.targetsMissedText.textContent = "0";
     this.bestReactionText.textContent = "∞";
+    // clear chartjs line chart
+    document.getElementById("chartjs-canvas")?.remove();
     this.endGameContainer.remove();
   }
 
@@ -336,8 +377,11 @@ class GUI {
     this.targetsMissedText.textContent = `${targetsMissed}`;
   }
 
-  public updateTotalScore(score: number): void {
+  public updateTotalScore(score: number, glitch = false): void {
     this.totalScoreText.textContent = `${score}`;
+    if (glitch) {
+      this.inGameContainer.setAttribute("text-glitch", `${score}`);
+    }
   }
 
   public updateTargetsHit(targetsHit: number, totalTargets: number) {

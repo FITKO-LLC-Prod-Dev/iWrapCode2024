@@ -107,7 +107,12 @@ function main() {
   const endGameCallback = (ev: CustomEvent<GameOverData>) => {
     gui.clearInGameUI();
     gui.resetCursor();
-    gui.addEndGameUI(restartGameCallback, ev.detail, bestReaction);
+    gui.addEndGameUI(
+      restartGameCallback,
+      ev.detail,
+      bestReaction,
+      ev.detail.reactionTimes,
+    );
   };
   // add event listeners
   container.addEventListener("loadingprogress", (ev) => {
@@ -143,7 +148,7 @@ function main() {
     }
   });
   container.addEventListener("targetmiss", (ev) => {
-    gui.updateTotalScore(ev.detail.points);
+    gui.updateTotalScore(ev.detail.points, true);
     gui.updateTargetsMissed(ev.detail.nbrTargetsMissed);
   });
   container.addEventListener("countdownstart", (_) => {

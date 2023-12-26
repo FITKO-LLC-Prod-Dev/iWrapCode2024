@@ -5,6 +5,7 @@
   --theme-black: #000000;
   --theme-gray: #535353;
   --theme-disabled-btn-text: #bdc3c7;
+  --theme-red: #e74c3c;
 }
 
 /* Animations */
@@ -86,10 +87,9 @@ body {
   flex-direction: column;
   justify-content: space-around;
   font-size: 2.2em;
-  background: rgb(232, 158, 0);
   background: linear-gradient(
     90deg,
-    rgba(232, 158, 0, 1) 0%,
+    var(--theme-orange) 0%,
     rgba(0, 0, 0, 0) 90%
   );
   top: 0;
@@ -150,7 +150,7 @@ body {
   display: block;
 }
 
-.menu-container .select-difficulty-switch {
+#scene-container .select-difficulty-switch {
   display: flex;
   justify-content: space-between;
   border: solid white 4px;
@@ -159,7 +159,7 @@ body {
   order: 3;
 }
 
-.menu-container .select-difficulty-switch button {
+#scene-container .select-difficulty-switch button {
   background: none;
   border: none;
   color: var(--theme-gray);
@@ -173,17 +173,17 @@ body {
   margin-right: 15px;
 }
 
-.menu-container .select-difficulty-switch button:disabled {
+#scene-container .select-difficulty-switch button:disabled {
   color: var(--theme-disabled-btn-text);
 }
 
-.menu-container .select-difficulty-switch button:hover:enabled {
+#scene-container .select-difficulty-switch button:hover:enabled {
   color: var(--theme-gray);
   cursor: pointer;
-  color: #e74c3c;
+  color: var(--theme-red);
 }
 
-.menu-container .select-difficulty-switch label {
+#scene-container .select-difficulty-switch label {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -380,7 +380,7 @@ body {
   transform: translate(-50%, -50%);
   width: 30%;
   aspect-ratio: 1 / 1;
-  border: 1rem solid #f5f6fa;
+  border: 1em solid #f5f6fa;
   color: #f5f6fa;
   border-radius: 100%;
   display: flex;
@@ -392,7 +392,7 @@ body {
     rgba(0, 0, 0, 0.12) 0px 4px 6px,
     rgba(0, 0, 0, 0.17) 0px 12px 13px,
     rgba(0, 0, 0, 0.09) 0px -3px 5px;
-  backdrop-filter: blur(0.75rem);
+  backdrop-filter: blur(10px);
 }
 
 #scene-container .counter span {
@@ -418,42 +418,120 @@ body {
 
 .end-game-container {
   display: flex;
-  background: rgba(0, 0, 0, 0);
-  background: radial-gradient(
-    circle,
-    rgba(0, 0, 0, 0) 0%,
-    rgba(0, 0, 0, 0.123) 100%
-  );
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
-  height: 100vh;
-  width: 100%;
-  margin: 0;
-  padding: 20px;
-  padding-top: 7%;
-  padding-bottom: 7%;
-  box-sizing: border-box;
   position: absolute;
-  left: 0;
+  flex-direction: column;
+  justify-content: space-around;
   top: 0;
+  bottom: 0;
+  left: 0;
+  right: 40%;
+  padding: 30px 33% 30px 30px;
+  background: linear-gradient(
+    90deg,
+    var(--theme-orange) 0%,
+    rgba(0, 0, 0, 0) 90%
+  );
+  box-sizing: border-box;
   font-size: 2em;
+}
+
+.end-game-container .end-game-logo {
+  order: 0;
   pointer-events: none;
   user-select: none;
 }
 
-.restart-btn {
-  background-color: #e89e00;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  font-size: 16px;
-  cursor: pointer;
-  pointer-events: all;
+.end-game-container .end-game-targets-hit {
+  order: 0;
+  pointer-events: none;
   user-select: none;
 }
 
-.restart-btn:hover {
+.end-game-container .end-game-targets-hit::before {
+  content: "Targets Hit";
+  margin-right: 5px;
+  font-size: 0.5em;
+}
+
+.end-game-container .end-game-targets-seperator {
+  order: 5;
+  pointer-events: none;
+  user-select: none;
+  font-size: 1.1em;
+  color: var(--theme-white);
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.end-game-container .end-game-total-targets {
+  order: 9;
+  pointer-events: none;
+  user-select: none;
+}
+
+.end-game-container .end-game-total-targets::after {
+  content: "Total Targets";
+  margin-left: 5px;
+  font-size: 0.5em;
+}
+
+.end-game-container .end-game-total-score {
+  order: 10;
+  pointer-events: none;
+  user-select: none;
+}
+
+.end-game-container .end-game-total-score::before {
+  content: "Score";
+  margin-right: 5px;
+  font-size: 0.5em;
+}
+
+.end-game-container .end-game-targets-missed {
+  order: 15;
+  pointer-events: none;
+  user-select: none;
+}
+
+.end-game-container .end-game-targets-missed::before {
+  content: "Tartets Missed";
+  margin-right: 5px;
+  font-size: 0.5em;
+}
+
+.end-game-container .end-game-best-reaction {
+  order: 20;
+  pointer-events: none;
+  user-select: none;
+}
+
+.end-game-container .end-game-best-reaction::before {
+  content: "Best Reaction Time";
+  margin-right: 5px;
+  font-size: 0.5em;
+}
+
+#chartjs-canvas {
+  order: 30;
+  pointer-events: none;
+  user-select: none;
+}
+
+.end-game-container .select-difficulty-switch {
+  order: 50 !important;
+  margin: 0 !important;
+}
+
+.end-game-container .restart-btn {
+  order: 99;
+  background-color: var(--theme-gray);
+  color: var(--theme-white);
+  cursor: pointer;
+  border: none;
+  font: inherit;
+}
+
+.end-game-container .restart-btn:hover {
   background-color: #cc8a00;
 }
 

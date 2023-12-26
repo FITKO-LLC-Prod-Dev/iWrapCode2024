@@ -34,6 +34,7 @@ interface GameOverData {
   success: boolean;
   nbrHits: number;
   nbrMisses: number;
+  nbrTargets: number;
   points: number;
   reactionTimes: number[];
   avgReactionTime: number;
