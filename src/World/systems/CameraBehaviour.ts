@@ -56,6 +56,19 @@ class CameraBehaviour {
     }
   }
 
+  public getStartPosition(): Vector3 {
+    return this.cameraStartPosition;
+  }
+
+  public updateStartPosition(newPos: Vector3): void {
+    this.cameraStartPosition = newPos;
+    this.camera.position.set(
+      this.cameraStartPosition.x,
+      this.cameraStartPosition.y,
+      this.cameraStartPosition.z,
+    );
+  }
+
   public transitionToGameState(callback?: () => void): void {
     this.transitionTo(
       this.cameraGamePosition,

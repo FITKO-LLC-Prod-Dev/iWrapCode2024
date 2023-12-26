@@ -1,17 +1,17 @@
 import { PerspectiveCamera, WebGLRenderer } from "three";
-import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
+import { IComposerWrapper } from "./interfaces.js";
 
 class Resizer {
   private readonly container: HTMLElement;
   private readonly camera: PerspectiveCamera;
   private readonly renderer: WebGLRenderer;
-  private readonly composer: EffectComposer;
+  private readonly composer: IComposerWrapper;
 
   constructor(
     container: HTMLElement,
     camera: PerspectiveCamera,
     renderer: WebGLRenderer,
-    composer: EffectComposer,
+    composer: IComposerWrapper,
   ) {
     this.container = container;
     this.camera = camera;
@@ -33,10 +33,7 @@ class Resizer {
       this.container.clientWidth,
       this.container.clientHeight,
     );
-    this.composer.setSize(
-      this.container.clientWidth,
-      this.container.clientHeight,
-    );
+    this.composer.updateSize(this.container);
     this.composer.render();
   }
 }

@@ -6,14 +6,23 @@ import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
 import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
 import { FXAAShader } from "three/examples/jsm/shaders/FXAAShader.js";
+import { IComposerWrapper } from "./interfaces.js";
 
+/**
+ * @param container - Scene container (ThreeJS Div in which game will be rendered)
+ * @param renderer - Renderer. Necessary for render-pass input to composer
+ * @param scene - Necessary for creating the render pass
+ * @param camera - Necessary for creating the render-pass
+ * @param gui - Debugging GUI. If passed, composer parameters will be added to it
+ * @returns Created effect composer. Should be used to render for rendering.
+ */
 function createComposer(
   container: HTMLElement,
   renderer: WebGLRenderer,
   scene: Scene,
   camera: Camera,
   gui?: GUI,
-): EffectComposer {
+): IComposerWrapper {
   const composer = new EffectComposer(renderer);
   composer.setSize(container.clientWidth, container.clientHeight);
   // create passes here
@@ -45,8 +54,15 @@ function createComposer(
     bloomFolder.add(bloomPostProcessing, "threshold", 0.0, 5, 0.05);
     composerFolder.add(fxaa, "enabled").name("FXAA");
   }
-
-  return composer;
+  const composerWrapped = composer as IComposerWrapper;
+  composerWrapped.updateSize = function (container: HTMLElement) {
+    this.setSize(container.clientWidth, container.clientHeight);
+    fxaa.material.uniforms["resolution"].value.x =
+      1.0 / (container.clientWidth * window.devicePixelRatio);
+    fxaa.material.uniforms["resolution"].value.y =
+      1.0 / (container.clientHeight * window.devicePixelRatio);
+  };
+  return composerWrapped;
 }
 
 export { createComposer };

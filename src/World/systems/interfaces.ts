@@ -1,3 +1,5 @@
+import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
+
 interface GameObject {
   start?: () => void;
   update: (delta: number) => void;
@@ -5,4 +7,8 @@ interface GameObject {
   getUID: () => number | undefined;
 }
 
-export { GameObject };
+interface IComposerWrapper extends EffectComposer {
+  updateSize: (container: HTMLElement) => void;
+}
+
+export { GameObject, IComposerWrapper };
