@@ -10,7 +10,7 @@ class CameraBehaviour {
   private currentTransitionUID: number | undefined;
   private cameraStartPosition = new Vector3(0, 1.5, 3.5);
   private cameraStartTarget = new Vector3(-1.5, 0.8, 0.0);
-  private cameraGamePosition = new Vector3(0, 2.2, 2.4);
+  private cameraGamePosition = new Vector3(0, 2.2, 2.5);
   private cameraGameTarget = new Vector3(0.0, 0.94, 0.0);
 
   constructor(
