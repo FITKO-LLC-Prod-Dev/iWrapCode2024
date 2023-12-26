@@ -60,7 +60,7 @@ body {
 
   /* style text */
   text-align: center;
-  font-family: "Cabin", sans-serif;
+  font-family: "Exo", "Cabin", sans-serif;
   /* color text */
   color: #444;
 }
@@ -85,7 +85,6 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  font-family: "Exo", sans-serif;
   font-size: 2.2em;
   background: rgb(232, 158, 0);
   background: linear-gradient(
@@ -605,23 +604,20 @@ body {
   aspect-ratio: 9/1;
   display: block;
   padding: 10px;
-  border: 3px solid #393e46;
 }
 
 #scene-container .loader-container .loader-progress {
   height: 75%;
   background: linear-gradient(
     to right,
-    #ff6337 0%,
-    #ff6337 var(--loadingprogress),
-    #eeeeee var(--loadingprogress)
+    var(--theme-orange) 0%,
+    var(--theme-orange) var(--loadingprogress),
+    var(--theme-white) var(--loadingprogress)
   );
 }
 
 #scene-container .loader-container .labels-container {
-  color: #393e46;
-  font-weight: bold;
-  font-family: monospace;
+  color: var(--theme-gray);
   font-size: 1.5em;
   display: flex;
   justify-content: space-between;
