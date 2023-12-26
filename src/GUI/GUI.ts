@@ -404,13 +404,11 @@ class GUI {
   ): HTMLDivElement {
     if (this.inGameContainer.contains(this.timerBar))
       this.clearTimerProgressBar();
-    console.log(`maxReactionTime: ${maxReactionTime}ms`);
     this.timerBar.style.transition = `width ${updateTime}ms linear`;
     this.progressRemainingTime = maxReactionTime;
     this.progressTimerId = setInterval(() => {
       this.progressRemainingTime! -= updateTime;
       if (this.progressRemainingTime! <= 0) {
-        console.log(`Run out of time: ${this.progressRemainingTime!}`);
         this.clearTimerProgressBar();
         return;
       }
@@ -446,7 +444,6 @@ class GUI {
     deleteAfter = 600,
   ): HTMLSpanElement {
     const reactionTimeText = document.createElement("span");
-    console.log(clientX, clientY);
     reactionTimeText.classList.add("reaction-time-popup");
     if (isBestReaction)
       reactionTimeText.classList.add("best-reaction-time-popup");

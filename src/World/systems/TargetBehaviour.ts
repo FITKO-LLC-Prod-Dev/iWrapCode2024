@@ -198,7 +198,6 @@ class TargetBehaviour {
       this.nbrTargetsHit / this.gameSettings.nbrTargets,
     );
     this.setTimeout(reactionTime);
-    console.log(`Reaction time timeout: ${reactionTime}`);
     this.container.dispatchEvent(
       createTargetSpawnEvent({
         time: this.clock.getElapsedTime(),

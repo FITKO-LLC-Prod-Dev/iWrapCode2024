@@ -149,7 +149,6 @@ class CameraTransitionBehaviour implements GameObject {
       this.camera.position.copy(this.finalPosition);
       this.camera.lookAt(this.finalTarget);
       this.onTransitionEnd();
-      console.log(`Removed camera transition with uid: ${this.uid}`);
     }
   }
 

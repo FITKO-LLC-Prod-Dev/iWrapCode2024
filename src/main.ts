@@ -16,7 +16,7 @@ function main() {
     countdown: 3,
     debugGUI: false,
     worldAxis: false,
-    statsGUI: true,
+    statsGUI: false,
   };
   enum Difficulty {
     Easy = "easy",
@@ -119,7 +119,6 @@ function main() {
     gui.updateLoadingProgress(ev.detail.progressPercentage);
   });
   container.addEventListener("loadingend", () => {
-    console.log("Loading ended...");
     // render background image once
     world.render();
     gui.clearLoadingProgressUI();
