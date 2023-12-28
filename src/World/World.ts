@@ -100,7 +100,7 @@ class World {
     );
     this.resizer = new Resizer(
       container,
-      this.camera,
+      this.cameraBehaviour,
       this.renderer,
       this.composer,
     );

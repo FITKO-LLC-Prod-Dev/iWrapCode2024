@@ -1,17 +1,19 @@
 import { Camera, PerspectiveCamera, Vector3 } from "three";
 import { Engine } from "./Engine.js";
 import GUI from "three/examples/jsm/libs/lil-gui.module.min.js";
-import { GameObject } from "./interfaces.js";
+import { GameObject, ICameraWrapper } from "./interfaces.js";
 
-class CameraBehaviour {
+class CameraBehaviour implements ICameraWrapper {
   private readonly engine: Engine;
   private readonly camera: PerspectiveCamera;
   private transitionSpeed: number; // in percents per remaining distance per second
   private currentTransitionUID: number | undefined;
   private cameraStartPosition = new Vector3(0, 1.5, 3.5);
-  private cameraStartTarget = new Vector3(-1.5, 0.8, 0.0);
+  private cameraStartTarget = new Vector3(-1, 0.8, 0.0);
   private cameraGamePosition = new Vector3(0, 2.2, 2.5);
   private cameraGameTarget = new Vector3(0.0, 0.94, 0.0);
+  // end-game state is identical to start-game state
+  private currentState: "start-game" | "in-game" = "start-game";
 
   constructor(
     engine: Engine,
@@ -56,20 +58,26 @@ class CameraBehaviour {
     }
   }
 
-  public getStartPosition(): Vector3 {
-    return this.cameraStartPosition;
+  public getCamera(): PerspectiveCamera {
+    return this.camera;
   }
 
-  public updateStartPosition(newPos: Vector3): void {
-    this.cameraStartPosition = newPos;
-    this.camera.position.set(
-      this.cameraStartPosition.x,
-      this.cameraStartPosition.y,
-      this.cameraStartPosition.z,
-    );
+  public updateCameraAccordingToRatio(newAspectRatio: number): void {
+    // if we are currently at start game state, we move the camera
+    if (newAspectRatio <= 423 / 283 && this.currentState == "start-game") {
+      this.cameraStartTarget.setX(0);
+      this.cameraStartPosition.setX(0);
+      this.camera.position.set(
+        this.cameraStartPosition.x,
+        this.cameraStartPosition.y,
+        this.cameraStartPosition.z,
+      );
+      this.camera.lookAt(this.cameraStartTarget);
+    }
   }
 
   public transitionToGameState(callback?: () => void): void {
+    this.currentState = "in-game";
     this.transitionTo(
       this.cameraGamePosition,
       this.cameraStartTarget,
@@ -79,6 +87,7 @@ class CameraBehaviour {
   }
 
   public transitionToStartState(callback?: () => void): void {
+    this.currentState = "start-game";
     this.transitionTo(
       this.cameraStartPosition,
       this.cameraGameTarget,
