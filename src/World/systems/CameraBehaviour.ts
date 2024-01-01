@@ -2,13 +2,12 @@ import { Camera, PerspectiveCamera, Vector3 } from "three";
 import { Engine } from "./Engine.js";
 import GUI from "three/examples/jsm/libs/lil-gui.module.min.js";
 import { GameObject, ICameraWrapper } from "./interfaces.js";
-import { call } from "three/examples/jsm/nodes/Nodes.js";
 
 class CameraBehaviour implements ICameraWrapper {
   private readonly container: HTMLElement;
   private readonly engine: Engine;
   private readonly camera: PerspectiveCamera;
-  private readonly aspectRatioThreshold: number;
+  private readonly aspectRatioThreshold: number = 1200 / 900;
   private transitionSpeed: number; // in percents per remaining distance per second
   private currentTransitionUID: number | undefined;
   private cameraStartPosition = new Vector3(0, 1.5, 3.5);
@@ -24,12 +23,10 @@ class CameraBehaviour implements ICameraWrapper {
     camera: PerspectiveCamera,
     gui?: GUI,
     transitionSpeed: number = 4.5,
-    aspectRatioThreshold: number = 1,
   ) {
     this.container = container;
     this.engine = engine;
     this.camera = camera;
-    this.aspectRatioThreshold = aspectRatioThreshold;
     // set initial camera position and target
     this.camera.position.set(
       this.cameraStartPosition.x,

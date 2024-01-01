@@ -377,9 +377,11 @@ body {
   flex-direction: column;
   justify-content: space-around;
   font-size: 2.2em;
-  background: linear-gradient(90deg,
-      var(--theme-orange) 0%,
-      rgba(0, 0, 0, 0) 90%);
+  background: linear-gradient(
+    90deg,
+    var(--theme-orange) 0%,
+    rgba(0, 0, 0, 0) 90%
+  );
   top: 0;
   bottom: 0;
   left: 0;
@@ -422,10 +424,11 @@ body {
 
 .menu-item:hover {
   color: var(--theme-white);
-  background: var(--theme-gray);
-  background: linear-gradient(90deg,
-      var(--theme-gray) 0%,
-      rgba(0, 0, 0, 0) 80%);
+  background: linear-gradient(
+    90deg,
+    var(--theme-gray) 0%,
+    rgba(0, 0, 0, 0) 80%
+  );
 }
 
 .menu-item div {
@@ -494,9 +497,11 @@ body {
 .in-game-container {
   display: flex;
   background: rgba(0, 0, 0, 0);
-  background: radial-gradient(circle,
-      rgba(0, 0, 0, 0) 0%,
-      rgba(0, 0, 0, 0.25) 100%);
+  background: radial-gradient(
+    circle,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.25) 100%
+  );
   justify-content: space-between;
   align-items: flex-start;
   align-items: center;
@@ -510,6 +515,7 @@ body {
   top: 0;
   pointer-events: none;
   user-select: none;
+  white-space: nowrap;
 }
 
 .in-game-result {
@@ -668,6 +674,12 @@ body {
   flex-grow: 2;
 }
 
+#scene-container .best-reaction label::after {
+  content: "(ms)";
+  padding-left: 5px;
+  text-transform: lowercase;
+}
+
 #scene-container .best-reaction span {
   padding: 5px;
   flex-grow: 5;
@@ -697,10 +709,9 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 200px;
-  height: 200px;
+  width: 50vmin;
   aspect-ratio: 1 / 1;
-  border: 1em solid #f5f6fa;
+  border: 0.7em solid #f5f6fa;
   color: #f5f6fa;
   border-radius: 50%;
   display: flex;
@@ -712,14 +723,14 @@ body {
     rgba(0, 0, 0, 0.12) 0px 4px 6px,
     rgba(0, 0, 0, 0.17) 0px 12px 13px,
     rgba(0, 0, 0, 0.09) 0px -3px 5px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  -o-backdrop-filter: blur(10px);
-  -moz-backdrop-filter: blur(10px);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  -o-backdrop-filter: blur(6px);
+  -moz-backdrop-filter: blur(6px);
 }
 
 #scene-container .counter span {
-  font-size: 7rem;
+  font-size: 6em;
 }
 
 .best-reaction-time-popup {
@@ -749,9 +760,11 @@ body {
   left: 0;
   right: 40%;
   padding: 30px 33% 30px 30px;
-  background: linear-gradient(90deg,
-      var(--theme-orange) 0%,
-      rgba(0, 0, 0, 0) 90%);
+  background: linear-gradient(
+    90deg,
+    var(--theme-orange) 0%,
+    rgba(0, 0, 0, 0) 90%
+  );
   box-sizing: border-box;
   font-size: 2em;
 }
@@ -856,9 +869,42 @@ body {
   background-color: #cc8a00;
 }
 
-/*************************************************************************
-************************* Mobile View < 400px*****************************
-**************************************************************************/
+/******************************************************************************
+******************************* Loader Container ******************************
+******************************************************************************/
+
+.loader-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30%;
+  padding: 10px 0;
+  aspect-ratio: 9/1;
+  display: block;
+}
+
+.loader-container .loader-progress {
+  height: 75%;
+  background: linear-gradient(
+    to right,
+    var(--theme-orange) 0%,
+    var(--theme-orange) var(--loadingprogress),
+    var(--theme-white) var(--loadingprogress)
+  );
+}
+
+.loader-container .labels-container {
+  color: var(--theme-gray);
+  font-size: 1.5em;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+/******************************************************************************
+****************************** Mobile View < 400px ****************************
+******************************************************************************/
 
 @media only screen and (max-width: 400px) {
   .menu-container {
@@ -887,6 +933,19 @@ body {
     color: #e89e00;
     text-align: center;
     font-size: 0.9em;
+  }
+
+  .menu-item:hover {
+    background: linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0) 0%,
+      var(--theme-gray) 50%,
+      rgba(0, 0, 0, 0)
+    );
+  }
+
+  #scene-container .counter span {
+    font-size: 4em;
   }
 
   #scene-container .select-difficulty-switch {
@@ -945,11 +1004,15 @@ body {
   #scene-container span {
     font-size: 2em;
   }
+
+  .loader-container {
+    width: 90%;
+  }
 }
 
-/*************************************************************************
-*************************** Mobile View > 400px **************************
-**************************************************************************/
+/******************************************************************************
+*************************** Mobile View > 400px *******************************
+******************************************************************************/
 
 @media only screen and (min-width: 401px) and (max-width: 600px) {
   .menu-container {
@@ -974,6 +1037,19 @@ body {
     color: #e89e00;
     text-align: center;
     font-size: 1em;
+  }
+
+  .menu-item:hover {
+    background: linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0) 0%,
+      var(--theme-gray) 50%,
+      rgba(0, 0, 0, 0)
+    );
+  }
+
+  #scene-container .counter span {
+    font-size: 4em;
   }
 
   #scene-container .select-difficulty-switch {
@@ -1032,11 +1108,14 @@ body {
     -o-backdrop-filter: blur(10px);
     justify-content: space-around;
   }
+  .loader-container {
+    width: 90%;
+  }
 }
 
-/*************************************************************************
-***************************** Tablet Views ********************************
-**************************************************************************/
+/******************************************************************************
+***************************** Tablet Views ************************************
+******************************************************************************/
 
 @media only screen and (min-width: 601px) and (max-width: 768px) {
   .menu-container {
@@ -1053,10 +1132,27 @@ body {
     -o-animation: mobileStartMenuAnimationIn 1s ease;
   }
 
+  .menu-item {
+    padding: 15px 0px;
+  }
+
   .menu-item div {
     color: #e89e00;
     text-align: center;
     font-size: 1em;
+  }
+
+  .menu-item:hover {
+    background: linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0) 0%,
+      var(--theme-gray) 50%,
+      rgba(0, 0, 0, 0)
+    );
+  }
+
+  #scene-container .counter span {
+    font-size: 4em;
   }
 
   #scene-container .select-difficulty-switch {
@@ -1089,13 +1185,15 @@ body {
     -o-backdrop-filter: blur(10px);
     justify-content: space-around;
   }
+
+  .loader-container {
+    width: 90%;
+  }
 }
 
-
-
-/*************************************************************************
-***************************** Portrait View ******************************
-**************************************************************************/
+/******************************************************************************
+********************************* Portrait View *******************************
+*******************************************************************************/
 
 @media screen and ((orientation: portrait) or (max-aspect-ratio: 683/512)) and (min-width: 768px) {
   .menu-container {
@@ -1112,6 +1210,10 @@ body {
     -o-animation: mobileStartMenuAnimationIn 1s ease;
   }
 
+  .menu-item {
+    padding: 15px 0px;
+  }
+
   .menu-container .logo {
     margin: 0% 15%;
   }
@@ -1120,6 +1222,19 @@ body {
     color: #e89e00;
     text-align: center;
     font-size: 1em;
+  }
+
+  .menu-item:hover {
+    background: linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0) 0%,
+      var(--theme-gray) 50%,
+      rgba(0, 0, 0, 0)
+    );
+  }
+
+  #scene-container .counter span {
+    font-size: 4em;
   }
 
   #scene-container .select-difficulty-switch {
@@ -1148,38 +1263,14 @@ body {
     -o-backdrop-filter: blur(10px);
     justify-content: space-around;
   }
+
+  .loader-container {
+    width: 90%;
+  }
 }
 
 @property --loadingprogress {
   syntax: "<percentage>";
   initial-value: 0%;
   inherits: true;
-}
-
-/* HTML: <div class="loader"></div> */
-#scene-container .loader-container {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 35%;
-  aspect-ratio: 9/1;
-  display: block;
-  padding: 10px;
-}
-
-#scene-container .loader-container .loader-progress {
-  height: 75%;
-  background: linear-gradient(to right,
-      var(--theme-orange) 0%,
-      var(--theme-orange) var(--loadingprogress),
-      var(--theme-white) var(--loadingprogress));
-}
-
-#scene-container .loader-container .labels-container {
-  color: var(--theme-gray);
-  font-size: 1.5em;
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
 }

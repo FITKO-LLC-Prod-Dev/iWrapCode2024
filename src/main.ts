@@ -13,7 +13,7 @@ function main() {
     endReactionTime: 20000,
     progression: "linear",
     keyboardTargetActivated: false,
-    countdown: 3,
+    countdown: 5,
     debugGUI: false,
     worldAxis: false,
     statsGUI: false,

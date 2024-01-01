@@ -394,7 +394,7 @@ class GUI {
   }
 
   public updateBestReaction(newReaction: number) {
-    this.bestReactionText.textContent = `${Math.ceil(newReaction)} ms`;
+    this.bestReactionText.textContent = `${Math.ceil(newReaction)}`;
   }
 
   public clearTimerProgressBar() {
