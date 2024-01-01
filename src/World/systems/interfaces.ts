@@ -1,4 +1,4 @@
-import { PerspectiveCamera, Vector3 } from "three";
+import { PerspectiveCamera } from "three";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
 
 interface GameObject {
@@ -14,7 +14,8 @@ interface IComposerWrapper extends EffectComposer {
 
 interface ICameraWrapper {
   getCamera: () => PerspectiveCamera;
-  updateCameraAccordingToRatio: (newAspectRatio: number) => void;
+  setCameraAccordingToRatio: () => void;
+  updateCameraAccordingToRatio: () => void;
 }
 
 export { GameObject, IComposerWrapper, ICameraWrapper };

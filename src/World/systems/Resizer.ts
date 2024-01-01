@@ -29,7 +29,8 @@ class Resizer {
   updateSize() {
     const aspectRatio =
       this.container.clientWidth / this.container.clientHeight;
-    this.cameraWrapper.updateCameraAccordingToRatio(aspectRatio);
+    this.cameraWrapper.updateCameraAccordingToRatio();
+    this.cameraWrapper.setCameraAccordingToRatio();
     this.camera.aspect = aspectRatio;
     this.camera.updateProjectionMatrix();
     this.renderer.setPixelRatio(devicePixelRatio);

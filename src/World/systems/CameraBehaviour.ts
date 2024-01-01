@@ -2,10 +2,13 @@ import { Camera, PerspectiveCamera, Vector3 } from "three";
 import { Engine } from "./Engine.js";
 import GUI from "three/examples/jsm/libs/lil-gui.module.min.js";
 import { GameObject, ICameraWrapper } from "./interfaces.js";
+import { call } from "three/examples/jsm/nodes/Nodes.js";
 
 class CameraBehaviour implements ICameraWrapper {
+  private readonly container: HTMLElement;
   private readonly engine: Engine;
   private readonly camera: PerspectiveCamera;
+  private readonly aspectRatioThreshold: number;
   private transitionSpeed: number; // in percents per remaining distance per second
   private currentTransitionUID: number | undefined;
   private cameraStartPosition = new Vector3(0, 1.5, 3.5);
@@ -16,13 +19,17 @@ class CameraBehaviour implements ICameraWrapper {
   private currentState: "start-game" | "in-game" = "start-game";
 
   constructor(
+    container: HTMLElement,
     engine: Engine,
     camera: PerspectiveCamera,
     gui?: GUI,
     transitionSpeed: number = 4.5,
+    aspectRatioThreshold: number = 1,
   ) {
+    this.container = container;
     this.engine = engine;
     this.camera = camera;
+    this.aspectRatioThreshold = aspectRatioThreshold;
     // set initial camera position and target
     this.camera.position.set(
       this.cameraStartPosition.x,
@@ -62,18 +69,42 @@ class CameraBehaviour implements ICameraWrapper {
     return this.camera;
   }
 
-  public updateCameraAccordingToRatio(newAspectRatio: number): void {
-    // if we are currently at start game state, we move the camera
-    if (newAspectRatio <= 423 / 283 && this.currentState == "start-game") {
-      this.cameraStartTarget.setX(0);
-      this.cameraStartPosition.setX(0);
-      this.camera.position.set(
-        this.cameraStartPosition.x,
-        this.cameraStartPosition.y,
-        this.cameraStartPosition.z,
-      );
+  public setCameraAccordingToRatio(): void {
+    if (this.currentState == "start-game") {
       this.camera.lookAt(this.cameraStartTarget);
+      return;
     }
+    // in-game state
+    this.camera.position.set(
+      this.cameraGamePosition.x,
+      this.cameraGamePosition.y,
+      this.cameraGamePosition.z,
+    );
+    this.camera.lookAt(this.cameraGameTarget);
+  }
+
+  public updateCameraAccordingToRatio(): void {
+    const newAspectRatio =
+      this.container.clientWidth / this.container.clientHeight;
+    // if we are currently at start game state, we move the camera
+    if (this.currentState == "start-game") {
+      if (newAspectRatio <= this.aspectRatioThreshold) {
+        this.cameraStartTarget.set(0.0, 0.8, 0.0);
+        return;
+      }
+      this.cameraStartTarget.set(-1, 0.8, 0.0);
+      return;
+    }
+    // in-game state
+    if (newAspectRatio <= this.aspectRatioThreshold) {
+      this.cameraStartTarget.set(0.0, 0.8, 0.0);
+      this.cameraGamePosition.set(0, 1.8, 1.6);
+      this.cameraGameTarget.set(0.0, 1.2, 0.0);
+      return;
+    }
+    this.cameraStartTarget.set(-1, 0.8, 0.0);
+    this.cameraGamePosition.set(0, 2.2, 2.5);
+    this.cameraGameTarget.set(0.0, 0.94, 0.0);
   }
 
   public transitionToGameState(callback?: () => void): void {
@@ -102,6 +133,7 @@ class CameraBehaviour implements ICameraWrapper {
     finalTarget: Vector3,
     callback?: () => void,
   ): void {
+    this.updateCameraAccordingToRatio();
     if (this.currentTransitionUID !== undefined) {
       this.engine.removeBehaviour(this.currentTransitionUID);
       this.currentTransitionUID = undefined;

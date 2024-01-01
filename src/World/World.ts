@@ -94,6 +94,7 @@ class World {
     );
     this.engine = new Engine(this.composer);
     this.cameraBehaviour = new CameraBehaviour(
+      this.container,
       this.engine,
       this.camera,
       this.gui,
