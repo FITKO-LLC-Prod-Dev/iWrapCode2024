@@ -7,7 +7,7 @@ class CameraBehaviour implements ICameraWrapper {
   private readonly container: HTMLElement;
   private readonly engine: Engine;
   private readonly camera: PerspectiveCamera;
-  private readonly aspectRatioThreshold: number = 1200 / 900;
+  private readonly aspectRatioThreshold: number = 683 / 512;
   private transitionSpeed: number; // in percents per remaining distance per second
   private currentTransitionUID: number | undefined;
   private cameraStartPosition = new Vector3(0, 1.5, 3.5);
