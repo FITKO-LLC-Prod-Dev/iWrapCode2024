@@ -36,6 +36,7 @@ class GUI {
   private difficultySpinnerIdx = -1;
 
   private readonly inGameContainer: HTMLDivElement;
+  private readonly inGameResult: HTMLDivElement;
   private readonly leftGameContainer: HTMLDivElement;
   private readonly rightGameContainer: HTMLDivElement;
   private readonly timerBar: HTMLDivElement;
@@ -132,14 +133,18 @@ class GUI {
     // in-game menu container
     this.inGameContainer = document.createElement("div");
     this.inGameContainer.classList.add("in-game-container");
+    // in-game result container
+    this.inGameResult = document.createElement("div");
+    this.inGameResult.classList.add("in-game-result");
+    this.inGameContainer.appendChild(this.inGameResult);
     // left-game menu container
     this.leftGameContainer = document.createElement("div");
     this.leftGameContainer.classList.add("left-game-container");
-    this.inGameContainer.appendChild(this.leftGameContainer);
+    this.inGameResult.appendChild(this.leftGameContainer);
     // right-game menu container
     this.rightGameContainer = document.createElement("div");
     this.rightGameContainer.classList.add("right-game-container");
-    this.inGameContainer.appendChild(this.rightGameContainer);
+    this.inGameResult.appendChild(this.rightGameContainer);
     // total score
     this.totalScoreDiv = document.createElement("div");
     this.totalScoreDiv.classList.add("total-score");
@@ -389,7 +394,7 @@ class GUI {
   }
 
   public updateBestReaction(newReaction: number) {
-    this.bestReactionText.textContent = `${Math.ceil(newReaction)}\u00A0ms`;
+    this.bestReactionText.textContent = `${Math.ceil(newReaction)} ms`;
   }
 
   public clearTimerProgressBar() {

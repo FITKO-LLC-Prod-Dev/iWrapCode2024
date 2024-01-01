@@ -14,6 +14,43 @@
     opacity: 0;
     display: none;
   }
+
+  100% {
+    opacity: 1;
+    display: flex;
+  }
+}
+
+@-webkit-keyframes backgroundFadeIn {
+  0% {
+    opacity: 0;
+    display: none;
+  }
+
+  100% {
+    opacity: 1;
+    display: flex;
+  }
+}
+
+@-moz-keyframes backgroundFadeIn {
+  0% {
+    opacity: 0;
+    display: none;
+  }
+
+  100% {
+    opacity: 1;
+    display: flex;
+  }
+}
+
+@-o-keyframes backgroundFadeIn {
+  0% {
+    opacity: 0;
+    display: none;
+  }
+
   100% {
     opacity: 1;
     display: flex;
@@ -25,6 +62,43 @@
     opacity: 1;
     display: flex;
   }
+
+  100% {
+    opacity: 0;
+    display: none;
+  }
+}
+
+@-webkit-keyframes backgroundFadeOut {
+  0% {
+    opacity: 1;
+    display: flex;
+  }
+
+  100% {
+    opacity: 0;
+    display: none;
+  }
+}
+
+@-moz-keyframes backgroundFadeOut {
+  0% {
+    opacity: 1;
+    display: flex;
+  }
+
+  100% {
+    opacity: 0;
+    display: none;
+  }
+}
+
+@-o-keyframes backgroundFadeOut {
+  0% {
+    opacity: 1;
+    display: flex;
+  }
+
   100% {
     opacity: 0;
     display: none;
@@ -36,6 +110,43 @@
     opacity: 0;
     display: none;
   }
+
+  100% {
+    opacity: 1;
+    display: flex;
+  }
+}
+
+@-webkit-keyframes backgroundFlexFadeIn {
+  0% {
+    opacity: 0;
+    display: none;
+  }
+
+  100% {
+    opacity: 1;
+    display: flex;
+  }
+}
+
+@-moz-keyframes backgroundFlexFadeIn {
+  0% {
+    opacity: 0;
+    display: none;
+  }
+
+  100% {
+    opacity: 1;
+    display: flex;
+  }
+}
+
+@-o-keyframes backgroundFlexFadeIn {
+  0% {
+    opacity: 0;
+    display: none;
+  }
+
   100% {
     opacity: 1;
     display: flex;
@@ -47,9 +158,188 @@
     opacity: 1;
     display: block;
   }
+
   100% {
     opacity: 0;
     display: flex;
+  }
+}
+
+@-webkit-keyframes backgroundFlexFadeOut {
+  0% {
+    opacity: 1;
+    display: block;
+  }
+
+  100% {
+    opacity: 0;
+    display: flex;
+  }
+}
+
+@-moz-keyframes backgroundFlexFadeOut {
+  0% {
+    opacity: 1;
+    display: block;
+  }
+
+  100% {
+    opacity: 0;
+    display: flex;
+  }
+}
+
+@-o-keyframes backgroundFlexFadeOut {
+  0% {
+    opacity: 1;
+    display: block;
+  }
+
+  100% {
+    opacity: 0;
+    display: flex;
+  }
+}
+
+@keyframes mobileStartMenuAnimationIn {
+  0% {
+    background-color: white;
+  }
+
+  100% {
+    background-color: #0000006e;
+  }
+}
+
+@-webkit-keyframes mobileStartMenuAnimationIn {
+  0% {
+    background-color: white;
+  }
+
+  100% {
+    background-color: #0000006e;
+  }
+}
+
+@-moz-keyframes mobileStartMenuAnimationIn {
+  0% {
+    background-color: white;
+  }
+
+  100% {
+    background-color: #0000006e;
+  }
+}
+
+@-o-keyframes mobileStartMenuAnimationIn {
+  0% {
+    background-color: white;
+  }
+
+  100% {
+    background-color: #0000006e;
+  }
+}
+
+@keyframes mobileStartMenuAnimationOut {
+  0% {
+    background-color: #0000006e;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    -moz-backdrop-filter: blur(8px);
+    -o-backdrop-filter: blur(8px);
+    opacity: inherit;
+  }
+
+  100% {
+    background-color: transparent;
+    -webkit-backdrop-filter: none;
+    -moz-backdrop-filter: none;
+    -o-backdrop-filter: none;
+    opacity: 0;
+  }
+}
+
+@-webkit-keyframes mobileStartMenuAnimationOut {
+  0% {
+    background-color: #0000006e;
+    -webkit-backdrop-filter: blur(8px);
+    opacity: inherit;
+  }
+
+  100% {
+    background-color: transparent;
+    -webkit-backdrop-filter: none;
+    opacity: 0;
+  }
+}
+
+@-moz-keyframes mobileStartMenuAnimationOut {
+  0% {
+    background-color: #0000006e;
+    backdrop-filter: blur(8px);
+    -moz-backdrop-filter: blur(8px);
+    opacity: inherit;
+  }
+
+  100% {
+    background-color: transparent;
+    -moz-backdrop-filter: none;
+    opacity: 0;
+  }
+}
+
+@-o-keyframes mobileStartMenuAnimationOut {
+  0% {
+    background-color: #0000006e;
+    -o-backdrop-filter: blur(8px);
+    opacity: inherit;
+  }
+
+  100% {
+    background-color: transparent;
+    -o-backdrop-filter: none;
+    opacity: 0;
+  }
+}
+
+@keyframes mobileInGameResultAnimationIn {
+  0% {
+    background-color: transparent;
+  }
+
+  100% {
+    background-color: rgba(255, 255, 255, 0.678);
+  }
+}
+
+@-webkit-keyframes mobileInGameResultAnimationIn {
+  0% {
+    background-color: transparent;
+  }
+
+  100% {
+    background-color: rgba(255, 255, 255, 0.678);
+  }
+}
+
+@-moz-keyframes mobileInGameResultAnimationIn {
+  0% {
+    background-color: transparent;
+  }
+
+  100% {
+    background-color: rgba(255, 255, 255, 0.678);
+  }
+}
+
+@-o-keyframes mobileInGameResultAnimationIn {
+  0% {
+    background-color: transparent;
+  }
+
+  100% {
+    background-color: rgba(255, 255, 255, 0.678);
   }
 }
 
@@ -87,20 +377,24 @@ body {
   flex-direction: column;
   justify-content: space-around;
   font-size: 2.2em;
-  background: linear-gradient(
-    90deg,
-    var(--theme-orange) 0%,
-    rgba(0, 0, 0, 0) 90%
-  );
+  background: linear-gradient(90deg,
+      var(--theme-orange) 0%,
+      rgba(0, 0, 0, 0) 90%);
   top: 0;
   bottom: 0;
   left: 0;
   right: 50%;
   animation: backgroundFadeIn 2s ease forwards;
+  -webkit-animation: backgroundFadeIn 2s ease forwards;
+  -moz-animation: backgroundFadeIn 2s ease forwards;
+  -o-animation: backgroundFadeIn 2s ease forwards;
 }
 
 .menu-container-fade-out {
   animation: backgroundFadeOut 0.7s ease forwards;
+  -webkit-animation: backgroundFadeOut 0.7s ease forwards;
+  -moz-animation: backgroundFadeOut 0.7s ease forwards;
+  -o-animation: backgroundFadeOut 0.7s ease forwards;
 }
 
 .menu-container .logo {
@@ -129,11 +423,9 @@ body {
 .menu-item:hover {
   color: var(--theme-white);
   background: var(--theme-gray);
-  background: linear-gradient(
-    90deg,
-    var(--theme-gray) 0%,
-    rgba(0, 0, 0, 0) 80%
-  );
+  background: linear-gradient(90deg,
+      var(--theme-gray) 0%,
+      rgba(0, 0, 0, 0) 80%);
 }
 
 .menu-item div {
@@ -202,11 +494,9 @@ body {
 .in-game-container {
   display: flex;
   background: rgba(0, 0, 0, 0);
-  background: radial-gradient(
-    circle,
-    rgba(0, 0, 0, 0) 0%,
-    rgba(0, 0, 0, 0.25) 100%
-  );
+  background: radial-gradient(circle,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0.25) 100%);
   justify-content: space-between;
   align-items: flex-start;
   align-items: center;
@@ -222,13 +512,29 @@ body {
   user-select: none;
 }
 
+.in-game-result {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
 .left-game-container div {
   display: none;
   opacity: 0;
   animation: backgroundFlexFadeIn 2s ease forwards;
   animation-delay: 0.5s;
+
+  -webkit-animation: backgroundFlexFadeIn 2s ease forwards;
+  -webkit-animation-delay: 0.5s;
+
+  -moz-animation: backgroundFlexFadeIn 2s ease forwards;
+  -moz-animation-delay: 0.5s;
+
+  -o-animation: backgroundFlexFadeIn 2s ease forwards;
+  -o-animation-delay: 0.5s;
   flex-direction: column;
 }
+
 .left-game-container span {
   width: 100%;
   text-align: right;
@@ -244,6 +550,15 @@ body {
   opacity: 0;
   animation: backgroundFlexFadeIn 2s ease forwards;
   animation-delay: 0.5s;
+
+  -webkit-animation: backgroundFlexFadeIn 2s ease forwards;
+  -webkit-animation-delay: 0.5s;
+
+  -moz-animation: backgroundFlexFadeIn 2s ease forwards;
+  -moz-animation-delay: 0.5s;
+
+  -o-animation: backgroundFlexFadeIn 2s ease forwards;
+  -o-animation-delay: 0.5s;
   flex-direction: column;
 }
 
@@ -284,6 +599,9 @@ body {
   height: 100%;
   background: linear-gradient(to right, rgba(255, 255, 255, 0.2), transparent);
   animation: shine 2s infinite;
+  -webkit-animation: shine 2s infinite;
+  -moz-animation: shine 2s infinite;
+  -o-animation: shine 2s infinite;
 }
 
 #scene-container span {
@@ -295,6 +613,7 @@ body {
   padding-top: 0px !important;
   padding-bottom: 30px !important;
 }
+
 #scene-container .total-score {
   flex-grow: 1;
   display: flex;
@@ -378,11 +697,12 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 30%;
+  width: 200px;
+  height: 200px;
   aspect-ratio: 1 / 1;
   border: 1em solid #f5f6fa;
   color: #f5f6fa;
-  border-radius: 100%;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -393,6 +713,9 @@ body {
     rgba(0, 0, 0, 0.17) 0px 12px 13px,
     rgba(0, 0, 0, 0.09) 0px -3px 5px;
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  -o-backdrop-filter: blur(10px);
+  -moz-backdrop-filter: blur(10px);
 }
 
 #scene-container .counter span {
@@ -426,11 +749,9 @@ body {
   left: 0;
   right: 40%;
   padding: 30px 33% 30px 30px;
-  background: linear-gradient(
-    90deg,
-    var(--theme-orange) 0%,
-    rgba(0, 0, 0, 0) 90%
-  );
+  background: linear-gradient(90deg,
+      var(--theme-orange) 0%,
+      rgba(0, 0, 0, 0) 90%);
   box-sizing: border-box;
   font-size: 2em;
 }
@@ -540,42 +861,66 @@ body {
 **************************************************************************/
 
 @media only screen and (max-width: 400px) {
-  .in-game-container div label {
-    font-size: 0.95em !important;
-  }
-}
-
-/*************************************************************************
-*************************** Mobile View > 400px **************************
-**************************************************************************/
-
-@media only screen and (max-width: 600px) {
   .menu-container {
     right: 0%;
-    background: #6e6e6e;
-    animation: none;
+    background: none;
+    background-color: #0000006e;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    -moz-backdrop-filter: blur(8px);
+    -o-backdrop-filter: blur(8px);
+    animation: mobileStartMenuAnimationIn 1s ease;
+    -webkit-animation: mobileStartMenuAnimationIn 1s ease;
+    -moz-animation: mobileStartMenuAnimationIn 1s ease;
+    -o-animation: mobileStartMenuAnimationIn 1s ease;
   }
+
+  .menu-container .logo {
+    margin: 0% 5%;
+  }
+
   .menu-item {
     padding: 15px 0px;
   }
+
   .menu-item div {
     color: #e89e00;
     text-align: center;
-    font-size: 1em;
+    font-size: 0.9em;
   }
-  .menu-container .select-difficulty-switch {
-    padding: 0px;
-    margin: 0px 3%;
+
+  #scene-container .select-difficulty-switch {
+    margin: 0px 5%;
+    font-size: 0.9em;
+    color: #d1d1c2;
   }
-  .menu-container .logo {
-    margin: 0% 3%;
+
+  .menu-container-fade-out {
+    animation: 1s mobileStartMenuAnimationOut ease forwards;
+    -webkit-animation: 1s mobileStartMenuAnimationOut ease forwards;
+    -moz-animation: 1s mobileStartMenuAnimationOut ease forwards;
+    -o-animation: 1s mobileStartMenuAnimationOut ease forwards;
+    background-color: transparent;
   }
+
   .in-game-container {
     align-items: flex-end !important;
     padding: 0px;
   }
-  .in-game-container div {
-    background-color: white;
+
+  .in-game-result {
+    background-color: rgba(255, 255, 255, 0.678);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    -moz-backdrop-filter: blur(5px);
+    -o-backdrop-filter: blur(5px);
+    animation: 1s mobileInGameResultAnimationIn ease;
+    -webkit-animation: 1s mobileInGameResultAnimationIn ease;
+    -moz-animation: 1s mobileInGameResultAnimationIn ease;
+    -o-animation: 1s mobileInGameResultAnimationIn ease;
+  }
+
+  .in-game-result div {
     width: 50%;
     margin-left: 0px;
     margin-right: 0px;
@@ -583,8 +928,108 @@ body {
     flex-direction: column;
     align-items: center;
   }
+
   .end-game-container {
-    background-color: white;
+    right: 0%;
+    width: 100%;
+    margin: 0%;
+    padding: 10% 2%;
+    background-color: #e89e00e0;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    -moz-backdrop-filter: blur(10px);
+    -o-backdrop-filter: blur(10px);
+    justify-content: space-around;
+  }
+
+  #scene-container span {
+    font-size: 2em;
+  }
+}
+
+/*************************************************************************
+*************************** Mobile View > 400px **************************
+**************************************************************************/
+
+@media only screen and (min-width: 401px) and (max-width: 600px) {
+  .menu-container {
+    right: 0%;
+    background: none;
+    background-color: #0000006e;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    -moz-backdrop-filter: blur(8px);
+    -o-backdrop-filter: blur(8px);
+    animation: mobileStartMenuAnimationIn 1s ease;
+    -webkit-animation: mobileStartMenuAnimationIn 1s ease;
+    -moz-animation: mobileStartMenuAnimationIn 1s ease;
+    -o-animation: mobileStartMenuAnimationIn 1s ease;
+  }
+
+  .menu-item {
+    padding: 15px 0px;
+  }
+
+  .menu-item div {
+    color: #e89e00;
+    text-align: center;
+    font-size: 1em;
+  }
+
+  #scene-container .select-difficulty-switch {
+    padding: 0px;
+    margin: 0px 3%;
+    color: #d1d1c2;
+  }
+
+  .menu-container-fade-out {
+    animation: 1s mobileStartMenuAnimationOut ease forwards;
+    -webkit-animation: 1s mobileStartMenuAnimationOut ease forwards;
+    -moz-animation: 1s mobileStartMenuAnimationOut ease forwards;
+    -o-animation: 1s mobileStartMenuAnimationOut ease forwards;
+    background-color: transparent;
+  }
+
+  .menu-container .logo {
+    margin: 0% 10%;
+  }
+
+  .in-game-container {
+    align-items: flex-end !important;
+    padding: 0px;
+  }
+
+  .in-game-result {
+    background-color: rgba(255, 255, 255, 0.678);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    -moz-backdrop-filter: blur(5px);
+    -o-backdrop-filter: blur(5px);
+    animation: 1s mobileInGameResultAnimationIn ease;
+    -webkit-animation: 1s mobileInGameResultAnimationIn ease;
+    -moz-animation: 1s mobileInGameResultAnimationIn ease;
+    -o-animation: 1s mobileInGameResultAnimationIn ease;
+  }
+
+  .in-game-result div {
+    width: 50%;
+    margin-left: 0px;
+    margin-right: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .end-game-container {
+    right: 0%;
+    width: 100%;
+    margin: 0%;
+    padding: 10% 2%;
+    background-color: #e89e00e0;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    -moz-backdrop-filter: blur(10px);
+    -o-backdrop-filter: blur(10px);
     justify-content: space-around;
   }
 }
@@ -593,75 +1038,114 @@ body {
 ***************************** Tablet Views ********************************
 **************************************************************************/
 
-@media only screen and (max-width: 768px) {
+@media only screen and (min-width: 601px) and (max-width: 768px) {
   .menu-container {
     right: 0%;
-    animation: none;
+    background: none;
+    background-color: #0000006e;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    -moz-backdrop-filter: blur(8px);
+    -o-backdrop-filter: blur(8px);
+    animation: mobileStartMenuAnimationIn 1s ease;
+    -webkit-animation: mobileStartMenuAnimationIn 1s ease;
+    -moz-animation: mobileStartMenuAnimationIn 1s ease;
+    -o-animation: mobileStartMenuAnimationIn 1s ease;
   }
+
   .menu-item div {
     color: #e89e00;
     text-align: center;
     font-size: 1em;
   }
-  .menu-container .select-difficulty-switch {
+
+  #scene-container .select-difficulty-switch {
     padding: 0px;
-    margin: 0px 3%;
+    margin: 0px 15%;
+    color: #d1d1c2;
   }
+
+  .menu-container-fade-out {
+    animation: 1s mobileStartMenuAnimationOut ease forwards;
+    -webkit-animation: 1s mobileStartMenuAnimationOut ease forwards;
+    -moz-animation: 1s mobileStartMenuAnimationOut ease forwards;
+    -o-animation: 1s mobileStartMenuAnimationOut ease forwards;
+    background-color: transparent;
+  }
+
   .menu-container .logo {
-    margin: 0% 3%;
+    margin: 0% 10%;
   }
+
   .end-game-container {
-    background-color: white;
+    right: 0%;
+    width: 100%;
+    margin: 0%;
+    padding: 10% 2%;
+    background-color: #e89e00e0;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    -moz-backdrop-filter: blur(10px);
+    -o-backdrop-filter: blur(10px);
     justify-content: space-around;
   }
 }
 
-@media screen and (max-aspect-ratio: 683/512) {
-  .menu-container {
-    right: 0%;
-    background-image: url("/assets/misc/mobile-bg.jpg");
-    backdrop-filter: blur(5px);
-    animation: none;
-  }
-  .menu-item {
-    padding: 15px 0px;
-  }
-  .menu-item div {
-    color: #e89e00;
-    text-align: center;
-    font-size: 1em;
-  }
-  .menu-container .select-difficulty-switch {
-    padding: 0px;
-    margin: 0px 3%;
-  }
-  .menu-container .logo {
-    margin: 0% 3%;
-  }
-  .end-game-container {
-    background-color: white;
-    justify-content: space-around;
-  }
-}
+
 
 /*************************************************************************
 ***************************** Portrait View ******************************
 **************************************************************************/
 
-@media screen and (orientation: portrait) {
+@media screen and ((orientation: portrait) or (max-aspect-ratio: 683/512)) and (min-width: 768px) {
   .menu-container {
     right: 0%;
-    background-image: url("/assets/misc/mobile-bg.jpg");
-    backdrop-filter: blur(5px);
-    animation: none;
+    background: none;
+    background-color: #0000006e;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    -moz-backdrop-filter: blur(8px);
+    -o-backdrop-filter: blur(8px);
+    animation: mobileStartMenuAnimationIn 1s ease;
+    -webkit-animation: mobileStartMenuAnimationIn 1s ease;
+    -moz-animation: mobileStartMenuAnimationIn 1s ease;
+    -o-animation: mobileStartMenuAnimationIn 1s ease;
   }
+
+  .menu-container .logo {
+    margin: 0% 15%;
+  }
+
   .menu-item div {
     color: #e89e00;
     text-align: center;
     font-size: 1em;
   }
+
+  #scene-container .select-difficulty-switch {
+    padding: 0px;
+    margin: 0px 15%;
+    color: #d1d1c2;
+  }
+
+  .menu-container-fade-out {
+    animation: 1s mobileStartMenuAnimationOut ease forwards;
+    -webkit-animation: 1s mobileStartMenuAnimationOut ease forwards;
+    -moz-animation: 1s mobileStartMenuAnimationOut ease forwards;
+    -o-animation: 1s mobileStartMenuAnimationOut ease forwards;
+    background-color: transparent;
+  }
+
   .end-game-container {
-    background-color: white;
+    right: 0%;
+    width: 100%;
+    margin: 0%;
+    padding: 10% 2%;
+    background-color: #e89e00e0;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    -moz-backdrop-filter: blur(10px);
+    -o-backdrop-filter: blur(10px);
     justify-content: space-around;
   }
 }
@@ -686,12 +1170,10 @@ body {
 
 #scene-container .loader-container .loader-progress {
   height: 75%;
-  background: linear-gradient(
-    to right,
-    var(--theme-orange) 0%,
-    var(--theme-orange) var(--loadingprogress),
-    var(--theme-white) var(--loadingprogress)
-  );
+  background: linear-gradient(to right,
+      var(--theme-orange) 0%,
+      var(--theme-orange) var(--loadingprogress),
+      var(--theme-white) var(--loadingprogress));
 }
 
 #scene-container .loader-container .labels-container {
